@@ -1,20 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ensure_default_dependencies_1 = require("../ensure-default-dependencies");
-exports.StringTemplate = (document, dependencies = {}) => {
-    const deps = ensure_default_dependencies_1.ensureDefaultDependencies(document, dependencies);
-    const stringTemplate = (schema) => {
-        if (schema.format === 'multiline' && deps.stringTextArea)
-            return deps.stringTextArea(schema);
-        const editor = deps.input(schema);
-        editor.type = 'text';
-        editor.dataset.title = schema.title || 'String';
-        if (typeof schema.type === 'string')
-            editor.dataset.type = schema.type;
-        if (schema.default)
-            editor.defaultValue = String(schema.default);
-        if (schema.pattern) {
-            editor.pattern = schema.pattern;
+exports.StringTemplate = (document, isMultiline = false) => {
+    const stringTemplate = (schema, name = '', defaultValue) => {
+        let editor;
+        if (isMultiline) {
+            editor = document.createElement('textarea');
+        }
+        else {
+            editor = document.createElement('input');
+            editor.type = 'text';
+            if (schema.pattern) {
+                editor.pattern = schema.pattern;
+            }
+        }
+        editor.title = schema.title || 'String';
+        if (name)
+            editor.name = name;
+        if (typeof defaultValue === 'string') {
+            editor.defaultValue = defaultValue;
+        }
+        else if (typeof schema.default === 'string') {
+            editor.defaultValue = schema.default;
         }
         if (schema.minLength !== undefined) {
             editor.minLength = schema.minLength;

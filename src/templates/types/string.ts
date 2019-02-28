@@ -1,28 +1,30 @@
 import { JSONSchema4 } from 'json-schema'
-import { TemplateFactory, Templates } from '../../types'
-import { ensureDefaultDependencies } from '../ensure-default-dependencies'
 
-export const StringTemplate: TemplateFactory<HTMLInputElement | HTMLTextAreaElement> =
-  ( document: Document, dependencies: Partial<Templates> = {} ) => {
-    const deps = ensureDefaultDependencies( document, dependencies )
+export const StringTemplate =
+  ( document: Document, isMultiline = false ) => {
+    const stringTemplate = ( schema: JSONSchema4, name = '', defaultValue?: string ) => {
+      let editor: HTMLInputElement | HTMLTextAreaElement
 
-    const stringTemplate = ( schema: JSONSchema4 ) => {
-      if( schema.format === 'multiline' && deps.stringTextArea )
-        return <HTMLTextAreaElement>deps.stringTextArea( schema )
+      if( isMultiline ){
+        editor = document.createElement( 'textarea' )
+      } else {
+        editor = document.createElement( 'input' )
 
-      const editor = deps.input( schema )
+        editor.type = 'text'
 
-      editor.type = 'text'
-      editor.dataset.title = schema.title || 'String'
+        if ( schema.pattern ) {
+          editor.pattern = schema.pattern
+        }
+      }
 
-      if ( typeof schema.type === 'string' )
-        editor.dataset.type = schema.type
+      editor.title = schema.title || 'String'
 
-      if ( schema.default )
-        editor.defaultValue = String( schema.default )
+      if( name ) editor.name = name
 
-      if ( schema.pattern ) {
-        editor.pattern = schema.pattern
+      if ( typeof defaultValue === 'string' ) {
+        editor.defaultValue = defaultValue
+      } else if ( typeof schema.default === 'string' ) {
+        editor.defaultValue = schema.default
       }
 
       if ( schema.minLength !== undefined ) {

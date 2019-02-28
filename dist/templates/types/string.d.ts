@@ -1,2 +1,2 @@
-import { TemplateFactory } from '../../types';
-export declare const StringTemplate: TemplateFactory<HTMLInputElement | HTMLTextAreaElement>;
+import { JSONSchema4 } from 'json-schema';
+export declare const StringTemplate: (document: Document, isMultiline?: boolean) => (schema: JSONSchema4, name?: string, defaultValue?: string | undefined) => HTMLInputElement | HTMLTextAreaElement;

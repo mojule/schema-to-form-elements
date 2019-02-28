@@ -1,24 +1,25 @@
 import { JSONSchema4 } from 'json-schema'
-import { TemplateFactory, Templates } from '../../types'
-import { ensureDefaultDependencies } from '../ensure-default-dependencies'
 
-export const NumberTemplate: TemplateFactory<HTMLInputElement> =
-  ( document: Document, dependencies: Partial<Templates> = {} ) => {
-    const deps = ensureDefaultDependencies( document, dependencies )
+export const NumberTemplate =
+  ( document: Document, isRange = false ) => {
+    const numberTemplate = ( schema: JSONSchema4, name = '', defaultValue?: number ) => {
+      const editor = document.createElement( 'input' )
 
-    const numberTemplate = ( schema: JSONSchema4 ) => {
-      const editor = deps.input( schema )
+      editor.type = isRange ? 'range' : 'number'
+      editor.title = schema.title || 'Number'
 
-      editor.type = 'number'
-      editor.dataset.title = schema.title || 'Number'
+      if( name ) editor.name = name
 
-      if ( schema.default )
+      if ( typeof defaultValue === 'number' ) {
+        editor.defaultValue = String( defaultValue )
+      } else if ( typeof schema.default === 'number' ) {
         editor.defaultValue = String( schema.default )
+      }
 
-      if ( schema.type === 'integer' ) {
-        editor.step = String( schema.multipleOf || 1 )
-      } else if ( schema.multipleOf ) {
+      if ( typeof schema.multipleOf === 'number' ) {
         editor.step = String( schema.multipleOf )
+      } else if ( schema.type === 'integer' ){
+        editor.step = '1'
       }
 
       if ( 'minimum' in schema ) {

@@ -1,15 +1,12 @@
-import { TemplateFactory, Templates } from '../../types'
 import { JSONSchema4 } from 'json-schema'
-import { ensureDefaultDependencies } from '../ensure-default-dependencies';
+import { Templates } from '../../types'
 
-export const ObjectTemplate: TemplateFactory =
-  ( document: Document, dependencies: Partial<Templates> = {} ) => {
-    const deps = ensureDefaultDependencies( document, dependencies )
+export const ObjectTemplate =
+  ( document: Document, templates: Partial<Templates> = {} ) => {
+    const objectTemplate = ( schema: JSONSchema4, name = '', defaultValue?: any ) => {
+      const container = document.createElement( 'div' )
 
-    const objectTemplate = ( schema: JSONSchema4 ) => {
-      const container = deps.container( schema )
-
-      container.dataset.title = schema.title || 'Object'
+      container.title = schema.title || 'Object'
 
       if ( !schema.properties ) return container
 
@@ -17,12 +14,19 @@ export const ObjectTemplate: TemplateFactory =
         const childSchema = schema.properties![ key ]
 
         if ( typeof childSchema.type !== 'string' ) return
-        if ( !( childSchema.type in deps ) ) return
 
-        const template = deps[ childSchema.type ]
-        const editor = template( childSchema )
+        const template = templates[ childSchema.type ]
 
-        editor.dataset.key = key
+        if ( !template ) return
+
+        let childDefaultValue: any = undefined
+
+        if( typeof defaultValue === 'object' ){
+          childDefaultValue = defaultValue[ key ]
+        }
+
+        const childName = name ? `${ name }[${ key }]` : key
+        const editor = template( childSchema, childName, childDefaultValue )
 
         container.appendChild( editor )
       } )

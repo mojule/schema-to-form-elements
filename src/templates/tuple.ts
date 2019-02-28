@@ -1,26 +1,31 @@
 import { JSONSchema4 } from 'json-schema'
-import { TemplateFactory, Templates } from '../types'
-import { ensureDefaultDependencies } from './ensure-default-dependencies';
+import { Templates } from '../types'
 
-export const TupleTemplate: TemplateFactory =
-( document: Document, options: Partial<Templates> = {} ) => {
-  const opts = ensureDefaultDependencies( document, options )
+export const TupleTemplate =
+  ( document: Document, templates: Partial<Templates> = {} ) => {
+  const tupleTemplate = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
+    const container = document.createElement( 'div' )
 
-  const tupleTemplate = ( schema: JSONSchema4 ) => {
-    const container = opts.container( schema )
-
-    container.dataset.title = schema.title || 'Tuple'
+    container.title = schema.title || 'Tuple'
 
     if ( !Array.isArray( schema.items ) ) return container
 
     schema.items.forEach( ( childSchema, key ) => {
       if ( typeof childSchema.type !== 'string' ) return
-      if ( !( childSchema.type in opts ) ) return
 
-      const template = opts[ childSchema.type ]
-      const editor = template( childSchema )
+      const template = templates[ childSchema.type ]
 
-      editor.dataset.key = String( key )
+      if ( !template ) return
+
+      let childDefaultValue: any = undefined
+
+      if ( Array.isArray( defaultValue ) ) {
+        childDefaultValue = defaultValue[ key ]
+      }
+
+      const childName = name ? `${ name }[${ key }]` : String( key )
+
+      const editor = template( childSchema, childName, childDefaultValue )
 
       container.appendChild( editor )
     } )

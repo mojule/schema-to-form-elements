@@ -1,10 +1,11 @@
 import { JSONSchema4 } from 'json-schema';
-export declare type Template<T = HTMLElement> = (schema: JSONSchema4) => T;
-export declare type TemplateFactory<T = HTMLElement> = (document: Document, dependencies?: Partial<Templates>) => Template<T>;
+export declare type SchemaTemplate = (schema: JSONSchema4, name?: string, defaultValue?: any) => HTMLElement;
 export interface Templates {
-    container: Template;
-    input: Template<HTMLInputElement>;
-    [name: string]: Template;
+    array: SchemaTemplate;
+    boolean: SchemaTemplate;
+    number: SchemaTemplate;
+    object: SchemaTemplate;
+    string: SchemaTemplate;
+    [name: string]: SchemaTemplate;
 }
-export declare type ElementDecorator = (element: HTMLElement) => HTMLElement;
-export declare type ElementDecoratorFactory = (document: Document) => ElementDecorator;
+export declare type StringTemplateFactory = (document: Document, isMultiline?: boolean) => SchemaTemplate;

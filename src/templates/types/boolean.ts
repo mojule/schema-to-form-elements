@@ -1,19 +1,20 @@
 import { JSONSchema4 } from 'json-schema'
-import { TemplateFactory, Templates } from '../../types'
-import { ensureDefaultDependencies } from '../ensure-default-dependencies';
 
-export const BooleanTemplate: TemplateFactory<HTMLInputElement> =
-  ( document: Document, dependencies: Partial<Templates> = {} ) => {
-    const deps = ensureDefaultDependencies( document, dependencies )
-
-    const booleanTemplate = ( schema: JSONSchema4 ) => {
-      const editor = deps.input( schema )
+export const BooleanTemplate =
+  ( document: Document ) => {
+    const booleanTemplate = ( schema: JSONSchema4, name = '', defaultValue?: boolean ) => {
+      const editor = document.createElement( 'input' )
 
       editor.type = 'checkbox'
-      editor.dataset.title = schema.title || 'Boolean'
+      editor.title = schema.title || 'Boolean'
 
-      if ( schema.default )
-        editor.checked = true
+      if( name ) editor.name = name
+
+      if( typeof defaultValue === 'boolean' ){
+        editor.checked = defaultValue
+      } else if ( typeof schema.default === 'boolean' ){
+        editor.checked = schema.default
+      }
 
       return editor
     }

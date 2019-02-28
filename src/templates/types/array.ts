@@ -1,23 +1,20 @@
 import { JSONSchema4 } from 'json-schema'
-import { TemplateFactory, Templates } from '../../types'
-import { ensureDefaultDependencies } from '../ensure-default-dependencies'
+import { Templates } from '../../types'
 
-export const ArrayTemplate: TemplateFactory =
-  ( document: Document, dependencies: Partial<Templates> = {} ) => {
-    const deps = ensureDefaultDependencies( document, dependencies )
-
-    const arrayTemplate = ( schema: JSONSchema4 ) => {
-      const container = deps.container( schema )
-
-      container.dataset.title = schema.title || 'Array'
-
-      if ( Array.isArray( schema.items ) && deps.tuple ) {
-        return deps.tuple( schema )
+export const ArrayTemplate =
+  ( document: Document, templates: Templates ) => {
+    const arrayTemplate = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
+      if ( Array.isArray( schema.items ) && templates.tuple ) {
+        return templates.tuple( schema, name, defaultValue )
       }
 
-      if ( schema.items && deps.arrayItems ) {
-        return deps.arrayItems( schema )
+      if ( schema.items && templates.arrayItems ) {
+        return templates.arrayItems( schema, name, defaultValue )
       }
+
+      const container = document.createElement( 'div' )
+
+      container.title = schema.title || 'Array'
 
       return container
     }

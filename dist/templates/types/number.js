@@ -1,19 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ensure_default_dependencies_1 = require("../ensure-default-dependencies");
-exports.NumberTemplate = (document, dependencies = {}) => {
-    const deps = ensure_default_dependencies_1.ensureDefaultDependencies(document, dependencies);
-    const numberTemplate = (schema) => {
-        const editor = deps.input(schema);
-        editor.type = 'number';
-        editor.dataset.title = schema.title || 'Number';
-        if (schema.default)
-            editor.defaultValue = String(schema.default);
-        if (schema.type === 'integer') {
-            editor.step = String(schema.multipleOf || 1);
+exports.NumberTemplate = (document, isRange = false) => {
+    const numberTemplate = (schema, name = '', defaultValue) => {
+        const editor = document.createElement('input');
+        editor.type = isRange ? 'range' : 'number';
+        editor.title = schema.title || 'Number';
+        if (name)
+            editor.name = name;
+        if (typeof defaultValue === 'number') {
+            editor.defaultValue = String(defaultValue);
         }
-        else if (schema.multipleOf) {
+        else if (typeof schema.default === 'number') {
+            editor.defaultValue = String(schema.default);
+        }
+        if (typeof schema.multipleOf === 'number') {
             editor.step = String(schema.multipleOf);
+        }
+        else if (schema.type === 'integer') {
+            editor.step = '1';
         }
         if ('minimum' in schema) {
             editor.min = String(schema.minimum);

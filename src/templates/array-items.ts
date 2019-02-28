@@ -1,41 +1,44 @@
 import { JSONSchema4 } from 'json-schema'
-import { TemplateFactory, Templates } from '../types'
-import { ensureDefaultDependencies } from './ensure-default-dependencies'
+import { Templates } from '../types'
 
-export const ArrayItemsTemplate: TemplateFactory =
-  ( document: Document, dependencies: Partial<Templates> = {} ) => {
-    const deps = ensureDefaultDependencies( document, dependencies )
+export const ArrayItemsTemplate =
+  ( document: Document, templates: Partial<Templates> = {}, initialCount?: number ) => {
+    const arrayItemsEditor = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
+      const container = document.createElement( 'div' )
 
-    const arrayItemsEditor = ( schema: JSONSchema4 ) => {
-      const container = deps.container( schema )
-
-      container.dataset.title = schema.title || 'Array Items'
+      container.title = schema.title || 'Array Items'
 
       if ( !schema.items || Array.isArray( schema.items ) ) return container
 
       const childSchema = schema.items
 
       if ( typeof childSchema.type !== 'string' ) return container
-      if ( !( childSchema.type in deps ) ) return container
 
-      const templateElement = document.createElement( 'template' )
-      const template = deps[ childSchema.type ]
-      const editor = template( childSchema )
+      const template = templates[ childSchema.type ]
 
-      container.appendChild( templateElement )
-      templateElement.content.appendChild( editor.cloneNode( true ) )
+      if ( !template ) return container
 
-      const count = schema.maxItems || schema.minItems
+      const count = (
+        typeof initialCount === 'number' ? initialCount:
+        schema.maxItems || schema.minItems
+      )
 
-      if ( !count ) return container
+      if ( typeof count === 'undefined' ) return container
 
       const list = document.createElement( 'ol' )
 
       for ( let key = 0; key < count; key++ ) {
         const li = document.createElement( 'li' )
-        const editorItem = <HTMLElement>editor.cloneNode( true )
 
-        editorItem.dataset.key = String( key )
+        let childDefaultValue: any = undefined
+
+        if ( Array.isArray( defaultValue ) ) {
+          childDefaultValue = defaultValue[ key ]
+        }
+
+        const childName = name ? `${ name }[${ key }]` : String( key )
+
+        const editorItem = template( childSchema, childName, childDefaultValue )
 
         li.appendChild( editorItem )
 

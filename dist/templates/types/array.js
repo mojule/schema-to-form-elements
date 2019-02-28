@@ -1,17 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ensure_default_dependencies_1 = require("../ensure-default-dependencies");
-exports.ArrayTemplate = (document, dependencies = {}) => {
-    const deps = ensure_default_dependencies_1.ensureDefaultDependencies(document, dependencies);
-    const arrayTemplate = (schema) => {
-        const container = deps.container(schema);
-        container.dataset.title = schema.title || 'Array';
-        if (Array.isArray(schema.items) && deps.tuple) {
-            return deps.tuple(schema);
+exports.ArrayTemplate = (document, templates) => {
+    const arrayTemplate = (schema, name = '', defaultValue) => {
+        if (Array.isArray(schema.items) && templates.tuple) {
+            return templates.tuple(schema, name, defaultValue);
         }
-        if (schema.items && deps.arrayItems) {
-            return deps.arrayItems(schema);
+        if (schema.items && templates.arrayItems) {
+            return templates.arrayItems(schema, name, defaultValue);
         }
+        const container = document.createElement('div');
+        container.title = schema.title || 'Array';
         return container;
     };
     return arrayTemplate;
