@@ -18,10 +18,19 @@ export const ArrayItemsTemplate =
 
       if ( !template ) return container
 
-      const count = (
+      let count = (
+        Array.isArray( defaultValue ) ? defaultValue.length :
         typeof initialCount === 'number' ? initialCount:
         schema.maxItems || schema.minItems
       )
+
+      if(
+        typeof schema.maxItems === 'number' &&
+        typeof count === 'number' &&
+        count > schema.maxItems
+      ){
+        count = schema.maxItems
+      }
 
       if ( typeof count === 'undefined' ) return container
 
@@ -36,7 +45,7 @@ export const ArrayItemsTemplate =
           childDefaultValue = defaultValue[ key ]
         }
 
-        const childName = name ? `${ name }[${ key }]` : String( key )
+        const childName = name ? `${ name }[${ key }]` : `[${ key }]`
 
         const editorItem = template( childSchema, childName, childDefaultValue )
 

@@ -2,8 +2,15 @@ import { JSONSchema4 } from 'json-schema'
 import { Templates } from '../../types'
 
 export const ArrayTemplate =
-  ( document: Document, templates: Templates ) => {
+  ( document: Document, templates: Partial<Templates> = {} ) => {
     const arrayTemplate = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
+      if(
+        typeof defaultValue === 'undefined' &&
+        Array.isArray( schema.default )
+      ){
+        defaultValue = schema.default
+      }
+
       if ( Array.isArray( schema.items ) && templates.tuple ) {
         return templates.tuple( schema, name, defaultValue )
       }
@@ -15,6 +22,7 @@ export const ArrayTemplate =
       const container = document.createElement( 'div' )
 
       container.title = schema.title || 'Array'
+      if( name ) container.dataset.name = name
 
       return container
     }

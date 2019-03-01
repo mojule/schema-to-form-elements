@@ -23,7 +23,7 @@ export const TupleTemplate =
         childDefaultValue = defaultValue[ key ]
       }
 
-      const childName = name ? `${ name }[${ key }]` : String( key )
+      const childName = name ? `${ name }[${ key }]` : `[${ key }]`
 
       const editor = template( childSchema, childName, childDefaultValue )
 

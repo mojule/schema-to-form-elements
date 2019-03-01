@@ -1,0 +1,13 @@
+{
+    "type": "array",
+    "title": "Nested Array",
+    "description": "A nested array",
+    "items": {
+        "type": "array",
+        "title": "Values",
+        "items": {
+            "type": "number"
+        }
+    },
+    "default": [[1, 2], [3, 4]]
+}

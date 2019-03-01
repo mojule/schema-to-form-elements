@@ -4,8 +4,11 @@ exports.ObjectTemplate = (document, templates = {}) => {
     const objectTemplate = (schema, name = '', defaultValue) => {
         const container = document.createElement('div');
         container.title = schema.title || 'Object';
+        if (name)
+            container.dataset.name = name;
         if (!schema.properties)
             return container;
+        defaultValue = defaultValue || schema.default;
         Object.keys(schema.properties).forEach(key => {
             const childSchema = schema.properties[key];
             if (typeof childSchema.type !== 'string')

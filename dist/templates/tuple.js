@@ -16,7 +16,7 @@ exports.TupleTemplate = (document, templates = {}) => {
             if (Array.isArray(defaultValue)) {
                 childDefaultValue = defaultValue[key];
             }
-            const childName = name ? `${name}[${key}]` : String(key);
+            const childName = name ? `${name}[${key}]` : `[${key}]`;
             const editor = template(childSchema, childName, childDefaultValue);
             container.appendChild(editor);
         });

@@ -12,8 +12,14 @@ exports.ArrayItemsTemplate = (document, templates = {}, initialCount) => {
         const template = templates[childSchema.type];
         if (!template)
             return container;
-        const count = (typeof initialCount === 'number' ? initialCount :
-            schema.maxItems || schema.minItems);
+        let count = (Array.isArray(defaultValue) ? defaultValue.length :
+            typeof initialCount === 'number' ? initialCount :
+                schema.maxItems || schema.minItems);
+        if (typeof schema.maxItems === 'number' &&
+            typeof count === 'number' &&
+            count > schema.maxItems) {
+            count = schema.maxItems;
+        }
         if (typeof count === 'undefined')
             return container;
         const list = document.createElement('ol');
@@ -23,7 +29,7 @@ exports.ArrayItemsTemplate = (document, templates = {}, initialCount) => {
             if (Array.isArray(defaultValue)) {
                 childDefaultValue = defaultValue[key];
             }
-            const childName = name ? `${name}[${key}]` : String(key);
+            const childName = name ? `${name}[${key}]` : `[${key}]`;
             const editorItem = template(childSchema, childName, childDefaultValue);
             li.appendChild(editorItem);
             list.appendChild(li);

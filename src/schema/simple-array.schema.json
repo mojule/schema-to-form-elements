@@ -1,0 +1,9 @@
+{
+  "type": "array",
+  "title": "Simple Array",
+  "description": "A simple array",
+  "items": {
+    "type": "number"
+  },
+  "default": [ 1, 2, 3 ]
+}

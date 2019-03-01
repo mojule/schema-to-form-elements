@@ -2,7 +2,7 @@ import { Templates } from '../../types'
 import { JSONSchema4 } from 'json-schema'
 
 export const ArrayApi =
-  ( _document: Document, templates: Partial<Templates> = {} ) => {
+  ( document: Document, templates: Partial<Templates> = {} ) => {
     const { arrayItems } = templates
 
     if( !arrayItems ) throw Error( 'ArrayApi: missing template arrayItems' )
@@ -44,7 +44,7 @@ export const ArrayApi =
         const key = count()
         const li = document.createElement( 'li' )
 
-        const childName = name ? `${ name }[${ key }]` : String( key )
+        const childName = name ? `${ name }[${ key }]` : `[${ key }]`
 
         const editorItem = template( childSchema, childName, defaultValue )
 
@@ -59,15 +59,28 @@ export const ArrayApi =
         if( index >= count() )
           throw Error( 'ArrayApi: remove index out of bounds' )
 
+        const previousCount = count()
+
         list.children[ index ].remove()
 
-        renumber( index )
+        renumber( previousCount, index + 1 )
       }
 
-      const renumber = ( from: number ) => {
-        if( from === count() ) return
+      const renumber = ( previousCount: number, from: number ) => {
+        for( let i = from; i < previousCount; i++ ){
+          const oldName = `${ name }[${ i }]`
+          const newName = `${ name }[${ i - 1 }]`
 
-        // todo
+          const targets = <HTMLInputElement[]>Array.from(
+            list.querySelectorAll( `input[name]` )
+          )
+
+          targets.forEach( target => {
+            if( target.name.startsWith( oldName ) ){
+              target.name = target.name.replace( oldName, newName )
+            }
+          })
+        }
       }
 
       return {
@@ -92,6 +105,11 @@ export const ArrayApi =
 
     const arrayApiDecorator = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
       const container = arrayItems( schema, name, defaultValue )
+
+      if( name in api )
+        throw Error(
+          `ArrayApi: name ${ name } already exists, create a new API for each form you generate`
+        )
 
       api[ name ] = Api( container, schema, name, defaultValue )
 

@@ -1,29 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsdom_1 = require("jsdom");
-const contactForm = require("../schema/contact-form.schema.json");
-const object_1 = require("../templates/types/object");
-const string_1 = require("../templates/types/string");
-const label_1 = require("../templates/decorators/label");
-const fieldset_js_1 = require("../templates/decorators/fieldset.js");
-const format_js_1 = require("../templates/decorators/format.js");
-const schema = contactForm;
-const jsdom = new jsdom_1.JSDOM(`<!doctype html>`);
-const { document } = jsdom.window;
-const stringTemplate = string_1.StringTemplate(document);
-const objectTemplate = object_1.ObjectTemplate(document, { string: stringTemplate });
-console.log('Unnamed object: ');
-const unnamed = objectTemplate(schema);
-console.log(unnamed.outerHTML);
-console.log('\nNamed object: ');
-const named = objectTemplate(schema, 'contact');
-console.log(named.outerHTML);
-console.log('\nWith decorators: ');
-const multilineStringTemplate = string_1.StringTemplate(document, true);
-const formattedStringTemplate = format_js_1.FormatDecorator(document, stringTemplate, multilineStringTemplate);
-const labelledStringTemplate = label_1.LabelDecorator(document, formattedStringTemplate);
-const labelledObjectTemplate = object_1.ObjectTemplate(document, { string: labelledStringTemplate });
-const fieldsetObjectTemplate = fieldset_js_1.FieldsetDecorator(document, labelledObjectTemplate);
-const decorated = fieldsetObjectTemplate(schema);
-console.log(decorated.outerHTML);
+const contact_form_1 = require("./contact-form");
+const simple_array_1 = require("./simple-array");
+const nested_array_1 = require("./nested-array");
+console.log('Contact Form:\n\n');
+Object.keys(contact_form_1.contactFormExample).forEach(key => {
+    console.log(key);
+    console.log(contact_form_1.contactFormExample[key]);
+    console.log();
+});
+console.log('Simple Array:\n\n');
+Object.keys(simple_array_1.simpleArrayExample).forEach(key => {
+    console.log(key);
+    console.log(simple_array_1.simpleArrayExample[key]);
+    console.log();
+});
+console.log('Nested Array:\n\n');
+Object.keys(nested_array_1.nestedArrayExample).forEach(key => {
+    console.log(key);
+    console.log(nested_array_1.nestedArrayExample[key]);
+    console.log();
+});
 //# sourceMappingURL=server.js.map

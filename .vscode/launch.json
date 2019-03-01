@@ -8,7 +8,8 @@
       "type": "node",
       "request": "launch",
       "name": "Server Example",
-      "program": "${workspaceFolder}/dist/examples/server"
+      "program": "${workspaceFolder}/dist/examples/server",
+      "preLaunchTask": "build"
     },
     {
       "type": "node",
