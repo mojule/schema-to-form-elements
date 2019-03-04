@@ -2,7 +2,7 @@ import { JSONSchema4 } from 'json-schema'
 import { Templates } from '../types'
 
 export const ArrayItemsTemplate =
-  ( document: Document, templates: Partial<Templates> = {}, initialCount?: number ) => {
+  ( document: Document, templates: Partial<Templates> = {} ) => {
     const arrayItemsEditor = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
       const container = document.createElement( 'div' )
 
@@ -18,21 +18,23 @@ export const ArrayItemsTemplate =
 
       if ( !template ) return container
 
+      const hasMaxItems = typeof schema.maxItems === 'number'
+      const hasMinItems = typeof schema.minItems === 'number'
+
       let count = (
         Array.isArray( defaultValue ) ? defaultValue.length :
-        typeof initialCount === 'number' ? initialCount:
-        schema.maxItems || schema.minItems
+        hasMaxItems ? schema.maxItems! :
+        hasMinItems ? schema.minItems! :
+        0
       )
 
-      if(
-        typeof schema.maxItems === 'number' &&
-        typeof count === 'number' &&
-        count > schema.maxItems
-      ){
-        count = schema.maxItems
+      if( hasMaxItems && count > schema.maxItems! ){
+        count = schema.maxItems!
       }
 
-      if ( typeof count === 'undefined' ) return container
+      if( hasMinItems && count < schema.minItems! ){
+        count = schema.minItems!
+      }
 
       const list = document.createElement( 'ol' )
 

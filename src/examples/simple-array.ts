@@ -5,7 +5,7 @@ import { JSONSchema4 } from 'json-schema'
 import { ArrayTemplate } from '../templates/types/array'
 import { NumberTemplate } from '../templates/types/number'
 import { ArrayItemsTemplate } from '../templates/array-items'
-import { ArrayApi } from '../templates/api/array'
+import { ArrayItemsApi } from '../templates/api/array-items'
 import { getEntries, entriesToPointers } from './util'
 
 const schema = <JSONSchema4>simpleArray
@@ -15,16 +15,16 @@ const { document } = jsdom.window
 
 const numberTemplate = NumberTemplate( document )
 const arrayItemsTemplate = ArrayItemsTemplate( document, { number: numberTemplate } )
-const { arrayApiDecorator, api } = ArrayApi( document, { number: numberTemplate, arrayItems: arrayItemsTemplate } )
-const arrayTemplate = ArrayTemplate( document, { number: numberTemplate, arrayItems: arrayApiDecorator } )
+const { arrayItemsDecorator, arrayItemsApi } = ArrayItemsApi( document, { number: numberTemplate, arrayItems: arrayItemsTemplate } )
+const arrayTemplate = ArrayTemplate( document, { number: numberTemplate, arrayItems: arrayItemsDecorator } )
 
 const unnamed = arrayTemplate( schema )
 
 const named = arrayTemplate( schema, 'simple-array' )
 
-api[ 'simple-array' ].add( 4 )
-api[ 'simple-array' ].add( 5 )
-api[ 'simple-array' ].remove( 3 )
+arrayItemsApi[ 'simple-array' ].add( 4 )
+arrayItemsApi[ 'simple-array' ].add( 5 )
+arrayItemsApi[ 'simple-array' ].remove( 3 )
 
 const unnamedEntries = getEntries( jsdom.window, unnamed )
 const namedEntries = getEntries( jsdom.window, named )

@@ -1,39 +1,39 @@
 import { Templates } from '../../types'
 import { JSONSchema4 } from 'json-schema'
 
-export const ArrayApi =
+export const ArrayItemsApi =
   ( document: Document, templates: Partial<Templates> = {} ) => {
     const { arrayItems } = templates
 
-    if( !arrayItems ) throw Error( 'ArrayApi: missing template arrayItems' )
+    if( !arrayItems ) throw Error( 'ArrayItemsApi: missing template arrayItems' )
 
-    const api: any = {}
+    const arrayItemsApi: any = {}
 
     const Api = ( container: HTMLElement, schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
       const list = container.querySelector( 'ol' )
 
       if( !list )
         throw Error(
-          'ArrayApi: arrayItems did not create an ol child'
+          'ArrayItemsApi: arrayItems did not create an ol child'
         )
 
       if ( !schema.items || Array.isArray( schema.items ) )
         throw Error(
-          'ArrayApi: schema.items should be a schema'
+          'ArrayItemsApi: schema.items should be a schema'
         )
 
       const childSchema = schema.items
 
       if ( typeof childSchema.type !== 'string' )
         throw Error(
-          'ArrayApi: schema.items.type should be a string'
+          'ArrayItemsApi: schema.items.type should be a string'
         )
 
       const template = templates[ childSchema.type ]
 
       if( !template )
         throw Error(
-          `ArrayApi: missing template ${ childSchema.type }`
+          `ArrayItemsApi: missing template ${ childSchema.type }`
         )
 
       const count = () => list.childElementCount
@@ -57,7 +57,7 @@ export const ArrayApi =
 
       const remove = ( index: number ) => {
         if( index >= count() )
-          throw Error( 'ArrayApi: remove index out of bounds' )
+          throw Error( 'ArrayItemsApi: remove index out of bounds' )
 
         const previousCount = count()
 
@@ -103,18 +103,18 @@ export const ArrayApi =
       }
     }
 
-    const arrayApiDecorator = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
+    const arrayItemsDecorator = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
       const container = arrayItems( schema, name, defaultValue )
 
-      if( name in api )
+      if( name in arrayItemsApi )
         throw Error(
-          `ArrayApi: name ${ name } already exists, create a new API for each form you generate`
+          `ArrayItemsApi: name ${ name } already exists, create a new API for each form you generate`
         )
 
-      api[ name ] = Api( container, schema, name, defaultValue )
+      arrayItemsApi[ name ] = Api( container, schema, name, defaultValue )
 
       return container
     }
 
-    return { arrayApiDecorator, api }
+    return { arrayItemsDecorator, arrayItemsApi }
   }
