@@ -4,27 +4,32 @@ import * as simpleArray from '../schema/simple-array.schema.json'
 import { JSONSchema4 } from 'json-schema'
 import { ArrayTemplate } from '../templates/types/array'
 import { NumberTemplate } from '../templates/types/number'
-import { ArrayItemsTemplate } from '../templates/array-items'
-import { ArrayItemsApi } from '../templates/api/array-items'
+import { ArrayListTemplate } from '../templates/array-list'
+import { ArrayListApi } from '../templates/api/array-list'
 import { getEntries, entriesToPointers } from './util'
+import { Templates } from '../types.js';
+import { ArrayItemTemplate } from '../templates/array-item.js';
 
 const schema = <JSONSchema4>simpleArray
 
 const jsdom = new JSDOM( `<!doctype html>` )
 const { document } = jsdom.window
 
-const numberTemplate = NumberTemplate( document )
-const arrayItemsTemplate = ArrayItemsTemplate( document, { number: numberTemplate } )
-const { arrayItemsDecorator, arrayItemsApi } = ArrayItemsApi( document, { number: numberTemplate, arrayItems: arrayItemsTemplate } )
-const arrayTemplate = ArrayTemplate( document, { number: numberTemplate, arrayItems: arrayItemsDecorator } )
+const templates: Partial<Templates> = {}
 
-const unnamed = arrayTemplate( schema )
+templates.number = NumberTemplate( document )
+templates.arrayItem = ArrayItemTemplate( document, templates )
+templates.arrayList = ArrayListTemplate( document, templates )
+templates.array = ArrayTemplate( document, templates )
 
-const named = arrayTemplate( schema, 'simple-array' )
+const unnamed = templates.array( schema )
+const named = templates.array( schema, 'simple-array' )
 
-arrayItemsApi[ 'simple-array' ].add( 4 )
-arrayItemsApi[ 'simple-array' ].add( 5 )
-arrayItemsApi[ 'simple-array' ].remove( 3 )
+const simpleArrayApi = ArrayListApi( named, schema, templates )
+
+simpleArrayApi.add( 4 )
+simpleArrayApi.add( 5 )
+simpleArrayApi.remove( 3 )
 
 const unnamedEntries = getEntries( jsdom.window, unnamed )
 const namedEntries = getEntries( jsdom.window, named )

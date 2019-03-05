@@ -1,12 +1,16 @@
 import { JSONSchema4 } from 'json-schema'
-import { Templates } from '../types'
+import { Templates, SchemaTemplate } from '../types'
+import { ArrayItemTemplate } from './array-item'
+import { getTitle } from './utils';
 
-export const ArrayItemsTemplate =
+export const ArrayListTemplate =
   ( document: Document, templates: Partial<Templates> = {} ) => {
-    const arrayItemsEditor = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
+    const arrayListEditor = ( schema: JSONSchema4, name = '', value?: any[] ) => {
       const container = document.createElement( 'div' )
 
-      container.title = schema.title || 'Array Items'
+      container.title = getTitle( schema, name, 'Array Items' )
+
+      if ( name ) container.dataset.name = name
 
       if ( !schema.items || Array.isArray( schema.items ) ) return container
 
@@ -16,13 +20,20 @@ export const ArrayItemsTemplate =
 
       const template = templates[ childSchema.type ]
 
-      if ( !template ) return container
+      if ( !template || !templates.arrayItem ) return container
+
+      const itemTemplate: SchemaTemplate = (
+        templates.arrayItem || ArrayItemTemplate( document, templates )
+      )
+
+      if( typeof value === 'undefined' && Array.isArray( schema.default ) )
+        value = schema.default
 
       const hasMaxItems = typeof schema.maxItems === 'number'
       const hasMinItems = typeof schema.minItems === 'number'
 
       let count = (
-        Array.isArray( defaultValue ) ? defaultValue.length :
+        Array.isArray( value ) ? value.length :
         hasMaxItems ? schema.maxItems! :
         hasMinItems ? schema.minItems! :
         0
@@ -38,28 +49,27 @@ export const ArrayItemsTemplate =
 
       const list = document.createElement( 'ol' )
 
+      container.appendChild( list )
+
       for ( let key = 0; key < count; key++ ) {
-        const li = document.createElement( 'li' )
+        let childValue: any = undefined
 
-        let childDefaultValue: any = undefined
-
-        if ( Array.isArray( defaultValue ) ) {
-          childDefaultValue = defaultValue[ key ]
+        if ( Array.isArray( value ) ) {
+          childValue = value[ key ]
         }
 
         const childName = name ? `${ name }[${ key }]` : `[${ key }]`
 
-        const editorItem = template( childSchema, childName, childDefaultValue )
-
-        li.appendChild( editorItem )
+        const li = itemTemplate(
+          childSchema, childName, childValue
+        )
 
         list.appendChild( li )
       }
 
-      container.appendChild( list )
 
       return container
     }
 
-    return arrayItemsEditor
+    return arrayListEditor
   }

@@ -1,16 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FieldsetDecorator = (document, template, useLegend = true) => {
-    const fieldsetDecorator = (schema, name = '', defaultValue) => {
-        const editor = template(schema, name, defaultValue);
-        const { title } = schema;
+const utils_1 = require("../utils");
+exports.FieldsetDecorator = (document, containerTemplate, useLegend = true) => {
+    const fieldsetDecorator = (schema, name = '', value) => {
+        const container = containerTemplate(schema, name, value);
+        const title = utils_1.getTitle(schema, name, 'Container');
         const fieldset = document.createElement('fieldset');
-        if (title && useLegend) {
+        if (useLegend) {
             const legend = document.createElement('legend');
             legend.innerHTML = title;
             fieldset.appendChild(legend);
         }
-        fieldset.appendChild(editor);
+        fieldset.appendChild(container);
         return fieldset;
     };
     return fieldsetDecorator;

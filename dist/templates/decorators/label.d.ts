@@ -1,3 +1,3 @@
-import { SchemaTemplate } from '../../types';
 import { JSONSchema4 } from 'json-schema';
-export declare const LabelDecorator: (document: Document, template: SchemaTemplate, isSuffix?: boolean) => (schema: JSONSchema4, name?: string, defaultValue?: any[] | undefined) => HTMLElement;
+import { SchemaTemplate } from '../../types';
+export declare const LabelDecorator: (document: Document, inputTemplate: SchemaTemplate, isSuffix?: boolean) => (schema: JSONSchema4, name?: string, value?: any[] | undefined, isRequired?: boolean) => HTMLLabelElement;

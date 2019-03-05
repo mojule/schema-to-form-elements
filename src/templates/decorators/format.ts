@@ -1,28 +1,41 @@
-import { SchemaTemplate } from '../../types'
+import { StringFormatTemplates } from '../../types'
 import { JSONSchema4 } from 'json-schema'
 
 export const FormatDecorator =
-  ( _document: Document, stringTemplate: SchemaTemplate, multilineTemplate: SchemaTemplate, formatToType = defaultFormatToType ) => {
-    const formatDecorator = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
-      if( schema.format === 'multiline' ){
-        return multilineTemplate( schema, name, defaultValue )
+  (
+    _document: Document,
+    stringTemplates: StringFormatTemplates,
+    formatToTemplateKey = new Map<string,string>(),
+    formatToTypeAttribute = defaultFormatToType
+  ) => {
+    const formatDecorator = ( schema: JSONSchema4, name = '', value?: any[], isRequired = false ) => {
+      const stringTemplate = stringTemplates.string
+
+      let format: string
+
+      if( typeof schema.format !== 'string' ){
+        return stringTemplate( schema, name, value )
       }
 
-      const editor = stringTemplate( schema, name, defaultValue )
+      format = formatToTemplateKey.get( schema.format ) || schema.format
 
-      if( typeof schema.format === 'string' ){
-        const input = <HTMLInputElement | null>(
-          editor.matches( 'input' ) ? editor :
+      if ( typeof stringTemplates[ format ] !== 'undefined' ){
+        return stringTemplates[ format ]!( schema, name, value, isRequired )
+      }
+
+      const editor = stringTemplate( schema, name, value, isRequired )
+
+      const input = <HTMLInputElement | null>(
+        editor.matches( 'input' ) ? editor :
           editor.querySelector( 'input' )
-        )
+      )
 
-        if( !input )
-          throw Error( 'formatDecorator could not find an input element!' )
+      if ( !input )
+        throw Error( 'formatDecorator could not find an input element!' )
 
-        const format = formatToType.get( schema.format ) || schema.format
+      format = formatToTypeAttribute.get( schema.format ) || schema.format
 
-        input.type = format
-      }
+      input.type = format
 
       return editor
     }

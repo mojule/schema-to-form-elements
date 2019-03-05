@@ -3,6 +3,7 @@
     "title": "Simple Array",
     "description": "A simple array",
     "items": {
+        "title": "Value",
         "type": "number"
     },
     "default": [1, 2, 3]

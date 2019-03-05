@@ -1,0 +1,26 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const contactFormJson = require("../schema/contact-form.schema.json");
+const nestedArrayJson = require("../schema/nested-array.schema.json");
+const __1 = require("../");
+const templates_1 = require("../templates");
+const mutable_array_list_1 = require("../templates/decorators/mutable-array-list");
+const array_list_1 = require("../templates/array-list");
+const array_item_1 = require("../templates/array-item");
+const templates = templates_1.FormTemplates(document);
+const schemaToFormElements = __1.SchemaToFormElements(document);
+const contactFormSchema = contactFormJson;
+const contactForm = document.createElement('form');
+contactForm.appendChild(schemaToFormElements(contactFormSchema, 'contact-form'));
+document.body.appendChild(contactForm);
+const nestArraySchema = nestedArrayJson;
+const arrayList = array_list_1.ArrayListTemplate(document, templates);
+const arrayItem = array_item_1.ArrayItemTemplate(document, templates);
+const { mutableArrayListDecorator, mutableArrayItemDecorator } = mutable_array_list_1.MutableArrayList(document, arrayList, arrayItem, templates);
+templates.arrayList = mutableArrayListDecorator;
+templates.arrayItem = mutableArrayItemDecorator;
+const schemaToFormElementsWithMutableList = __1.SchemaToFormElements(document, templates);
+const mutableListForm = document.createElement('form');
+mutableListForm.appendChild(schemaToFormElementsWithMutableList(nestArraySchema, 'nested-array'));
+document.body.appendChild(mutableListForm);
+//# sourceMappingURL=client.js.map

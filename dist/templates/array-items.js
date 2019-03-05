@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArrayItemsTemplate = (document, templates = {}, initialCount) => {
+exports.ArrayItemsTemplate = (document, templates = {}) => {
     const arrayItemsEditor = (schema, name = '', defaultValue) => {
         const container = document.createElement('div');
         container.title = schema.title || 'Array Items';
@@ -12,16 +12,18 @@ exports.ArrayItemsTemplate = (document, templates = {}, initialCount) => {
         const template = templates[childSchema.type];
         if (!template)
             return container;
+        const hasMaxItems = typeof schema.maxItems === 'number';
+        const hasMinItems = typeof schema.minItems === 'number';
         let count = (Array.isArray(defaultValue) ? defaultValue.length :
-            typeof initialCount === 'number' ? initialCount :
-                schema.maxItems || schema.minItems);
-        if (typeof schema.maxItems === 'number' &&
-            typeof count === 'number' &&
-            count > schema.maxItems) {
+            hasMaxItems ? schema.maxItems :
+                hasMinItems ? schema.minItems :
+                    0);
+        if (hasMaxItems && count > schema.maxItems) {
             count = schema.maxItems;
         }
-        if (typeof count === 'undefined')
-            return container;
+        if (hasMinItems && count < schema.minItems) {
+            count = schema.minItems;
+        }
         const list = document.createElement('ol');
         for (let key = 0; key < count; key++) {
             const li = document.createElement('li');

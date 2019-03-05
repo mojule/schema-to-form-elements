@@ -1,8 +1,9 @@
 import { JSONSchema4 } from 'json-schema'
+import { getTitle } from '../utils';
 
 export const StringTemplate =
   ( document: Document, isMultiline = false ) => {
-    const stringTemplate = ( schema: JSONSchema4, name = '', defaultValue?: string ) => {
+    const stringTemplate = ( schema: JSONSchema4, name = '', value?: string, isRequired = false ) => {
       let editor: HTMLInputElement | HTMLTextAreaElement
 
       if( isMultiline ){
@@ -17,12 +18,15 @@ export const StringTemplate =
         }
       }
 
-      editor.title = schema.title || 'String'
+      editor.title = getTitle( schema, name, 'String' )
+
+      if ( isRequired )
+        editor.setAttribute( 'required', '' )
 
       if( name ) editor.name = name
 
-      if ( typeof defaultValue === 'string' ) {
-        editor.defaultValue = defaultValue
+      if ( typeof value === 'string' ) {
+        editor.defaultValue = value
       } else if ( typeof schema.default === 'string' ) {
         editor.defaultValue = schema.default
       }

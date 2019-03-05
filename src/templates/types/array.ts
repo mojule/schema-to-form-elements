@@ -1,30 +1,25 @@
 import { JSONSchema4 } from 'json-schema'
-import { Templates } from '../../types'
+import { Templates, SchemaTemplate } from '../../types'
+import { TupleTemplate } from '../tuple'
+import { ArrayListTemplate } from '../array-list'
 
 export const ArrayTemplate =
   ( document: Document, templates: Partial<Templates> = {} ) => {
-    const arrayTemplate = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
+    const arrayTemplate = ( schema: JSONSchema4, name = '', value?: any[] ) => {
       if(
-        typeof defaultValue === 'undefined' &&
+        typeof value === 'undefined' &&
         Array.isArray( schema.default )
       ){
-        defaultValue = schema.default
+        value = schema.default
       }
 
-      if ( Array.isArray( schema.items ) && templates.tuple ) {
-        return templates.tuple( schema, name, defaultValue )
-      }
+      const template: SchemaTemplate = (
+        Array.isArray( schema.items ) ?
+        templates.tuple || TupleTemplate( document, templates ) :
+        templates.arrayList || ArrayListTemplate( document, templates )
+      )
 
-      if ( schema.items && templates.arrayItems ) {
-        return templates.arrayItems( schema, name, defaultValue )
-      }
-
-      const container = document.createElement( 'div' )
-
-      container.title = schema.title || 'Array'
-      if( name ) container.dataset.name = name
-
-      return container
+      return template( schema, name, value )
     }
 
     return arrayTemplate

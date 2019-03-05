@@ -19,7 +19,7 @@ export const getEntries = ( window: DOMWindow, element: HTMLElement ) => {
   )
 }
 
-export const keyToPointer = ( key: string ) => {
+export const keyToJsonPointer = ( key: string ) => {
   key = key.replace( /\[/g, '/' )
   key = key.replace( /\]/g, '/' )
 
@@ -30,4 +30,4 @@ export const keyToPointer = ( key: string ) => {
 }
 
 export const entriesToPointers = ( entries: string[][] ) =>
-  entries.map( ( [ key, value ] ) => [ keyToPointer( key ), value ] )
+  entries.map( ( [ key, value ] ) => [ keyToJsonPointer( key ), value ] )

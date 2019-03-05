@@ -1,14 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils");
 exports.NumberTemplate = (document, isRange = false) => {
-    const numberTemplate = (schema, name = '', defaultValue) => {
+    const numberTemplate = (schema, name = '', value, isRequired = false) => {
         const editor = document.createElement('input');
         editor.type = isRange ? 'range' : 'number';
-        editor.title = schema.title || 'Number';
+        editor.title = utils_1.getTitle(schema, name, 'Number');
+        if (isRequired)
+            editor.setAttribute('required', '');
         if (name)
             editor.name = name;
-        if (typeof defaultValue === 'number') {
-            editor.defaultValue = String(defaultValue);
+        if (typeof value === 'number') {
+            editor.defaultValue = String(value);
         }
         else if (typeof schema.default === 'number') {
             editor.defaultValue = String(schema.default);

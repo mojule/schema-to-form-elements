@@ -1,14 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LabelDecorator = (document, template, isSuffix = false) => {
-    const labelDecorator = (schema, name = '', defaultValue) => {
-        const editor = template(schema, name, defaultValue);
-        const { title } = schema;
-        if (!title)
-            return editor;
+const utils_1 = require("../utils");
+exports.LabelDecorator = (document, inputTemplate, isSuffix = false) => {
+    const labelDecorator = (schema, name = '', value, isRequired = false) => {
+        const editor = inputTemplate(schema, name, value, isRequired);
         const label = document.createElement('label');
         const span = document.createElement('span');
-        span.innerHTML = title;
+        span.innerHTML = utils_1.getTitle(schema, name, 'Input');
         if (isSuffix) {
             label.appendChild(editor);
             label.appendChild(span);

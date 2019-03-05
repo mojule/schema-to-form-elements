@@ -8,7 +8,7 @@
     "build": "tsc",
     "test": "tsc && mocha ./dist/test",
     "coverage": "tsc && nyc --reporter=html --reporter=text mocha ./dist/test",
-    "examples": "tsc && browserify ./dist/examples/client.js -o ./examples/client.js",
+    "client-examples": "tsc && browserify ./dist/examples/client.js -o ./examples/client.js",
     "server-examples": "tsc && node ./dist/examples/server"
   },
   "nyc": {

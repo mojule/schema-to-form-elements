@@ -1,14 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils");
 exports.ObjectTemplate = (document, templates = {}) => {
-    const objectTemplate = (schema, name = '', defaultValue) => {
+    const objectTemplate = (schema, name = '', value) => {
         const container = document.createElement('div');
-        container.title = schema.title || 'Object';
+        container.title = utils_1.getTitle(schema, name, 'Object');
         if (name)
             container.dataset.name = name;
         if (!schema.properties)
             return container;
-        defaultValue = defaultValue || schema.default;
+        value = value || schema.default;
+        const required = schema.required || [];
         Object.keys(schema.properties).forEach(key => {
             const childSchema = schema.properties[key];
             if (typeof childSchema.type !== 'string')
@@ -16,12 +18,13 @@ exports.ObjectTemplate = (document, templates = {}) => {
             const template = templates[childSchema.type];
             if (!template)
                 return;
-            let childDefaultValue = undefined;
-            if (typeof defaultValue === 'object') {
-                childDefaultValue = defaultValue[key];
+            let childValue = undefined;
+            if (typeof value === 'object') {
+                childValue = value[key];
             }
+            const isRequired = required.includes(key);
             const childName = name ? `${name}[${key}]` : key;
-            const editor = template(childSchema, childName, childDefaultValue);
+            const editor = template(childSchema, childName, childValue, isRequired);
             container.appendChild(editor);
         });
         return container;

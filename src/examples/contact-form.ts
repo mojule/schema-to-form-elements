@@ -7,12 +7,12 @@ import { StringTemplate } from '../templates/types/string'
 import { LabelDecorator } from '../templates/decorators/label'
 import { FieldsetDecorator } from '../templates/decorators/fieldset'
 import { FormatDecorator } from '../templates/decorators/format'
-import { getEntries, entriesToPointers } from './util.js';
+import { getEntries, entriesToPointers } from './util'
 
 const schema = <JSONSchema4>contactForm
 
 const jsdom = new JSDOM( `<!doctype html>` )
-const { document, FormData } = jsdom.window
+const { document } = jsdom.window
 
 const stringTemplate = StringTemplate( document )
 const objectTemplate = ObjectTemplate( document, { string: stringTemplate } )
@@ -22,7 +22,10 @@ const unnamed = objectTemplate( schema )
 const named = objectTemplate( schema, 'contact' )
 
 const multilineStringTemplate = StringTemplate( document, true )
-const formattedStringTemplate = FormatDecorator( document, stringTemplate, multilineStringTemplate )
+const formattedStringTemplate = FormatDecorator( document, {
+  string: stringTemplate,
+  multiline: multilineStringTemplate
+})
 const labelledStringTemplate = LabelDecorator( document, formattedStringTemplate )
 const labelledObjectTemplate = ObjectTemplate( document, { string: labelledStringTemplate } )
 const fieldsetObjectTemplate = FieldsetDecorator( document, labelledObjectTemplate )
@@ -41,7 +44,7 @@ export const contactFormExample = {
   "Unnamed Contact Form Pointers": JSON.stringify(
     entriesToPointers( unnamedEntries ), null, 2
   ),
-  "Naamed Contact Form Pointers": JSON.stringify(
+  "Named Contact Form Pointers": JSON.stringify(
     entriesToPointers( namedEntries ), null, 2
   )
 }

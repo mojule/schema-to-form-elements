@@ -4,10 +4,11 @@ import * as nestedArray from '../schema/nested-array.schema.json'
 import { JSONSchema4 } from 'json-schema'
 import { ArrayTemplate } from '../templates/types/array'
 import { NumberTemplate } from '../templates/types/number'
-import { ArrayItemsTemplate } from '../templates/array-items'
-import { ArrayItemsApi } from '../templates/api/array-items'
+import { ArrayListTemplate } from '../templates/array-list'
+import { ArrayListApi } from '../templates/api/array-list'
 import { getEntries, entriesToPointers } from './util'
 import { Templates } from '../types.js';
+import { ArrayItemTemplate } from '../templates/array-item.js';
 
 const schema = <JSONSchema4>nestedArray
 
@@ -17,18 +18,19 @@ const { document } = jsdom.window
 const templates: Partial<Templates> = {}
 
 templates.number = NumberTemplate( document )
-templates.arrayItems = ArrayItemsTemplate( document, templates )
-const { arrayItemsDecorator, arrayItemsApi } = ArrayItemsApi( document, templates )
-templates.arrayItems = arrayItemsDecorator
+templates.arrayItem = ArrayItemTemplate( document, templates )
+templates.arrayList = ArrayListTemplate( document, templates )
 templates.array = ArrayTemplate( document, templates )
 
 const unnamed = templates.array( schema )
 
 const named = templates.array( schema, 'nested-array' )
 
-arrayItemsApi[ 'nested-array' ].add( [ 5, 6 ] )
-arrayItemsApi[ 'nested-array' ].add( [ 7, 8 ] )
-arrayItemsApi[ 'nested-array' ].remove( 3 )
+const namedApi = ArrayListApi( named, schema, templates )
+
+namedApi.add( [ 5, 6 ] )
+namedApi.add( [ 7, 8 ] )
+namedApi.remove( 3 )
 
 const unnamedEntries = getEntries( jsdom.window, unnamed )
 const namedEntries = getEntries( jsdom.window, named )

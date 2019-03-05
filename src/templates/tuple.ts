@@ -1,37 +1,38 @@
 import { JSONSchema4 } from 'json-schema'
 import { Templates } from '../types'
+import { getTitle } from './utils';
 
 export const TupleTemplate =
   ( document: Document, templates: Partial<Templates> = {} ) => {
-  const tupleTemplate = ( schema: JSONSchema4, name = '', defaultValue?: any[] ) => {
-    const container = document.createElement( 'div' )
+    const tupleTemplate = ( schema: JSONSchema4, name = '', value?: any[] ) => {
+      const container = document.createElement( 'div' )
 
-    container.title = schema.title || 'Tuple'
+      container.title = getTitle( schema, name, 'Tuple' )
 
-    if ( !Array.isArray( schema.items ) ) return container
+      if ( !Array.isArray( schema.items ) ) return container
 
-    schema.items.forEach( ( childSchema, key ) => {
-      if ( typeof childSchema.type !== 'string' ) return
+      schema.items.forEach( ( childSchema, key ) => {
+        if ( typeof childSchema.type !== 'string' ) return
 
-      const template = templates[ childSchema.type ]
+        const template = templates[ childSchema.type ]
 
-      if ( !template ) return
+        if ( !template ) return
 
-      let childDefaultValue: any = undefined
+        let childValue: any = undefined
 
-      if ( Array.isArray( defaultValue ) ) {
-        childDefaultValue = defaultValue[ key ]
-      }
+        if ( Array.isArray( value ) ) {
+          childValue = value[ key ]
+        }
 
-      const childName = name ? `${ name }[${ key }]` : `[${ key }]`
+        const childName = name ? `${ name }[${ key }]` : `[${ key }]`
 
-      const editor = template( childSchema, childName, childDefaultValue )
+        const editor = template( childSchema, childName, childValue )
 
-      container.appendChild( editor )
-    } )
+        container.appendChild( editor )
+      } )
 
-    return container
+      return container
+    }
+
+    return tupleTemplate
   }
-
-  return tupleTemplate
-}

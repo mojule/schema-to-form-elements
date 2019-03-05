@@ -1,22 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tuple_1 = require("../tuple");
+const array_list_1 = require("../array-list");
 exports.ArrayTemplate = (document, templates = {}) => {
-    const arrayTemplate = (schema, name = '', defaultValue) => {
-        if (typeof defaultValue === 'undefined' &&
+    const arrayTemplate = (schema, name = '', value) => {
+        if (typeof value === 'undefined' &&
             Array.isArray(schema.default)) {
-            defaultValue = schema.default;
+            value = schema.default;
         }
-        if (Array.isArray(schema.items) && templates.tuple) {
-            return templates.tuple(schema, name, defaultValue);
-        }
-        if (schema.items && templates.arrayItems) {
-            return templates.arrayItems(schema, name, defaultValue);
-        }
-        const container = document.createElement('div');
-        container.title = schema.title || 'Array';
-        if (name)
-            container.dataset.name = name;
-        return container;
+        const template = (Array.isArray(schema.items) ?
+            templates.tuple || tuple_1.TupleTemplate(document, templates) :
+            templates.arrayList || array_list_1.ArrayListTemplate(document, templates));
+        return template(schema, name, value);
     };
     return arrayTemplate;
 };

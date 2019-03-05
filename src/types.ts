@@ -1,6 +1,7 @@
 import { JSONSchema4 } from 'json-schema'
 
-export type SchemaTemplate = ( schema: JSONSchema4, name?: string, defaultValue?: any ) => HTMLElement
+export type SchemaTemplate =
+  ( schema: JSONSchema4, name?: string, value?: any, isRequired?: boolean ) => HTMLElement
 
 export interface Templates {
   array: SchemaTemplate
@@ -11,4 +12,9 @@ export interface Templates {
   [ name: string ]: SchemaTemplate
 }
 
-export type StringTemplateFactory = ( document: Document, isMultiline?: boolean ) => SchemaTemplate
+export interface StringFormatTemplates extends Partial<Templates> {
+  string: SchemaTemplate
+}
+
+export type StringTemplateFactory =
+  ( document: Document, isMultiline?: boolean ) => SchemaTemplate

@@ -11,7 +11,7 @@ exports.getEntries = (window, element) => {
     const formData = new FormData(form);
     return Array.from(formData.entries()).map(([key, value]) => [key, String(value)]);
 };
-exports.keyToPointer = (key) => {
+exports.keyToJsonPointer = (key) => {
     key = key.replace(/\[/g, '/');
     key = key.replace(/\]/g, '/');
     if (key[key.length - 1] === '/')
@@ -20,5 +20,5 @@ exports.keyToPointer = (key) => {
         key = '/' + key;
     return key;
 };
-exports.entriesToPointers = (entries) => entries.map(([key, value]) => [exports.keyToPointer(key), value]);
+exports.entriesToPointers = (entries) => entries.map(([key, value]) => [exports.keyToJsonPointer(key), value]);
 //# sourceMappingURL=util.js.map

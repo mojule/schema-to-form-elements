@@ -1,0 +1,25 @@
+body {
+  font-family: sans-serif;
+}
+
+form {
+  max-width: 30rem;
+}
+
+fieldset {
+  padding: 1rem;
+}
+
+div[data-name] {
+  display: grid;
+  grid-gap: 1rem;
+}
+
+label, label span {
+  display: block;
+}
+
+input, textarea {
+  width: 100%;
+  max-width: 100%;
+}

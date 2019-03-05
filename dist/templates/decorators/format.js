@@ -1,19 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FormatDecorator = (_document, stringTemplate, multilineTemplate, formatToType = exports.defaultFormatToType) => {
-    const formatDecorator = (schema, name = '', defaultValue) => {
-        if (schema.format === 'multiline') {
-            return multilineTemplate(schema, name, defaultValue);
+exports.FormatDecorator = (_document, stringTemplates, formatToTemplateKey = new Map(), formatToTypeAttribute = exports.defaultFormatToType) => {
+    const formatDecorator = (schema, name = '', value, isRequired = false) => {
+        const stringTemplate = stringTemplates.string;
+        let format;
+        if (typeof schema.format !== 'string') {
+            return stringTemplate(schema, name, value);
         }
-        const editor = stringTemplate(schema, name, defaultValue);
-        if (typeof schema.format === 'string') {
-            const input = (editor.matches('input') ? editor :
-                editor.querySelector('input'));
-            if (!input)
-                throw Error('formatDecorator could not find an input element!');
-            const format = formatToType.get(schema.format) || schema.format;
-            input.type = format;
+        format = formatToTemplateKey.get(schema.format) || schema.format;
+        if (typeof stringTemplates[format] !== 'undefined') {
+            return stringTemplates[format](schema, name, value, isRequired);
         }
+        const editor = stringTemplate(schema, name, value, isRequired);
+        const input = (editor.matches('input') ? editor :
+            editor.querySelector('input'));
+        if (!input)
+            throw Error('formatDecorator could not find an input element!');
+        format = formatToTypeAttribute.get(schema.format) || schema.format;
+        input.type = format;
         return editor;
     };
     return formatDecorator;

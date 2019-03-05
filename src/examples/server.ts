@@ -1,6 +1,6 @@
 import { contactFormExample } from './contact-form'
 import { simpleArrayExample } from './simple-array'
-import { nestedArrayExample } from './nested-array';
+import { nestedArrayExample } from './nested-array'
 
 console.log( 'Contact Form:\n\n' )
 

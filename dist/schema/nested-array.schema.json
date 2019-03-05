@@ -6,6 +6,7 @@
         "type": "array",
         "title": "Values",
         "items": {
+            "title": "Value",
             "type": "number"
         }
     },

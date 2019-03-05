@@ -1,17 +1,21 @@
 import { JSONSchema4 } from 'json-schema'
+import { getTitle } from '../utils';
 
 export const NumberTemplate =
   ( document: Document, isRange = false ) => {
-    const numberTemplate = ( schema: JSONSchema4, name = '', defaultValue?: number ) => {
+    const numberTemplate = ( schema: JSONSchema4, name = '', value?: number, isRequired = false ) => {
       const editor = document.createElement( 'input' )
 
       editor.type = isRange ? 'range' : 'number'
-      editor.title = schema.title || 'Number'
+      editor.title = getTitle( schema, name, 'Number' )
+
+      if ( isRequired )
+        editor.setAttribute( 'required', '' )
 
       if( name ) editor.name = name
 
-      if ( typeof defaultValue === 'number' ) {
-        editor.defaultValue = String( defaultValue )
+      if ( typeof value === 'number' ) {
+        editor.defaultValue = String( value )
       } else if ( typeof schema.default === 'number' ) {
         editor.defaultValue = String( schema.default )
       }
