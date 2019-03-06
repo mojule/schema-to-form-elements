@@ -11,10 +11,12 @@ exports.BooleanTemplate = (document) => {
         if (name)
             editor.name = name;
         if (typeof value === 'boolean') {
-            editor.checked = value;
+            if (value)
+                editor.setAttribute('checked', '');
         }
         else if (typeof schema.default === 'boolean') {
-            editor.checked = schema.default;
+            if (schema.default)
+                editor.setAttribute('checked', '');
         }
         return editor;
     };

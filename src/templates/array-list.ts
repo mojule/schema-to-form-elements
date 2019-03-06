@@ -8,7 +8,7 @@ export const ArrayListTemplate =
     const arrayListEditor = ( schema: JSONSchema4, name = '', value?: any[] ) => {
       const container = document.createElement( 'div' )
 
-      container.title = getTitle( schema, name, 'Array Items' )
+      container.title = getTitle( schema, name, 'Array List' )
 
       if ( name ) container.dataset.name = name
 
@@ -20,7 +20,7 @@ export const ArrayListTemplate =
 
       const template = templates[ childSchema.type ]
 
-      if ( !template || !templates.arrayItem ) return container
+      if ( !template ) return container
 
       const itemTemplate: SchemaTemplate = (
         templates.arrayItem || ArrayItemTemplate( document, templates )
@@ -36,7 +36,7 @@ export const ArrayListTemplate =
         Array.isArray( value ) ? value.length :
         hasMaxItems ? schema.maxItems! :
         hasMinItems ? schema.minItems! :
-        0
+        1
       )
 
       if( hasMaxItems && count > schema.maxItems! ){
@@ -58,15 +58,12 @@ export const ArrayListTemplate =
           childValue = value[ key ]
         }
 
-        const childName = name ? `${ name }[${ key }]` : `[${ key }]`
+        const childName = name ? `${ name }[${ key }]` : String( key )
 
-        const li = itemTemplate(
-          childSchema, childName, childValue
-        )
+        const li = itemTemplate( childSchema, childName, childValue )
 
         list.appendChild( li )
       }
-
 
       return container
     }

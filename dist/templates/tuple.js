@@ -5,8 +5,12 @@ exports.TupleTemplate = (document, templates = {}) => {
     const tupleTemplate = (schema, name = '', value) => {
         const container = document.createElement('div');
         container.title = utils_1.getTitle(schema, name, 'Tuple');
+        if (name)
+            container.dataset.name = name;
         if (!Array.isArray(schema.items))
             return container;
+        if (typeof value === 'undefined' && Array.isArray(schema.default))
+            value = schema.default;
         schema.items.forEach((childSchema, key) => {
             if (typeof childSchema.type !== 'string')
                 return;
@@ -17,7 +21,7 @@ exports.TupleTemplate = (document, templates = {}) => {
             if (Array.isArray(value)) {
                 childValue = value[key];
             }
-            const childName = name ? `${name}[${key}]` : `[${key}]`;
+            const childName = name ? `${name}[${key}]` : String(key);
             const editor = template(childSchema, childName, childValue);
             container.appendChild(editor);
         });

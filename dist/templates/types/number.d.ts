@@ -1,2 +1,2 @@
-import { JSONSchema4 } from 'json-schema';
-export declare const NumberTemplate: (document: Document, isRange?: boolean) => (schema: JSONSchema4, name?: string, value?: number | undefined, isRequired?: boolean) => HTMLInputElement;
+import { NumberTemplateFactory } from '../../types';
+export declare const NumberTemplate: NumberTemplateFactory;

@@ -9,7 +9,12 @@ export const TupleTemplate =
 
       container.title = getTitle( schema, name, 'Tuple' )
 
+      if ( name ) container.dataset.name = name
+
       if ( !Array.isArray( schema.items ) ) return container
+
+      if ( typeof value === 'undefined' && Array.isArray( schema.default ) )
+        value = schema.default
 
       schema.items.forEach( ( childSchema, key ) => {
         if ( typeof childSchema.type !== 'string' ) return
@@ -24,7 +29,7 @@ export const TupleTemplate =
           childValue = value[ key ]
         }
 
-        const childName = name ? `${ name }[${ key }]` : `[${ key }]`
+        const childName = name ? `${ name }[${ key }]` : String( key )
 
         const editor = template( childSchema, childName, childValue )
 

@@ -3,10 +3,10 @@ import { Templates, SchemaTemplate } from '../../types'
 import { ArrayListApi } from '../api/array-list'
 import { getTitle } from '../utils'
 
-export const MutableArrayList =
+export const MutableArrayListDecorator =
   (
     document: Document,
-    arrayList: SchemaTemplate, arrayItem: SchemaTemplate,
+    arrayList: SchemaTemplate,
     templates: Partial<Templates> = {}
   ) => {
     const mutableArrayListDecorator = ( schema: JSONSchema4, name = '', value?: any[] ) => {
@@ -48,8 +48,6 @@ export const MutableArrayList =
             li.parentNode!.children
           ).indexOf( li )
 
-          console.log( `remove ${ index }` )
-
           api.remove( index )
         }
       })
@@ -57,6 +55,14 @@ export const MutableArrayList =
       return container
     }
 
+    return mutableArrayListDecorator
+  }
+
+export const MutableArrayItemDecorator =
+  (
+    document: Document,
+    arrayItem: SchemaTemplate
+  ) => {
     const mutableArrayItemDecorator = ( schema: JSONSchema4, name = '', value?: any ) => {
       const item = arrayItem( schema, name, value )
 
@@ -73,7 +79,5 @@ export const MutableArrayList =
       return item
     }
 
-    return {
-      mutableArrayListDecorator, mutableArrayItemDecorator
-    }
+    return mutableArrayItemDecorator
   }

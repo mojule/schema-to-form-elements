@@ -5,7 +5,7 @@ exports.NumberTemplate = (document, isRange = false) => {
     const numberTemplate = (schema, name = '', value, isRequired = false) => {
         const editor = document.createElement('input');
         editor.type = isRange ? 'range' : 'number';
-        editor.title = utils_1.getTitle(schema, name, 'Number');
+        editor.title = utils_1.getTitle(schema, name, schema.type === 'integer' ? 'Integer' : 'Number');
         if (isRequired)
             editor.setAttribute('required', '');
         if (name)
@@ -22,10 +22,10 @@ exports.NumberTemplate = (document, isRange = false) => {
         else if (schema.type === 'integer') {
             editor.step = '1';
         }
-        if ('minimum' in schema) {
+        if (typeof schema.minimum === 'number') {
             editor.min = String(schema.minimum);
         }
-        if ('maximum' in schema) {
+        if (typeof schema.maximum === 'number') {
             editor.max = String(schema.maximum);
         }
         return editor;

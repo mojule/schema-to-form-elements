@@ -13,7 +13,9 @@
   },
   "nyc": {
     "exclude": [
-      "./dist/test"
+      "./dist/test",
+      "./dist/examples",
+      "./dist/server"
     ]
   },
   "repository": {

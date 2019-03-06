@@ -1,7 +1,8 @@
 import { JSONSchema4 } from 'json-schema'
-import { getTitle } from '../utils';
+import { getTitle } from '../utils'
+import { SchemaTemplateFactory } from '../../types';
 
-export const StringTemplate =
+export const StringTemplate: SchemaTemplateFactory =
   ( document: Document, isMultiline = false ) => {
     const stringTemplate = ( schema: JSONSchema4, name = '', value?: string, isRequired = false ) => {
       let editor: HTMLInputElement | HTMLTextAreaElement
@@ -31,11 +32,11 @@ export const StringTemplate =
         editor.defaultValue = schema.default
       }
 
-      if ( schema.minLength !== undefined ) {
+      if ( typeof schema.minLength === 'number' ) {
         editor.minLength = schema.minLength
       }
 
-      if ( schema.maxLength !== undefined ) {
+      if ( typeof schema.maxLength === 'number' ) {
         editor.maxLength = schema.maxLength
       }
 

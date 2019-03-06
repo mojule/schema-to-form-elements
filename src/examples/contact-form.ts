@@ -1,5 +1,3 @@
-import { JSDOM } from 'jsdom'
-
 import * as contactForm from '../schema/contact-form.schema.json'
 import { JSONSchema4 } from 'json-schema'
 import { ObjectTemplate } from '../templates/types/object'
@@ -7,12 +5,10 @@ import { StringTemplate } from '../templates/types/string'
 import { LabelDecorator } from '../templates/decorators/label'
 import { FieldsetDecorator } from '../templates/decorators/fieldset'
 import { FormatDecorator } from '../templates/decorators/format'
-import { getEntries, entriesToPointers } from './util'
+import { entriesToPointers } from '../templates/utils'
+import { document, getEntries, form } from '../server/dom'
 
 const schema = <JSONSchema4>contactForm
-
-const jsdom = new JSDOM( `<!doctype html>` )
-const { document } = jsdom.window
 
 const stringTemplate = StringTemplate( document )
 const objectTemplate = ObjectTemplate( document, { string: stringTemplate } )
@@ -32,8 +28,9 @@ const fieldsetObjectTemplate = FieldsetDecorator( document, labelledObjectTempla
 
 const decorated = fieldsetObjectTemplate( schema )
 
-const unnamedEntries = getEntries( jsdom.window, unnamed )
-const namedEntries = getEntries( jsdom.window, named )
+
+const unnamedEntries = getEntries( form( {}, unnamed ) )
+const namedEntries = getEntries( form( {}, unnamed ) )
 
 export const contactFormExample = {
   'Unnamed Contact Form': unnamed.outerHTML,

@@ -1,9 +1,9 @@
 import { JSONSchema4 } from 'json-schema'
-import { Templates, SchemaTemplate } from '../../types'
+import { Templates, SchemaTemplate, ContainerTemplateFactory } from '../../types'
 import { TupleTemplate } from '../tuple'
 import { ArrayListTemplate } from '../array-list'
 
-export const ArrayTemplate =
+export const ArrayTemplate: ContainerTemplateFactory =
   ( document: Document, templates: Partial<Templates> = {} ) => {
     const arrayTemplate = ( schema: JSONSchema4, name = '', value?: any[] ) => {
       if(

@@ -7,6 +7,11 @@ import { StringTemplate } from './types/string'
 import { FieldsetDecorator } from './decorators/fieldset'
 import { FormatDecorator } from './decorators/format'
 import { LabelDecorator } from './decorators/label'
+import {
+  MutableArrayListDecorator, MutableArrayItemDecorator
+} from './decorators/mutable-array-list'
+import { ArrayListTemplate } from './array-list'
+import { ArrayItemTemplate } from './array-item'
 
 export const FormTemplates = ( document: Document ) => {
   const templates: Partial<Templates> = {}
@@ -26,6 +31,8 @@ export const FormTemplates = ( document: Document ) => {
     NumberTemplate( document )
   )
 
+  templates.integer = templates.number
+
   templates.object = FieldsetDecorator(
     document,
     ObjectTemplate( document, templates )
@@ -43,4 +50,21 @@ export const FormTemplates = ( document: Document ) => {
   )
 
   return <Templates>templates
+}
+
+export const ClientFormTemplates = ( document: Document ) => {
+  const templates = FormTemplates( document )
+
+  templates.arrayList = MutableArrayListDecorator(
+    document,
+    ArrayListTemplate( document, templates ),
+    templates
+  )
+
+  templates.arrayItem = MutableArrayItemDecorator(
+    document,
+    ArrayItemTemplate( document, templates )
+  )
+
+  return templates
 }

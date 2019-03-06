@@ -1,13 +1,18 @@
 import { JSONSchema4 } from 'json-schema'
-import { getTitle } from '../utils';
+import { getTitle } from '../utils'
+import { NumberTemplateFactory } from '../../types';
 
-export const NumberTemplate =
+export const NumberTemplate: NumberTemplateFactory =
   ( document: Document, isRange = false ) => {
     const numberTemplate = ( schema: JSONSchema4, name = '', value?: number, isRequired = false ) => {
       const editor = document.createElement( 'input' )
 
       editor.type = isRange ? 'range' : 'number'
-      editor.title = getTitle( schema, name, 'Number' )
+      editor.title = getTitle(
+        schema,
+        name,
+        schema.type === 'integer' ? 'Integer' : 'Number'
+      )
 
       if ( isRequired )
         editor.setAttribute( 'required', '' )
@@ -26,11 +31,11 @@ export const NumberTemplate =
         editor.step = '1'
       }
 
-      if ( 'minimum' in schema ) {
+      if ( typeof schema.minimum === 'number' ) {
         editor.min = String( schema.minimum )
       }
 
-      if ( 'maximum' in schema ) {
+      if ( typeof schema.maximum === 'number' ) {
         editor.max = String( schema.maximum )
       }
 

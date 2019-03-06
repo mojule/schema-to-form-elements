@@ -9,7 +9,8 @@ exports.ObjectTemplate = (document, templates = {}) => {
             container.dataset.name = name;
         if (!schema.properties)
             return container;
-        value = value || schema.default;
+        if (typeof value === 'undefined' && typeof schema.default !== 'undefined')
+            value = schema.default;
         const required = schema.required || [];
         Object.keys(schema.properties).forEach(key => {
             const childSchema = schema.properties[key];

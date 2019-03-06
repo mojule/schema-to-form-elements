@@ -5,27 +5,19 @@ const contactFormJson = require("../schema/contact-form.schema.json");
 const nestedArrayJson = require("../schema/nested-array.schema.json");
 const __1 = require("../");
 const templates_1 = require("../templates");
-const mutable_array_list_1 = require("../templates/decorators/mutable-array-list");
-const array_list_1 = require("../templates/array-list");
-const array_item_1 = require("../templates/array-item");
-const templates = templates_1.FormTemplates(document);
 const schemaToFormElements = __1.SchemaToFormElements(document);
 const contactFormSchema = contactFormJson;
 const contactForm = document.createElement('form');
 contactForm.appendChild(schemaToFormElements(contactFormSchema, 'contact-form'));
 document.body.appendChild(contactForm);
 const nestArraySchema = nestedArrayJson;
-const arrayList = array_list_1.ArrayListTemplate(document, templates);
-const arrayItem = array_item_1.ArrayItemTemplate(document, templates);
-const { mutableArrayListDecorator, mutableArrayItemDecorator } = mutable_array_list_1.MutableArrayList(document, arrayList, arrayItem, templates);
-templates.arrayList = mutableArrayListDecorator;
-templates.arrayItem = mutableArrayItemDecorator;
-const schemaToFormElementsWithMutableList = __1.SchemaToFormElements(document, templates);
+const clientTemplates = templates_1.ClientFormTemplates(document);
+const schemaToClientFormElements = __1.SchemaToFormElements(document, clientTemplates);
 const mutableListForm = document.createElement('form');
-mutableListForm.appendChild(schemaToFormElementsWithMutableList(nestArraySchema, 'nested-array'));
+mutableListForm.appendChild(schemaToClientFormElements(nestArraySchema, 'nested-array'));
 document.body.appendChild(mutableListForm);
 
-},{"../":2,"../schema/contact-form.schema.json":3,"../schema/nested-array.schema.json":4,"../templates":12,"../templates/array-item":6,"../templates/array-list":7,"../templates/decorators/mutable-array-list":11}],2:[function(require,module,exports){
+},{"../":2,"../schema/contact-form.schema.json":3,"../schema/nested-array.schema.json":4,"../templates":12}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const templates_1 = require("./templates");
@@ -294,13 +286,11 @@ exports.LabelDecorator = (document, inputTemplate, isSuffix = false) => {
 Object.defineProperty(exports, "__esModule", { value: true });
 const array_list_1 = require("../api/array-list");
 const utils_1 = require("../utils");
-exports.MutableArrayList = (document, arrayList, arrayItem, templates = {}) => {
-    const parentMap = new Map();
+exports.MutableArrayListDecorator = (document, arrayList, templates = {}) => {
     const mutableArrayListDecorator = (schema, name = '', value) => {
         const container = arrayList(schema, name, value);
         if (!schema.items || Array.isArray(schema.items))
             throw Error('MutableArrayList: expected schema.items to be JSON Schema');
-        parentMap.set(schema.items, schema);
         const api = array_list_1.ArrayListApi(container, schema, templates);
         const title = `Add ${utils_1.getTitle(schema.items, '', 'Item')}`;
         const addButton = document.createElement('button');
@@ -327,6 +317,9 @@ exports.MutableArrayList = (document, arrayList, arrayItem, templates = {}) => {
         });
         return container;
     };
+    return mutableArrayListDecorator;
+};
+exports.MutableArrayItemDecorator = (document, arrayItem) => {
     const mutableArrayItemDecorator = (schema, name = '', value) => {
         const item = arrayItem(schema, name, value);
         const title = `Delete ${utils_1.getTitle(schema, name, 'Item')}`;
@@ -337,9 +330,7 @@ exports.MutableArrayList = (document, arrayList, arrayItem, templates = {}) => {
         item.appendChild(deleteButton);
         return item;
     };
-    return {
-        mutableArrayListDecorator, mutableArrayItemDecorator
-    };
+    return mutableArrayItemDecorator;
 };
 
 },{"../api/array-list":5,"../utils":19}],12:[function(require,module,exports){
@@ -353,6 +344,9 @@ const string_1 = require("./types/string");
 const fieldset_1 = require("./decorators/fieldset");
 const format_1 = require("./decorators/format");
 const label_1 = require("./decorators/label");
+const mutable_array_list_1 = require("./decorators/mutable-array-list");
+const array_list_1 = require("./array-list");
+const array_item_1 = require("./array-item");
 exports.FormTemplates = (document) => {
     const templates = {};
     templates.array = fieldset_1.FieldsetDecorator(document, array_1.ArrayTemplate(document, templates));
@@ -365,8 +359,14 @@ exports.FormTemplates = (document) => {
     }));
     return templates;
 };
+exports.ClientFormTemplates = (document) => {
+    const templates = exports.FormTemplates(document);
+    templates.arrayList = mutable_array_list_1.MutableArrayListDecorator(document, array_list_1.ArrayListTemplate(document, templates), templates);
+    templates.arrayItem = mutable_array_list_1.MutableArrayItemDecorator(document, array_item_1.ArrayItemTemplate(document, templates));
+    return templates;
+};
 
-},{"./decorators/fieldset":8,"./decorators/format":9,"./decorators/label":10,"./types/array":14,"./types/boolean":15,"./types/number":16,"./types/object":17,"./types/string":18}],13:[function(require,module,exports){
+},{"./array-item":6,"./array-list":7,"./decorators/fieldset":8,"./decorators/format":9,"./decorators/label":10,"./decorators/mutable-array-list":11,"./types/array":14,"./types/boolean":15,"./types/number":16,"./types/object":17,"./types/string":18}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");

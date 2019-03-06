@@ -5,7 +5,7 @@ const utils_1 = require("./utils");
 exports.ArrayListTemplate = (document, templates = {}) => {
     const arrayListEditor = (schema, name = '', value) => {
         const container = document.createElement('div');
-        container.title = utils_1.getTitle(schema, name, 'Array Items');
+        container.title = utils_1.getTitle(schema, name, 'Array List');
         if (name)
             container.dataset.name = name;
         if (!schema.items || Array.isArray(schema.items))
@@ -14,7 +14,7 @@ exports.ArrayListTemplate = (document, templates = {}) => {
         if (typeof childSchema.type !== 'string')
             return container;
         const template = templates[childSchema.type];
-        if (!template || !templates.arrayItem)
+        if (!template)
             return container;
         const itemTemplate = (templates.arrayItem || array_item_1.ArrayItemTemplate(document, templates));
         if (typeof value === 'undefined' && Array.isArray(schema.default))
@@ -24,7 +24,7 @@ exports.ArrayListTemplate = (document, templates = {}) => {
         let count = (Array.isArray(value) ? value.length :
             hasMaxItems ? schema.maxItems :
                 hasMinItems ? schema.minItems :
-                    0);
+                    1);
         if (hasMaxItems && count > schema.maxItems) {
             count = schema.maxItems;
         }
@@ -38,7 +38,7 @@ exports.ArrayListTemplate = (document, templates = {}) => {
             if (Array.isArray(value)) {
                 childValue = value[key];
             }
-            const childName = name ? `${name}[${key}]` : `[${key}]`;
+            const childName = name ? `${name}[${key}]` : String(key);
             const li = itemTemplate(childSchema, childName, childValue);
             list.appendChild(li);
         }

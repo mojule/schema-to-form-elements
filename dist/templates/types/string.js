@@ -25,10 +25,10 @@ exports.StringTemplate = (document, isMultiline = false) => {
         else if (typeof schema.default === 'string') {
             editor.defaultValue = schema.default;
         }
-        if (schema.minLength !== undefined) {
+        if (typeof schema.minLength === 'number') {
             editor.minLength = schema.minLength;
         }
-        if (schema.maxLength !== undefined) {
+        if (typeof schema.maxLength === 'number') {
             editor.maxLength = schema.maxLength;
         }
         return editor;

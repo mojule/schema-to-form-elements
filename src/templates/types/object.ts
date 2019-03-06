@@ -1,8 +1,8 @@
 import { JSONSchema4 } from 'json-schema'
-import { Templates } from '../../types'
-import { getTitle } from '../utils';
+import { Templates, ContainerTemplateFactory } from '../../types'
+import { getTitle } from '../utils'
 
-export const ObjectTemplate =
+export const ObjectTemplate: ContainerTemplateFactory =
   ( document: Document, templates: Partial<Templates> = {} ) => {
     const objectTemplate = ( schema: JSONSchema4, name = '', value?: any ) => {
       const container = document.createElement( 'div' )
@@ -13,7 +13,8 @@ export const ObjectTemplate =
 
       if ( !schema.properties ) return container
 
-      value = value || schema.default
+      if( typeof value === 'undefined' && typeof schema.default !== 'undefined' )
+        value = schema.default
 
       const required = schema.required || []
 

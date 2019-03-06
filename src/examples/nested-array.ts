@@ -1,19 +1,15 @@
-import { JSDOM } from 'jsdom'
-
 import * as nestedArray from '../schema/nested-array.schema.json'
 import { JSONSchema4 } from 'json-schema'
 import { ArrayTemplate } from '../templates/types/array'
 import { NumberTemplate } from '../templates/types/number'
 import { ArrayListTemplate } from '../templates/array-list'
 import { ArrayListApi } from '../templates/api/array-list'
-import { getEntries, entriesToPointers } from './util'
-import { Templates } from '../types.js';
-import { ArrayItemTemplate } from '../templates/array-item.js';
+import { Templates } from '../types'
+import { ArrayItemTemplate } from '../templates/array-item'
+import { entriesToPointers } from '../templates/utils'
+import { document, getEntries, form } from '../server/dom'
 
 const schema = <JSONSchema4>nestedArray
-
-const jsdom = new JSDOM( `<!doctype html>` )
-const { document } = jsdom.window
 
 const templates: Partial<Templates> = {}
 
@@ -32,8 +28,8 @@ namedApi.add( [ 5, 6 ] )
 namedApi.add( [ 7, 8 ] )
 namedApi.remove( 3 )
 
-const unnamedEntries = getEntries( jsdom.window, unnamed )
-const namedEntries = getEntries( jsdom.window, named )
+const unnamedEntries = getEntries( form( {}, unnamed ) )
+const namedEntries = getEntries( form( {}, named ) )
 
 export const nestedArrayExample = {
   'Unnamed Nested Array': unnamed.outerHTML,

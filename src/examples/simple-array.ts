@@ -1,19 +1,15 @@
-import { JSDOM } from 'jsdom'
-
 import * as simpleArray from '../schema/simple-array.schema.json'
 import { JSONSchema4 } from 'json-schema'
 import { ArrayTemplate } from '../templates/types/array'
 import { NumberTemplate } from '../templates/types/number'
 import { ArrayListTemplate } from '../templates/array-list'
 import { ArrayListApi } from '../templates/api/array-list'
-import { getEntries, entriesToPointers } from './util'
-import { Templates } from '../types.js';
-import { ArrayItemTemplate } from '../templates/array-item.js';
+import { Templates } from '../types'
+import { ArrayItemTemplate } from '../templates/array-item'
+import { document, getEntries, form } from '../server/dom'
+import { entriesToPointers } from '../templates/utils'
 
 const schema = <JSONSchema4>simpleArray
-
-const jsdom = new JSDOM( `<!doctype html>` )
-const { document } = jsdom.window
 
 const templates: Partial<Templates> = {}
 
@@ -31,8 +27,8 @@ simpleArrayApi.add( 4 )
 simpleArrayApi.add( 5 )
 simpleArrayApi.remove( 3 )
 
-const unnamedEntries = getEntries( jsdom.window, unnamed )
-const namedEntries = getEntries( jsdom.window, named )
+const unnamedEntries = getEntries( form( {}, unnamed ) )
+const namedEntries = getEntries( form( {}, named ) )
 
 export const simpleArrayExample = {
   'Unnamed Simple Array': unnamed.outerHTML,
@@ -42,7 +38,7 @@ export const simpleArrayExample = {
   "Unnamed Simple Array Pointers": JSON.stringify(
     entriesToPointers( unnamedEntries ), null, 2
   ),
-  "Naamed Simple Array Pointers": JSON.stringify(
+  "Named Simple Array Pointers": JSON.stringify(
     entriesToPointers( namedEntries ), null, 2
-  ),
+  )
 }
