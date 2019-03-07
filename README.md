@@ -115,68 +115,87 @@ PRs will be welcome after 1.0 release, until then please open an issue to
 discuss
 
 todo: document which features won't be supported as they don't make sense for
-generating forms, nicer formatting for supported lists below
+generating forms, support JSON Schema past draft 4
 
-✔️ string
-  - ✔️ minLength
-  - ✔️ maxLength
-  - ✔️ pattern
-  - ✔️ format
+### ✔️ string
 
-✔️ number
-  - ✔️ multipleOf
-  - ✔️ minimum
-  - ✔️ maximum
+- ✔️ minLength
+- ✔️ maxLength
+- ✔️ pattern
+- ✔️ format
 
-✔️ integer
-  - ✔️ multipleOf
-  - ✔️ minimum
-  - ✔️ maximum
+### ✔️ number / ✔️ integer
 
-✔️ object
-  - ✔️ properties
-  - ✔️ required
-  - ❌ additionalProperties
-  - ❌ minProperties
-  - ❌ maxProperties
-  - ❌ dependencies
-  - ❌ patternProperties
+- ✔️ multipleOf
+- ✔️ minimum
+- ✔️ maximum
 
-✔️ array
-  - ✔️ items
-    - ✔️ list
-    - ✔️ tuple
-  - ✔️ minItems
-  - ✔️ maxItems
-  - ❌ additionalItems
-  - ❌ contains
-  - ❌ uniqueItems
+### ✔️ object
 
-✔️ boolean
+- ✔️ properties
+- ✔️ required
+- ❌ additionalProperties
+- ❌ minProperties
+- ❌ maxProperties
+- ❌ dependencies
+- ❌ patternProperties
 
-❌ null
+todo: custom api/decorator to support advanced keywords
 
-✔️ generic keywords
-  - ✔️ title
-  - ✔️ default
-  - ✔️ type
-    - ✔️ where type is a string
-    - ✔️ where type is undefined, the type will be inferred according to which
-         template was called, but note that type is required for child schema of
-         arrays and objects, as these cannot be inferred - any child schema
-         missing a type will be skipped - todo: consider strict mode that throws
-         instead of skipping
-    - ❌ where type is an array
-  - ❌ description
-  - ❌ enum
+### ✔️ array
+- ✔️ items (list)
+- ✔️ items (tuple)
+- ✔️ minItems
+- ✔️ maxItems
+- ❌ additionalItems
+- ❌ contains
+- ❌ uniqueItems
 
-❌ combining keywords
-  - ❌ allOf
-  - ❌ anyOf
-  - ❌ oneOf
-  - ❌ not
+todo: custom api/decorator to support advanced keywords
 
-❌ $ref - you should resolve references first
+### ✔️ boolean
+
+### ❌ null
+
+todo: support via hidden element
+
+### ✔️ generic keywords
+- ✔️ title
+- ✔️ default
+- ✔️ type (string)
+- ✔️ type (undefined)
+- ❌ type (array)
+- ❌ description
+- ❌ enum
+
+Where type is undefined, the type will be inferred according to which template
+was called, but note that type is required for child schema of arrays and
+objects, as these cannot be inferred - any child schema missing a type will be
+skipped
+
+todo: enum is easy for primitive types, description could be added via a
+decorator in the same way that title is added with the label decorator, consider
+strict mode that throws instead of skipping, child types can be inferred in most
+cases if they have type-specific keywords
+
+### ❌ combining keywords
+- ❌ allOf
+- ❌ anyOf
+- ❌ oneOf
+- ❌ not
+
+todo: support `anyOf`/`oneOf` - possibly `not` in some situations - `allOf` is
+not possible without making some opiniated decisions about how it should
+work, see prior art in various npm modules that attempt this, they all do it
+differently
+
+### ❌ $ref
+
+You should resolve references first
+
+todo: link to module for resolving - circular references can't be resolved when
+generating forms, but an api and decorator can be written that allow adding them
+tree-style without triggering an infinite loop
 
 ## Convenience Factories
 
@@ -410,7 +429,7 @@ import { ArrayListApi } from '@mojule/schema-forms'
 
 todo: document
 
-## architecture
+## architecture, extending, customising etc.
 
 todo: overview
 
