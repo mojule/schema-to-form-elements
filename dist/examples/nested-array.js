@@ -16,7 +16,7 @@ templates.arrayList = array_list_1.ArrayListTemplate(dom_1.document, templates);
 templates.array = array_1.ArrayTemplate(dom_1.document, templates);
 const unnamed = templates.array(schema);
 const named = templates.array(schema, 'nested-array');
-const namedApi = array_list_2.ArrayListApi(named, schema, templates);
+const namedApi = array_list_2.ArrayListApi(dom_1.document, named, schema, templates);
 namedApi.add([5, 6]);
 namedApi.add([7, 8]);
 namedApi.remove(3);

@@ -1,8 +1,11 @@
 import * as assert from 'assert'
 import { document, FormData } from '../server/dom'
-import { getTitle, Form, H, GetEntries, entriesToPointers, keyToJsonPointer } from '../templates/utils'
-import { StringTemplate } from '../templates/types/string';
-import { TupleTemplate } from '../templates/tuple';
+import {
+  getTitle, Form, H, GetEntries, entriesToPointers, keyToJsonPointer,
+  getChildName
+} from '../templates/utils'
+import { StringTemplate } from '../templates/types/string'
+import { TupleTemplate } from '../templates/tuple'
 
 describe( 'utils', () => {
   describe( 'getTitle', () => {
@@ -28,6 +31,20 @@ describe( 'utils', () => {
       const title = getTitle( {}, '', 'Title' )
 
       assert.strictEqual( title, 'Title' )
+    } )
+  })
+
+  describe( 'getChildName', () => {
+    it( 'uses square brackets if parent name', () => {
+      const name = getChildName( 'foo', 0 )
+
+      assert.strictEqual( name, 'foo[0]' )
+    } )
+
+    it( 'does not use square brackets if no parent name', () => {
+      const name = getChildName( '', 0 )
+
+      assert.strictEqual( name, '0' )
     } )
   })
 

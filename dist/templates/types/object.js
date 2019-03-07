@@ -24,7 +24,7 @@ exports.ObjectTemplate = (document, templates = {}) => {
                 childValue = value[key];
             }
             const isRequired = required.includes(key);
-            const childName = name ? `${name}[${key}]` : key;
+            const childName = utils_1.getChildName(name, key);
             const editor = template(childSchema, childName, childValue, isRequired);
             container.appendChild(editor);
         });

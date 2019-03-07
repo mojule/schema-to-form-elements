@@ -1,12 +1,14 @@
 import { Templates } from '../../types'
 import { JSONSchema4 } from 'json-schema'
+import { ArrayItemTemplate } from '../array-item'
+import { getChildName } from '../utils';
 
-export const ArrayListApi = ( container: HTMLElement, schema: JSONSchema4, templates: Partial<Templates> = {} ) => {
+export const ArrayListApi = ( document: Document, container: HTMLElement, schema: JSONSchema4, templates: Partial<Templates> ) => {
   const list = container.querySelector( 'ol' )
 
   if ( !list )
     throw Error(
-      'ArrayListApi: arrayList did not create an ol child'
+      'ArrayListApi: container is missing OL'
     )
 
   if ( !schema.items || Array.isArray( schema.items ) )
@@ -35,15 +37,14 @@ export const ArrayListApi = ( container: HTMLElement, schema: JSONSchema4, templ
   const clear = () => { list.innerHTML = '' }
 
   const add = ( value?: any ) => {
-    const arrayItem = templates.arrayItem
+    let arrayItem = templates.arrayItem
 
-    if ( !arrayItem )
-      throw Error(
-        `ArrayListApi: missing template arrayItem`
-      )
+    if ( !arrayItem ){
+      arrayItem = ArrayItemTemplate( document, templates )
+    }
 
     const key = count()
-    const childName = name ? `${ name }[${ key }]` : `[${ key }]`
+    const childName = getChildName( name, count() )
 
     const li = arrayItem( childSchema, childName, value )
 
@@ -67,8 +68,8 @@ export const ArrayListApi = ( container: HTMLElement, schema: JSONSchema4, templ
     const name = container.dataset.name || ''
 
     for ( let i = from; i < previousCount; i++ ) {
-      const oldName = `${ name }[${ i }]`
-      const newName = `${ name }[${ i - 1 }]`
+      const oldName = getChildName( name, i )
+      const newName = getChildName( name, i - 1 )
 
       const targets = <HTMLInputElement[]>Array.from(
         list.querySelectorAll( '[name]' )

@@ -11,7 +11,7 @@ const label_1 = require("./decorators/label");
 const mutable_array_list_1 = require("./decorators/mutable-array-list");
 const array_list_1 = require("./array-list");
 const array_item_1 = require("./array-item");
-exports.FormTemplates = (document) => {
+exports.ServerFormTemplates = (document) => {
     const templates = {};
     templates.array = fieldset_1.FieldsetDecorator(document, array_1.ArrayTemplate(document, templates));
     templates.boolean = label_1.LabelDecorator(document, boolean_1.BooleanTemplate(document), true);
@@ -25,8 +25,8 @@ exports.FormTemplates = (document) => {
     return templates;
 };
 exports.ClientFormTemplates = (document) => {
-    const templates = exports.FormTemplates(document);
-    templates.arrayList = mutable_array_list_1.MutableArrayListDecorator(document, array_list_1.ArrayListTemplate(document, templates), templates);
+    const templates = exports.ServerFormTemplates(document);
+    templates.arrayList = fieldset_1.FieldsetDecorator(document, mutable_array_list_1.MutableArrayListDecorator(document, array_list_1.ArrayListTemplate(document, templates), templates));
     templates.arrayItem = mutable_array_list_1.MutableArrayItemDecorator(document, array_item_1.ArrayItemTemplate(document, templates));
     return templates;
 };

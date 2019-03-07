@@ -1,7 +1,7 @@
 import { JSONSchema4 } from 'json-schema'
 import { Templates, SchemaTemplate } from '../types'
 import { ArrayItemTemplate } from './array-item'
-import { getTitle } from './utils';
+import { getTitle, getChildName } from './utils';
 
 export const ArrayListTemplate =
   ( document: Document, templates: Partial<Templates> = {} ) => {
@@ -58,7 +58,7 @@ export const ArrayListTemplate =
           childValue = value[ key ]
         }
 
-        const childName = name ? `${ name }[${ key }]` : String( key )
+        const childName = getChildName( name, key )
 
         const li = itemTemplate( childSchema, childName, childValue )
 

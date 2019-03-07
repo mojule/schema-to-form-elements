@@ -22,7 +22,7 @@ const unnamed = templates.array( schema )
 
 const named = templates.array( schema, 'nested-array' )
 
-const namedApi = ArrayListApi( named, schema, templates )
+const namedApi = ArrayListApi( document, named, schema, templates )
 
 namedApi.add( [ 5, 6 ] )
 namedApi.add( [ 7, 8 ] )

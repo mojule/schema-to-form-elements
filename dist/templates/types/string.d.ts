@@ -1,2 +1,2 @@
-import { SchemaTemplateFactory } from '../../types';
-export declare const StringTemplate: SchemaTemplateFactory;
+import { StringTemplateFactory } from '../../types';
+export declare const StringTemplate: StringTemplateFactory;

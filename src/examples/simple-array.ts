@@ -21,7 +21,7 @@ templates.array = ArrayTemplate( document, templates )
 const unnamed = templates.array( schema )
 const named = templates.array( schema, 'simple-array' )
 
-const simpleArrayApi = ArrayListApi( named, schema, templates )
+const simpleArrayApi = ArrayListApi( document, named, schema, templates )
 
 simpleArrayApi.add( 4 )
 simpleArrayApi.add( 5 )

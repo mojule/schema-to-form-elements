@@ -4,8 +4,9 @@ import { StringTemplate } from '../templates/types/string'
 import { ObjectTemplate } from '../templates/types/object'
 import { TupleTemplate } from '../templates/tuple'
 import { ArrayListTemplate } from '../templates/array-list'
-import { SchemaTemplate } from '../types';
+import { SchemaTemplate, Templates } from '../types';
 import { ArrayItemTemplate } from '../templates/array-item';
+import { ArrayTemplate } from '../templates/types/array';
 
 describe( 'schema-forms', () => {
   describe( 'containers', () => {
@@ -180,16 +181,132 @@ describe( 'schema-forms', () => {
     } )
 
     describe( 'array', () => {
+      it( 'calls implicit tuple delegate', () => {
+        const arrayTemplate = ArrayTemplate(
+          document,
+          { string: StringTemplate( document )}
+        )
+
+        const container = arrayTemplate({
+          type: 'array',
+          items: [
+            { type: 'string' }
+          ]
+        })
+
+        assert.strictEqual( container.childElementCount, 1 )
+        assert.strictEqual(
+          ( <HTMLInputElement>container.firstElementChild ).type,
+          'text'
+        )
+      } )
+
+      it( 'calls explicit tuple delegate', () => {
+        const templates: Partial<Templates> = {
+          string: StringTemplate( document )
+        }
+
+        templates.tuple = TupleTemplate( document, templates )
+
+        const arrayTemplate = ArrayTemplate(
+          document, templates
+        )
+
+        const container = arrayTemplate( {
+          type: 'array',
+          items: [
+            { type: 'string' }
+          ]
+        } )
+
+        assert.strictEqual( container.childElementCount, 1 )
+        assert.strictEqual(
+          ( <HTMLInputElement>container.firstElementChild ).type,
+          'text'
+        )
+      } )
+
+      it( 'calls implicit array-list delegate', () => {
+        const arrayTemplate = ArrayTemplate(
+          document,
+          { string: StringTemplate( document ) }
+        )
+
+        const container = arrayTemplate( {
+          type: 'array',
+          items: {
+            type: 'string'
+          }
+        } )
+
+        const ol = container.querySelector( 'ol' )
+
+        assert( ol )
+
+        assert.strictEqual( ol!.childElementCount, 1 )
+
+        const inputs = ol!.querySelectorAll( 'input' )
+
+        assert.strictEqual( inputs.length, 1 )
+      } )
+
+      it( 'calls explicit array-list delegate', () => {
+        const templates: Partial<Templates> = {
+          string: StringTemplate( document )
+        }
+
+        templates.arrayList = ArrayListTemplate( document, templates )
+
+        const arrayTemplate = ArrayTemplate(
+          document, templates
+        )
+
+        const container = arrayTemplate( {
+          type: 'array',
+          items: {
+            type: 'string'
+          }
+        } )
+
+        const ol = container.querySelector( 'ol' )
+
+        assert( ol )
+
+        assert.strictEqual( ol!.childElementCount, 1 )
+
+        const inputs = ol!.querySelectorAll( 'input' )
+
+        assert.strictEqual( inputs.length, 1 )
+      } )
+
+      it( 'passes schema.default to delegate', () => {
+        const arrayTemplate = ArrayTemplate(
+          document,
+          { string: StringTemplate( document ) }
+        )
+
+        const container = arrayTemplate( {
+          type: 'array',
+          items: [
+            { type: 'string' }
+          ],
+          default: [ 'foo' ]
+        } )
+
+        assert.strictEqual( container.childElementCount, 1 )
+        assert.strictEqual(
+          ( <HTMLInputElement>container.firstElementChild ).defaultValue,
+          'foo'
+        )
+      })
+
       describe( 'tuple', () => {
         testContainer( 'tuple' )
       } )
 
       describe( 'array-list', () => {
         const fixture = <any>fixtures[ 'array-list' ]
-        const {
-          type, title, children, childrenCompound, childName, template,
-          bareTemplate, value
-        } = fixture
+        const { type, children, template } = fixture
 
         testContainer( 'array-list' )
 

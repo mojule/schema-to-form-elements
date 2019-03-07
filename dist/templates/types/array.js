@@ -8,10 +8,16 @@ exports.ArrayTemplate = (document, templates = {}) => {
             Array.isArray(schema.default)) {
             value = schema.default;
         }
-        const template = (Array.isArray(schema.items) ?
-            templates.tuple || tuple_1.TupleTemplate(document, templates) :
-            templates.arrayList || array_list_1.ArrayListTemplate(document, templates));
-        return template(schema, name, value);
+        if (Array.isArray(schema.items)) {
+            if (templates.tuple) {
+                return templates.tuple(schema, name, value);
+            }
+            return tuple_1.TupleTemplate(document, templates)(schema, name, value);
+        }
+        if (templates.arrayList) {
+            return templates.arrayList(schema, name, value);
+        }
+        return array_list_1.ArrayListTemplate(document, templates)(schema, name, value);
     };
     return arrayTemplate;
 };

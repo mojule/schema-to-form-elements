@@ -1,6 +1,6 @@
 import { JSONSchema4 } from 'json-schema'
 import { Templates } from '../types'
-import { getTitle } from './utils';
+import { getTitle, getChildName } from './utils';
 
 export const TupleTemplate =
   ( document: Document, templates: Partial<Templates> = {} ) => {
@@ -29,7 +29,7 @@ export const TupleTemplate =
           childValue = value[ key ]
         }
 
-        const childName = name ? `${ name }[${ key }]` : String( key )
+        const childName = getChildName( name, key )
 
         const editor = template( childSchema, childName, childValue )
 

@@ -1,6 +1,6 @@
 import { JSONSchema4 } from 'json-schema'
 import { Templates, ContainerTemplateFactory } from '../../types'
-import { getTitle } from '../utils'
+import { getTitle, getChildName } from '../utils'
 
 export const ObjectTemplate: ContainerTemplateFactory =
   ( document: Document, templates: Partial<Templates> = {} ) => {
@@ -35,7 +35,7 @@ export const ObjectTemplate: ContainerTemplateFactory =
 
         const isRequired = required.includes( key )
 
-        const childName = name ? `${ name }[${ key }]` : key
+        const childName = getChildName( name, key )
         const editor = template( childSchema, childName, childValue, isRequired )
 
         container.appendChild( editor )

@@ -7,6 +7,7 @@ const object_1 = require("../templates/types/object");
 const tuple_1 = require("../templates/tuple");
 const array_list_1 = require("../templates/array-list");
 const array_item_1 = require("../templates/array-item");
+const array_1 = require("../templates/types/array");
 describe('schema-forms', () => {
     describe('containers', () => {
         const fixtures = {
@@ -135,12 +136,82 @@ describe('schema-forms', () => {
             });
         });
         describe('array', () => {
+            it('calls implicit tuple delegate', () => {
+                const arrayTemplate = array_1.ArrayTemplate(dom_1.document, { string: string_1.StringTemplate(dom_1.document) });
+                const container = arrayTemplate({
+                    type: 'array',
+                    items: [
+                        { type: 'string' }
+                    ]
+                });
+                assert.strictEqual(container.childElementCount, 1);
+                assert.strictEqual(container.firstElementChild.type, 'text');
+            });
+            it('calls explicit tuple delegate', () => {
+                const templates = {
+                    string: string_1.StringTemplate(dom_1.document)
+                };
+                templates.tuple = tuple_1.TupleTemplate(dom_1.document, templates);
+                const arrayTemplate = array_1.ArrayTemplate(dom_1.document, templates);
+                const container = arrayTemplate({
+                    type: 'array',
+                    items: [
+                        { type: 'string' }
+                    ]
+                });
+                assert.strictEqual(container.childElementCount, 1);
+                assert.strictEqual(container.firstElementChild.type, 'text');
+            });
+            it('calls implicit array-list delegate', () => {
+                const arrayTemplate = array_1.ArrayTemplate(dom_1.document, { string: string_1.StringTemplate(dom_1.document) });
+                const container = arrayTemplate({
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                });
+                const ol = container.querySelector('ol');
+                assert(ol);
+                assert.strictEqual(ol.childElementCount, 1);
+                const inputs = ol.querySelectorAll('input');
+                assert.strictEqual(inputs.length, 1);
+            });
+            it('calls explicit array-list delegate', () => {
+                const templates = {
+                    string: string_1.StringTemplate(dom_1.document)
+                };
+                templates.arrayList = array_list_1.ArrayListTemplate(dom_1.document, templates);
+                const arrayTemplate = array_1.ArrayTemplate(dom_1.document, templates);
+                const container = arrayTemplate({
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                });
+                const ol = container.querySelector('ol');
+                assert(ol);
+                assert.strictEqual(ol.childElementCount, 1);
+                const inputs = ol.querySelectorAll('input');
+                assert.strictEqual(inputs.length, 1);
+            });
+            it('passes schema.default to delegate', () => {
+                const arrayTemplate = array_1.ArrayTemplate(dom_1.document, { string: string_1.StringTemplate(dom_1.document) });
+                const container = arrayTemplate({
+                    type: 'array',
+                    items: [
+                        { type: 'string' }
+                    ],
+                    default: ['foo']
+                });
+                assert.strictEqual(container.childElementCount, 1);
+                assert.strictEqual(container.firstElementChild.defaultValue, 'foo');
+            });
             describe('tuple', () => {
                 testContainer('tuple');
             });
             describe('array-list', () => {
                 const fixture = fixtures['array-list'];
-                const { type, title, children, childrenCompound, childName, template, bareTemplate, value } = fixture;
+                const { type, children, template } = fixture;
                 testContainer('array-list');
                 it('minItems', () => {
                     const container = template(Object.assign({ type }, children, { minItems: 2 }));

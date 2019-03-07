@@ -24,6 +24,16 @@ describe('utils', () => {
             assert.strictEqual(title, 'Title');
         });
     });
+    describe('getChildName', () => {
+        it('uses square brackets if parent name', () => {
+            const name = utils_1.getChildName('foo', 0);
+            assert.strictEqual(name, 'foo[0]');
+        });
+        it('does not use square brackets if no parent name', () => {
+            const name = utils_1.getChildName('', 0);
+            assert.strictEqual(name, '0');
+        });
+    });
     describe('H', () => {
         it('creates HTML templates', () => {
             const div = utils_1.H(dom_1.document, 'div');

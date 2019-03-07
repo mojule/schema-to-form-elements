@@ -13,13 +13,19 @@ export const ArrayTemplate: ContainerTemplateFactory =
         value = schema.default
       }
 
-      const template: SchemaTemplate = (
-        Array.isArray( schema.items ) ?
-        templates.tuple || TupleTemplate( document, templates ) :
-        templates.arrayList || ArrayListTemplate( document, templates )
-      )
+      if( Array.isArray( schema.items ) ){
+        if( templates.tuple ){
+          return templates.tuple( schema, name, value )
+        }
 
-      return template( schema, name, value )
+        return TupleTemplate( document, templates )( schema, name, value )
+      }
+
+      if( templates.arrayList ){
+        return templates.arrayList( schema, name, value )
+      }
+
+      return ArrayListTemplate( document, templates )( schema, name, value )
     }
 
     return arrayTemplate

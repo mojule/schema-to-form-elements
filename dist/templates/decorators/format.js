@@ -5,7 +5,7 @@ exports.FormatDecorator = (_document, stringTemplates, formatToTemplateKey = new
         const stringTemplate = stringTemplates.string;
         let format;
         if (typeof schema.format !== 'string') {
-            return stringTemplate(schema, name, value);
+            return stringTemplate(schema, name, value, isRequired);
         }
         format = formatToTemplateKey.get(schema.format) || schema.format;
         if (typeof stringTemplates[format] !== 'undefined') {

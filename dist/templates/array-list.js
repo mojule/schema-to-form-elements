@@ -38,7 +38,7 @@ exports.ArrayListTemplate = (document, templates = {}) => {
             if (Array.isArray(value)) {
                 childValue = value[key];
             }
-            const childName = name ? `${name}[${key}]` : String(key);
+            const childName = utils_1.getChildName(name, key);
             const li = itemTemplate(childSchema, childName, childValue);
             list.appendChild(li);
         }

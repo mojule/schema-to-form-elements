@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTitle = (schema, name = '', fallback = 'Schema') => schema.title || name || fallback;
+exports.getChildName = (name, key) => name ? `${name}[${key}]` : String(key);
 exports.H = (document, name) => (attributes = {}, ...children) => {
     const el = document.createElement(name);
     Object.keys(attributes).forEach(name => el.setAttribute(name, String(attributes[name])));

@@ -13,7 +13,7 @@ import {
 import { ArrayListTemplate } from './array-list'
 import { ArrayItemTemplate } from './array-item'
 
-export const FormTemplates = ( document: Document ) => {
+export const ServerFormTemplates = ( document: Document ) => {
   const templates: Partial<Templates> = {}
 
   templates.array = FieldsetDecorator(
@@ -53,12 +53,15 @@ export const FormTemplates = ( document: Document ) => {
 }
 
 export const ClientFormTemplates = ( document: Document ) => {
-  const templates = FormTemplates( document )
+  const templates = ServerFormTemplates( document )
 
-  templates.arrayList = MutableArrayListDecorator(
+  templates.arrayList = FieldsetDecorator(
     document,
-    ArrayListTemplate( document, templates ),
-    templates
+    MutableArrayListDecorator(
+      document,
+      ArrayListTemplate( document, templates ),
+      templates
+    )
   )
 
   templates.arrayItem = MutableArrayItemDecorator(

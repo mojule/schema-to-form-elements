@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const array_list_1 = require("../api/array-list");
 const utils_1 = require("../utils");
-exports.MutableArrayListDecorator = (document, arrayList, templates = {}) => {
+exports.MutableArrayListDecorator = (document, arrayList, templates) => {
     const mutableArrayListDecorator = (schema, name = '', value) => {
         const container = arrayList(schema, name, value);
         if (!schema.items || Array.isArray(schema.items))
             throw Error('MutableArrayList: expected schema.items to be JSON Schema');
-        const api = array_list_1.ArrayListApi(container, schema, templates);
+        const api = array_list_1.ArrayListApi(document, container, schema, templates);
         const title = `Add ${utils_1.getTitle(schema.items, '', 'Item')}`;
         const addButton = document.createElement('button');
         addButton.type = 'button';
@@ -15,17 +15,18 @@ exports.MutableArrayListDecorator = (document, arrayList, templates = {}) => {
         addButton.dataset.action = 'array-list-add';
         container.appendChild(addButton);
         container.addEventListener('click', e => {
-            if (!(e.target instanceof HTMLButtonElement))
-                return;
-            if (e.target.dataset.action === 'array-list-add') {
+            const target = e.target;
+            if (target.dataset.action === 'array-list-add') {
                 e.stopPropagation();
                 api.add();
             }
-            if (e.target.dataset.action === 'array-list-delete') {
+            if (target.dataset.action === 'array-list-delete') {
                 e.stopPropagation();
-                const li = e.target.closest('li');
+                const li = target.closest('li');
+                // can't throw errors in event handlers, no way to catch them
+                // when using dispatchEvent so throwing makes this untestable
                 if (!li)
-                    throw Error('MutableArrayList: expected delete action to have an LI parent');
+                    return;
                 const index = Array.from(li.parentNode.children).indexOf(li);
                 api.remove(index);
             }

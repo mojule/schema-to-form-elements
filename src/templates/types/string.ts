@@ -1,8 +1,8 @@
 import { JSONSchema4 } from 'json-schema'
 import { getTitle } from '../utils'
-import { SchemaTemplateFactory } from '../../types';
+import { StringTemplateFactory } from '../../types'
 
-export const StringTemplate: SchemaTemplateFactory =
+export const StringTemplate: StringTemplateFactory =
   ( document: Document, isMultiline = false ) => {
     const stringTemplate = ( schema: JSONSchema4, name = '', value?: string, isRequired = false ) => {
       let editor: HTMLInputElement | HTMLTextAreaElement

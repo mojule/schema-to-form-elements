@@ -7,7 +7,7 @@ export const MutableArrayListDecorator =
   (
     document: Document,
     arrayList: SchemaTemplate,
-    templates: Partial<Templates> = {}
+    templates: Partial<Templates>
   ) => {
     const mutableArrayListDecorator = ( schema: JSONSchema4, name = '', value?: any[] ) => {
       const container = arrayList( schema, name, value )
@@ -15,7 +15,7 @@ export const MutableArrayListDecorator =
       if ( !schema.items || Array.isArray( schema.items ) )
         throw Error( 'MutableArrayList: expected schema.items to be JSON Schema' )
 
-      const api = ArrayListApi( container, schema, templates )
+      const api = ArrayListApi( document, container, schema, templates )
 
       const title = `Add ${ getTitle( schema.items, '', 'Item' ) }`
 
@@ -28,21 +28,22 @@ export const MutableArrayListDecorator =
       container.appendChild( addButton )
 
       container.addEventListener( 'click', e => {
-        if( !( e.target instanceof HTMLButtonElement ) ) return
+        const target = <HTMLElement>e.target
 
-        if ( e.target.dataset.action === 'array-list-add' ) {
+        if ( target.dataset.action === 'array-list-add' ) {
           e.stopPropagation()
 
           api.add()
         }
 
-        if ( e.target.dataset.action === 'array-list-delete' ) {
+        if ( target.dataset.action === 'array-list-delete' ) {
           e.stopPropagation()
 
-          const li = e.target.closest( 'li' )
+          const li = target.closest( 'li' )
 
-          if ( !li )
-            throw Error( 'MutableArrayList: expected delete action to have an LI parent' )
+          // can't throw errors in event handlers, no way to catch them
+          // when using dispatchEvent so throwing makes this untestable
+          if ( !li ) return
 
           const index = Array.from(
             li.parentNode!.children

@@ -16,7 +16,7 @@ templates.arrayList = array_list_1.ArrayListTemplate(dom_1.document, templates);
 templates.array = array_1.ArrayTemplate(dom_1.document, templates);
 const unnamed = templates.array(schema);
 const named = templates.array(schema, 'simple-array');
-const simpleArrayApi = array_list_2.ArrayListApi(named, schema, templates);
+const simpleArrayApi = array_list_2.ArrayListApi(dom_1.document, named, schema, templates);
 simpleArrayApi.add(4);
 simpleArrayApi.add(5);
 simpleArrayApi.remove(3);

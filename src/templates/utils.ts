@@ -3,6 +3,9 @@ import { JSONSchema4 } from 'json-schema'
 export const getTitle = ( schema: JSONSchema4, name = '', fallback = 'Schema' ) =>
   schema.title || name || fallback
 
+export const getChildName = ( name: string, key: any ) =>
+  name ? `${ name }[${ key }]` : String( key )
+
 export const H =
   <K extends keyof HTMLElementTagNameMap>( document: Document, name: K ) =>
     (
