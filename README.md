@@ -184,18 +184,28 @@ cases if they have type-specific keywords
 - ❌ oneOf
 - ❌ not
 
-todo: support `anyOf`/`oneOf` - possibly `not` in some situations - `allOf` is
+todo: support `anyOf`/`oneOf`, these are easy via api/decorator similar to how
+`array` lists already work - possibly `not` in some situations - `allOf` is
 not possible without making some opiniated decisions about how it should
 work, see prior art in various npm modules that attempt this, they all do it
-differently
+differently. An inelegant solution would be to treat `allOf` the same way as
+an `array` tuple and let the consumer of the form data figure out what to do
+with it, makes for an ugly and cluttered form for the user however
 
 ### ❌ $ref
 
-You should resolve references first
+todo: full resolution eg with http and etc is beyond the scope of this package
+and there are plenty of good packages to handle this. A decorator/api that works
+with this package could be published as a separate module.
 
-todo: link to module for resolving - circular references can't be resolved when
-generating forms, but an api and decorator can be written that allow adding them
-tree-style without triggering an infinite loop
+Even so, `$ref` can be circular but again an api and decorator can be written
+that takes the required schema and allows adding them tree-style without
+triggering an infinite loop
+
+### ❌ definitions
+
+Essentially the same as `$ref`, pre-resolve them or create an external module
+to handle it
 
 ## Convenience Factories
 
@@ -428,6 +438,19 @@ import { ArrayListApi } from '@mojule/schema-forms'
 ```
 
 todo: document
+
+## utils
+
+todo: document - existing utils are useful for getting the data from a form
+post, or from the form element itself in the client - easy to turn into json
+using eg `@mojule/json-pointer`; also, consider if it is out of scope for this
+package to populate an already generated form from json-compatible object, if so
+consider creating an external module
+
+## validation
+
+todo: not really in scope for this package but an external module that plays
+nicely with this one using `ajv` or similar would be good
 
 ## architecture, extending, customising etc.
 
