@@ -269,6 +269,11 @@ import { ServerFormTemplates } from '@mojule/schema-forms'
 const templates = TypeTemplates( document )
 ```
 
+```js
+// <label><span>Foo</span><input type="text" name="foo" value="Bar"></label>
+const el = templates.string( { title: 'Foo', default: 'Bar' }, 'foo' )
+```
+
 todo: document
 
 ### ClientFormTemplates
@@ -282,6 +287,11 @@ import { ClientFormTemplates } from '@mojule/schema-forms'
 
 ```js
 const templates = ClientFormTemplates( document )
+```
+
+```js
+// <label><span>Foo</span><input type="text" name="foo" value="Bar"></label>
+const el = templates.string( { title: 'Foo', default: 'Bar' }, 'foo' )
 ```
 
 todo: document
