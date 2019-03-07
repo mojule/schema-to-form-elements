@@ -87,23 +87,25 @@ Outputs:
 <fieldset>
   <legend>Contact Form</legend>
   <div title="Contact Form">
-    <label><span>Name</span><input type="text" title="Name" required="" name="name"></label>
-    <label><span>Email</span><input type="email" title="Email" required="" name="email"></label>
-    <label><span>Subject</span><input type="text" title="Subject" name="subject" value="I have a query"></label>
-    <label><span>Message</span><textarea title="Message" required="" name="message"></textarea></label>
+    <label>
+      <span>Name</span>
+      <input type="text" title="Name" required="" name="name">
+    </label>
+    <label>
+      <span>Email</span>
+      <input type="email" title="Email" required="" name="email">
+    </label>
+    <label>
+      <span>Subject</span>
+      <input type="text" title="Subject" name="subject" value="I have a query">
+    </label>
+    <label>
+      <span>Message</span>
+      <textarea title="Message" required="" name="message"></textarea>
+    </label>
   </div>
 </fieldset>
 ```
-
-<fieldset>
-  <legend>Contact Form</legend>
-  <div title="Contact Form">
-    <label><span>Name</span><input type="text" title="Name" required="" name="name"></label><br>
-    <label><span>Email</span><input type="email" title="Email" required="" name="email"></label><br>
-    <label><span>Subject</span><input type="text" title="Subject" name="subject" value="I have a query"></label><br>
-    <label><span>Message</span><textarea title="Message" required="" name="message"></textarea></label><br>
-  </div>
-</fieldset>
 
 ## supported schema functionality
 
