@@ -109,13 +109,13 @@ Outputs:
 
 ## supported schema functionality
 
-Some unsupported features are planned (partiularly `anyOf`/`oneOf`, `enum`)
+Some unsupported features are planned (particularly `anyOf`/`oneOf`, `enum`)
 
 PRs will be welcome after 1.0 release, until then please open an issue to
 discuss
 
 todo: document which features won't be supported as they don't make sense for
-generating forms
+generating forms, nicer formatting for supported lists below
 
 ✔️ string
   - ✔️ minLength
@@ -180,6 +180,8 @@ generating forms
 
 ## Convenience Factories
 
+### SchemaToFormElements
+
 Creates a single function for turning a schema into an element (schema must
 have a `type: string` keyword ):
 ```js
@@ -188,12 +190,16 @@ import { SchemaToFormElements } from '@mojule/schema-forms'
 
 todo: document
 
+### TypeTemplates
+
 Create an object containing basic templates for each schema type:
 ```js
 import { TypeTemplates } from '@mojule/schema-forms'
 ```
 
 todo: document
+
+### ServerFormTemplates
 
 Create an object containing basic templates for each schema type, pre-decorated
 with labels and fieldsets:
@@ -202,6 +208,8 @@ import { ServerFormTemplates } from '@mojule/schema-forms'
 ```
 
 todo: document
+
+### ClientFormTemplates
 
 Create an object containing basic templates for each schema type, pre-decorated
 with labels and fieldsets and using the mutable array list decorator so that
@@ -226,7 +234,7 @@ The signature for a schema template is:
 ( schema?: JSONSchema4, name?: string, value?: any, isRequired?: boolean ) => HTMLElement
 ```
 
-### string
+### StringTemplate
 
 Get the template factory:
 ```js
@@ -317,7 +325,7 @@ console.log( foo.outerHTML )
 todo: document minLength, maxLength, pattern, how format is used (see format
 decorator below ) etc.
 
-### number and integer
+### NumberTemplate
 
 Get the template factory:
 ```js
@@ -326,7 +334,7 @@ import { NumberTemplate } from '@mojule/schema-forms'
 
 todo: document in full, basically same as string
 
-### object
+### ObjectTemplate
 
 Get the template factory:
 ```js
@@ -335,7 +343,7 @@ import { ObjectTemplate } from '@mojule/schema-forms'
 
 todo: document
 
-### array
+### ArrayTemplate
 
 Get the template factory:
 ```js
@@ -344,7 +352,7 @@ import { ArrayTemplate } from '@mojule/schema-forms'
 
 todo: document
 
-### boolean
+### BooleanTemplate
 
 Get the template factory:
 ```js
@@ -355,7 +363,7 @@ todo: document
 
 ## decorators
 
-### labels
+### LabelDecorator
 
 Get the decorator factory:
 ```js
@@ -364,7 +372,7 @@ import { LabelDecorator } from '@mojule/schema-forms'
 
 todo: document
 
-### fieldsets
+### FieldsetDecorator
 
 Get the decorator factory:
 ```js
@@ -373,7 +381,7 @@ import { FieldsetDecorator } from '@mojule/schema-forms'
 
 todo: document
 
-### format
+### FormatDecorator
 
 Get the decorator factory:
 ```js
@@ -382,7 +390,7 @@ import { FormatDecorator } from '@mojule/schema-forms'
 
 todo: document
 
-### mutable arrays
+### MutableArrayListDecorator
 
 Get the decorator factory:
 ```js
@@ -393,7 +401,7 @@ todo: document
 
 ## api
 
-### array list
+### ArrayListApi
 
 Get the decorator factory:
 ```js
