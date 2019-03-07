@@ -92,6 +92,19 @@ Outputs:
   </div>
 </fieldset>
 
+## features
+
+- supports all schema functionality required to edit majority of models, with
+  remaining functionality planned in future releases
+- modular and extensible
+- 100% test coverage
+- typescript typings
+- browser and server (server via JSDOM or similar)
+- no dependencies
+- class-free functional style
+
+todo: example code, full documentation
+
 ## supported schema functionality
 
 Some unsupported features are planned, PRs welcome
