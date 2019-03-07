@@ -394,11 +394,26 @@ todo: document
 
 ## decorators
 
+Decorators modify the template output, allowing you to customize the generated
+DOM, eg `<label>text <input></label>` vs
+`<label for="foo">text</label> <input id="foo">`, or adding extra metadata
+for client side interactivity and any number of other use cases
+
 ### LabelDecorator
 
 Get the decorator factory:
 ```js
 import { LabelDecorator } from '@mojule/schema-forms'
+```
+
+Wrap all string inputs with labels:
+```js
+import { LabelDecorator, StringTemplate } from '@mojule/schema-forms'
+
+const labelledString = LabelDecorator( document, StringTemplate( document ) )
+
+// <label><span>Foo</span><input type="text"></label>
+const el = labelledString( { title: 'Foo' } )
 ```
 
 todo: document
@@ -431,6 +446,9 @@ import { MutableArrayListDecorator } from '@mojule/schema-forms'
 todo: document
 
 ## api
+
+API provides interaction without having to create and dispatch synthetic events,
+for eg manipulating arrays etc
 
 ### ArrayListApi
 
