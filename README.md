@@ -5,22 +5,24 @@ Generate HTML forms from [JSON Schema](https://json-schema.org/)
 This module attempts to provide a toolkit which is small, simple and flexible
 enough to cover all use cases
 
-todo: rationale, toc etc
+todo: rationale, toc, example code, playground, full documentation, etc
 
 `npm install @mojule/schema-forms`
 
 ## features
 
-- supports all schema functionality required to edit majority of models, with
-  remaining functionality planned in future releases
-- modular and extensible
+- supports all schema functionality required for the majority of data models,
+  with remaining functionality planned in future releases
+- modular and extensible - use the convenience functions provided to create
+  forms with a few lines of code or easily override any of the functionality by
+  following the established template/decorator/api patterns
 - 100% test coverage
 - typescript typings
-- browser and server (server via JSDOM or similar)
+- no strings, generates actual HTML elements for the browser or server (server
+  via JSDOM or similar, easily serialized to a string to send as an HTTP
+  response)
 - no dependencies
-- class-free, functional style
-
-todo: example code, playground, full documentation
+- simple class-free, functional coding style
 
 ## quickstart
 
