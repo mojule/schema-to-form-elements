@@ -219,6 +219,12 @@ have a `type: string` keyword ):
 import { SchemaToFormElements } from '@mojule/schema-forms'
 ```
 
+```js
+const createEl = SchemaToFormElements( document )
+
+const inputText = createEl( { type: 'string' } )
+```
+
 todo: document
 
 ### TypeTemplates
@@ -226,6 +232,27 @@ todo: document
 Create an object containing basic templates for each schema type:
 ```js
 import { TypeTemplates } from '@mojule/schema-forms'
+```
+
+```js
+const templates = TypeTemplates( document )
+```
+
+`templates` will be an instance of `Templates` with no decorators applied:
+
+```typescript
+export type SchemaTemplate =
+  ( schema?: JSONSchema4, name?: string, value?: any, isRequired?: boolean ) => HTMLElement
+
+export interface Templates {
+  array: SchemaTemplate
+  boolean: SchemaTemplate
+  number: SchemaTemplate
+  integer: SchemaTemplate
+  object: SchemaTemplate
+  string: SchemaTemplate
+  [ name: string ]: SchemaTemplate
+}
 ```
 
 todo: document
@@ -238,6 +265,10 @@ with labels and fieldsets:
 import { ServerFormTemplates } from '@mojule/schema-forms'
 ```
 
+```js
+const templates = TypeTemplates( document )
+```
+
 todo: document
 
 ### ClientFormTemplates
@@ -247,6 +278,10 @@ with labels and fieldsets and using the mutable array list decorator so that
 the user can add and delete items from an array list:
 ```js
 import { ClientFormTemplates } from '@mojule/schema-forms'
+```
+
+```js
+const templates = ClientFormTemplates( document )
 ```
 
 todo: document
