@@ -16,7 +16,7 @@ export type StringTemplateFactory =
   ( document: Document, isMultiline?: boolean ) => SchemaTemplate
 
 export type SchemaTemplate =
-  ( schema: JSONSchema4, name?: string, value?: any, isRequired?: boolean ) => HTMLElement
+  ( schema?: JSONSchema4, name?: string, value?: any, isRequired?: boolean ) => HTMLElement
 
 export interface Templates {
   array: SchemaTemplate

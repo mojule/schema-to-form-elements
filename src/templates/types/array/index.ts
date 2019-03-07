@@ -1,11 +1,11 @@
 import { JSONSchema4 } from 'json-schema'
-import { Templates, SchemaTemplate, ContainerTemplateFactory } from '../../types'
-import { TupleTemplate } from '../tuple'
-import { ArrayListTemplate } from '../array-list'
+import { Templates, ContainerTemplateFactory } from '../../../types'
+import { TupleTemplate } from './tuple'
+import { ArrayListTemplate } from './array-list'
 
 export const ArrayTemplate: ContainerTemplateFactory =
   ( document: Document, templates: Partial<Templates> = {} ) => {
-    const arrayTemplate = ( schema: JSONSchema4, name = '', value?: any[] ) => {
+    const arrayTemplate = ( schema: JSONSchema4 = {}, name = '', value?: any[] ) => {
       if(
         typeof value === 'undefined' &&
         Array.isArray( schema.default )

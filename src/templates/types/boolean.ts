@@ -4,7 +4,7 @@ import { PrimitiveTemplateFactory } from '../../types'
 
 export const BooleanTemplate: PrimitiveTemplateFactory =
   ( document: Document ) => {
-    const booleanTemplate = ( schema: JSONSchema4, name = '', value?: boolean, isRequired = false ) => {
+    const booleanTemplate = ( schema: JSONSchema4 = {}, name = '', value?: boolean, isRequired = false ) => {
       const editor = document.createElement( 'input' )
 
       editor.type = 'checkbox'

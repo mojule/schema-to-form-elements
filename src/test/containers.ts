@@ -1,12 +1,10 @@
 import * as assert from 'assert'
 import { document } from '../server/dom'
-import { StringTemplate } from '../templates/types/string'
-import { ObjectTemplate } from '../templates/types/object'
-import { TupleTemplate } from '../templates/tuple'
-import { ArrayListTemplate } from '../templates/array-list'
-import { SchemaTemplate, Templates } from '../types';
-import { ArrayItemTemplate } from '../templates/array-item';
-import { ArrayTemplate } from '../templates/types/array';
+import { SchemaTemplate, Templates } from '../types'
+import {
+  ObjectTemplate, StringTemplate, TupleTemplate, ArrayListTemplate,
+  ArrayTemplate, ArrayItemTemplate
+} from '..'
 
 describe( 'schema-forms', () => {
   describe( 'containers', () => {
@@ -95,6 +93,12 @@ describe( 'schema-forms', () => {
         assert.strictEqual( typeof container.localName, 'string' )
       } )
 
+      it( 'creates an empty container when no schema', () => {
+        const container = template()
+
+        assert.strictEqual( container.childElementCount, 0 )
+      } )
+
       it( 'default title', () => {
         const container = template( { type } )
 
@@ -181,6 +185,18 @@ describe( 'schema-forms', () => {
     } )
 
     describe( 'array', () => {
+      it( 'array creates an empty container when no schema', () => {
+        const container = ArrayTemplate( document )()
+
+        assert.strictEqual( container.childElementCount, 0 )
+      } )
+
+      it( 'arrayItem creates an empty li when no type', () => {
+        const el = ArrayItemTemplate( document )()
+
+        assert.strictEqual( el.childElementCount, 0 )
+      })
+
       it( 'calls implicit tuple delegate', () => {
         const arrayTemplate = ArrayTemplate(
           document,

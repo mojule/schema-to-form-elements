@@ -1,11 +1,13 @@
 import { JSONSchema4 } from 'json-schema'
-import { Templates, SchemaTemplate } from '../types'
+import {
+  Templates, SchemaTemplate, ContainerTemplateFactory
+} from '../../../types'
 import { ArrayItemTemplate } from './array-item'
-import { getTitle, getChildName } from './utils';
+import { getTitle, getChildName } from '../../utils'
 
-export const ArrayListTemplate =
+export const ArrayListTemplate: ContainerTemplateFactory =
   ( document: Document, templates: Partial<Templates> = {} ) => {
-    const arrayListEditor = ( schema: JSONSchema4, name = '', value?: any[] ) => {
+    const arrayListEditor = ( schema: JSONSchema4 = {}, name = '', value?: any[] ) => {
       const container = document.createElement( 'div' )
 
       container.title = getTitle( schema, name, 'Array List' )

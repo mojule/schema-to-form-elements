@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 exports.ObjectTemplate = (document, templates = {}) => {
-    const objectTemplate = (schema, name = '', value) => {
+    const objectTemplate = (schema = {}, name = '', value) => {
         const container = document.createElement('div');
         container.title = utils_1.getTitle(schema, name, 'Object');
         if (name)

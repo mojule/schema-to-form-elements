@@ -1,9 +1,9 @@
 import * as assert from 'assert'
 import { document } from '../server/dom'
-import { TypeTemplates } from '../templates/types'
-import { ServerFormTemplates, ClientFormTemplates } from '../templates';
-import { SchemaToFormElements } from '..';
-import { StringTemplate } from '../templates/types/string';
+import {
+  SchemaToFormElements, ServerFormTemplates, ClientFormTemplates,
+  StringTemplate, TypeTemplates
+} from '..'
 
 describe( 'schema-forms', () => {
   describe( 'exports', () => {
@@ -62,7 +62,7 @@ describe( 'schema-forms', () => {
       Object.keys( formTemplates ).forEach( name => {
         it( name, () => {
           const template = formTemplates[ name ]
-          const result = template( {} )
+          const result = template()
 
           assert.strictEqual( result.localName, localNames[ name ] )
         } )
@@ -100,8 +100,11 @@ describe( 'schema-forms', () => {
       Object.keys( clientFormTemplates ).forEach( name => {
         it( name, () => {
           const template = clientFormTemplates[ name ]
-          const schema = schemas[ name ] || {}
-          const result = template( schema )
+          const result = (
+            schemas[ name ] ?
+            template( schemas[ name ] ) :
+            template()
+          )
 
           assert.strictEqual( result.localName, localNames[ name ] )
         } )

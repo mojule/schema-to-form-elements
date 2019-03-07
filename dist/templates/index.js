@@ -9,8 +9,8 @@ const fieldset_1 = require("./decorators/fieldset");
 const format_1 = require("./decorators/format");
 const label_1 = require("./decorators/label");
 const mutable_array_list_1 = require("./decorators/mutable-array-list");
-const array_list_1 = require("./array-list");
-const array_item_1 = require("./array-item");
+const array_list_1 = require("./types/array/array-list");
+const array_item_1 = require("./types/array/array-item");
 exports.ServerFormTemplates = (document) => {
     const templates = {};
     templates.array = fieldset_1.FieldsetDecorator(document, array_1.ArrayTemplate(document, templates));

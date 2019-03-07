@@ -10,8 +10,8 @@ import { LabelDecorator } from './decorators/label'
 import {
   MutableArrayListDecorator, MutableArrayItemDecorator
 } from './decorators/mutable-array-list'
-import { ArrayListTemplate } from './array-list'
-import { ArrayItemTemplate } from './array-item'
+import { ArrayListTemplate } from './types/array/array-list'
+import { ArrayItemTemplate } from './types/array/array-item'
 
 export const ServerFormTemplates = ( document: Document ) => {
   const templates: Partial<Templates> = {}

@@ -5,7 +5,7 @@ import {
   getChildName
 } from '../templates/utils'
 import { StringTemplate } from '../templates/types/string'
-import { TupleTemplate } from '../templates/tuple'
+import { TupleTemplate } from '../templates/types/array/tuple'
 
 describe( 'utils', () => {
   describe( 'getTitle', () => {

@@ -1,5 +1,24 @@
 "use strict";
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("./templates/api/array-list"));
+__export(require("./templates/decorators/fieldset"));
+__export(require("./templates/decorators/format"));
+__export(require("./templates/decorators/label"));
+__export(require("./templates/decorators/mutable-array-list"));
+__export(require("./templates/types/array"));
+__export(require("./templates/types/boolean"));
+__export(require("./templates/types/number"));
+__export(require("./templates/types/object"));
+__export(require("./templates/types/string"));
+__export(require("./templates/types/array/array-item"));
+__export(require("./templates/types/array/array-list"));
+__export(require("./templates/types/array/tuple"));
+__export(require("./templates/types"));
+__export(require("./templates/utils"));
+__export(require("./templates"));
 exports.SchemaToFormElements = (templates) => {
     const schemaToFormElements = (schema, name = '', value) => {
         if (typeof schema.type !== 'string')

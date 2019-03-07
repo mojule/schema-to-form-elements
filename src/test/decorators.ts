@@ -1,14 +1,11 @@
 import * as assert from 'assert'
 import { document, Event, getEntries, form } from '../server/dom'
-import { ArrayTemplate } from '../templates/types/array'
-import { FieldsetDecorator } from '../templates/decorators/fieldset'
-import { StringTemplate } from '../templates/types/string'
-import { FormatDecorator } from '../templates/decorators/format'
-import { LabelDecorator } from '../templates/decorators/label'
-import { MutableArrayListDecorator, MutableArrayItemDecorator } from '../templates/decorators/mutable-array-list';
-import { ArrayListTemplate } from '../templates/array-list';
-import { Templates } from '../types';
-import { ArrayItemTemplate } from '../templates/array-item';
+import { Templates } from '../types'
+import {
+  ArrayTemplate, FieldsetDecorator, LabelDecorator, StringTemplate,
+  FormatDecorator, MutableArrayListDecorator, ArrayListTemplate,
+  MutableArrayItemDecorator, ArrayItemTemplate
+} from '..'
 
 describe( 'schema-forms', () => {
   describe( 'decorators', () => {
@@ -20,7 +17,7 @@ describe( 'schema-forms', () => {
         )
 
         const container = fieldsetArrayTemplate(
-          { title: 'Foo', type: 'array' }
+          { title: 'Foo' }
         )
 
         assert.strictEqual( container.localName, 'fieldset' )
@@ -38,7 +35,7 @@ describe( 'schema-forms', () => {
         )
 
         const container = fieldsetArrayTemplate(
-          { title: 'Foo', type: 'array' }
+          { title: 'Foo' }
         )
 
         assert.strictEqual( container.localName, 'fieldset' )
@@ -56,7 +53,7 @@ describe( 'schema-forms', () => {
           StringTemplate( document )
         )
 
-        const editor = labelDecorator( { type: 'string' } )
+        const editor = labelDecorator()
 
         assert.strictEqual( editor.localName, 'label' )
 
@@ -73,7 +70,7 @@ describe( 'schema-forms', () => {
           true
         )
 
-        const editor = labelDecorator( { type: 'string' } )
+        const editor = labelDecorator()
 
         assert.strictEqual( editor.localName, 'label' )
 
@@ -94,7 +91,6 @@ describe( 'schema-forms', () => {
         const formatDecorator = FormatDecorator( document, stringTemplates )
 
         const multilineEl = formatDecorator( {
-          type: 'string',
           format: 'multiline'
         })
 
@@ -108,7 +104,7 @@ describe( 'schema-forms', () => {
 
         const formatDecorator = FormatDecorator( document, stringTemplates )
 
-        const el = <HTMLInputElement>formatDecorator( { type: 'string' } )
+        const el = <HTMLInputElement>formatDecorator()
 
         assert.strictEqual( el.type, 'text' )
       })
@@ -121,7 +117,7 @@ describe( 'schema-forms', () => {
         const formatDecorator = FormatDecorator( document, stringTemplates )
 
         const el = <HTMLInputElement>formatDecorator(
-          { type: 'string', format: 'color' }
+          { format: 'color' }
         )
 
         assert.strictEqual( el.type, 'color' )
@@ -138,7 +134,7 @@ describe( 'schema-forms', () => {
         const formatDecorator = FormatDecorator( document, stringTemplates )
 
         const el = <HTMLInputElement>formatDecorator(
-            { type: 'string', format: 'color' }
+            { format: 'color' }
           )
 
         const input = el.querySelector( 'input' )!
@@ -155,7 +151,7 @@ describe( 'schema-forms', () => {
 
         assert.throws( () => {
           formatDecorator(
-            { type: 'string', format: 'color' }
+            { format: 'color' }
           )
         })
       })
@@ -181,13 +177,33 @@ describe( 'schema-forms', () => {
 
       it( 'creates an add action', () => {
         const container = templates.arrayList!(
-          { type: 'array', items: { type: 'string' } }
+          { items: { type: 'string' } }
         )
 
         const addActions = container.querySelectorAll( '[data-action="array-list-add"]' )
 
         assert.strictEqual( addActions.length, 1 )
       })
+
+      it( 'creates an empty container when no schema', () => {
+        const container = templates.arrayList!()
+
+        assert.strictEqual( container.childElementCount, 0 )
+      } )
+
+      it( 'creates an empty container when items is an array', () => {
+        const container = templates.arrayList!( { items: [] } )
+
+        assert.strictEqual( container.childElementCount, 0 )
+      } )
+
+      it( 'creates an empty container when items has no type', () => {
+        const container = templates.arrayList!(
+          { items: {} }
+        )
+
+        assert.strictEqual( container.childElementCount, 0 )
+      } )
 
       it( 'creates a delete action', () => {
         const item = templates.arrayItem!(
@@ -199,9 +215,19 @@ describe( 'schema-forms', () => {
         assert.strictEqual( deleteActions.length, 1 )
       } )
 
+      it( 'creates an li with a single button when no type', () => {
+        const item = templates.arrayItem!()
+
+        assert.strictEqual( item.childElementCount, 1 )
+
+        const deleteActions = item.querySelectorAll( '[data-action="array-list-delete"]' )
+
+        assert.strictEqual( deleteActions.length, 1 )
+      } )
+
       it( 'adds', () => {
         const container = templates.arrayList!(
-          { type: 'array', items: { type: 'string' } }
+          { items: { type: 'string' } }
         )
 
         const addAction = container.querySelector( '[data-action="array-list-add"]' )!
@@ -267,12 +293,6 @@ describe( 'schema-forms', () => {
           ]
         )
       } )
-
-      it( 'schema must be array-list', () => {
-        assert.throws( () => templates.arrayList!(
-          { type: 'array' }
-        ))
-      })
 
       it( 'button without LI ancestor does not delete', () => {
         const container = templates.arrayList!(

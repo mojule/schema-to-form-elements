@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 exports.FieldsetDecorator = (document, containerTemplate, useLegend = true) => {
-    const fieldsetDecorator = (schema, name = '', value) => {
+    const fieldsetDecorator = (schema = {}, name = '', value) => {
         const container = containerTemplate(schema, name, value);
         const title = utils_1.getTitle(schema, name, 'Container');
         const fieldset = document.createElement('fieldset');

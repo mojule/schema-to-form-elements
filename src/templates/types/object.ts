@@ -4,7 +4,7 @@ import { getTitle, getChildName } from '../utils'
 
 export const ObjectTemplate: ContainerTemplateFactory =
   ( document: Document, templates: Partial<Templates> = {} ) => {
-    const objectTemplate = ( schema: JSONSchema4, name = '', value?: any ) => {
+    const objectTemplate = ( schema: JSONSchema4 = {}, name = '', value?: any ) => {
       const container = document.createElement( 'div' )
 
       container.title = getTitle( schema, name, 'Object' )

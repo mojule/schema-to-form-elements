@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 exports.NumberTemplate = (document, isRange = false) => {
-    const numberTemplate = (schema, name = '', value, isRequired = false) => {
+    const numberTemplate = (schema = {}, name = '', value, isRequired = false) => {
         const editor = document.createElement('input');
         editor.type = isRange ? 'range' : 'number';
         editor.title = utils_1.getTitle(schema, name, schema.type === 'integer' ? 'Integer' : 'Number');

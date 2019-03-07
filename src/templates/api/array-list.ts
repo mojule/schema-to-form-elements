@@ -1,6 +1,6 @@
 import { Templates } from '../../types'
 import { JSONSchema4 } from 'json-schema'
-import { ArrayItemTemplate } from '../array-item'
+import { ArrayItemTemplate } from '../types/array/array-item'
 import { getChildName } from '../utils';
 
 export const ArrayListApi = ( document: Document, container: HTMLElement, schema: JSONSchema4, templates: Partial<Templates> ) => {

@@ -1,10 +1,8 @@
 import * as assert from 'assert'
-import { document } from '../server/dom'
 import { JSONSchema4 } from 'json-schema'
-import { BooleanTemplate } from '../templates/types/boolean'
-import { NumberTemplate } from '../templates/types/number'
-import { StringTemplate } from '../templates/types/string'
+import { document } from '../server/dom'
 import { SchemaTemplate } from '../types'
+import { BooleanTemplate, NumberTemplate, StringTemplate } from '..'
 
 describe( 'schema-forms', () => {
   describe( 'primitives', () => {
@@ -57,9 +55,8 @@ describe( 'schema-forms', () => {
         const inputValue = expectValue[ type ]
 
         describe( `input[type="${ inputType }"] from ${ type } schema`, () => {
-          const schema = <JSONSchema4>{ type }
           it( 'expected type', () => {
-            const input = <HTMLInputElement>templates[ type ]( schema )
+            const input = <HTMLInputElement>templates[ type ]()
 
             assert.strictEqual( input.type, inputType )
           } )
@@ -73,14 +70,14 @@ describe( 'schema-forms', () => {
           } )
 
           it( 'name', () => {
-            const input = <HTMLInputElement>templates[ type ]( schema, type )
+            const input = <HTMLInputElement>templates[ type ]( {}, type )
 
             assert.strictEqual( input.name, type )
           } )
 
           it( 'value', () => {
             const input = <HTMLInputElement>templates[ type ](
-              schema, type, values[ type ]
+              {}, type, values[ type ]
             )
 
             assert.strictEqual( input[ valueProperties[ type ] ], inputValue )
@@ -88,7 +85,7 @@ describe( 'schema-forms', () => {
 
           it( 'value from default', () => {
             const input = <HTMLInputElement>templates[ type ](
-              <JSONSchema4>{ type, default: values[ type ] },
+              { default: values[ type ] },
               type
             )
 
@@ -98,7 +95,7 @@ describe( 'schema-forms', () => {
           if ( type === 'boolean' ) {
             it( 'value is false', () => {
               const input = <HTMLInputElement>templates[ type ](
-                schema, type, false
+                {}, type, false
               )
 
               assert.strictEqual( input[ valueProperties[ type ] ], false )
@@ -106,7 +103,7 @@ describe( 'schema-forms', () => {
 
             it( 'value from default is false', () => {
               const input = <HTMLInputElement>templates[ type ](
-                <JSONSchema4>{ type, default: false },
+                { default: false },
                 type
               )
 
@@ -116,7 +113,7 @@ describe( 'schema-forms', () => {
 
           it( 'required', () => {
             const input = <HTMLInputElement>templates[ type ](
-              schema, type, values[ type ], true
+              {}, type, values[ type ], true
             )
 
             assert( input.required )
@@ -125,7 +122,7 @@ describe( 'schema-forms', () => {
           if ( type === 'number' || type === 'integer' ) {
             it( 'step matches multipleOf', () => {
               const input = <HTMLInputElement>templates[ type ](
-                <JSONSchema4>{ type, multipleOf: 2 }
+                { multipleOf: 2 }
               )
 
               assert.strictEqual( input.step, '2' )
@@ -133,7 +130,7 @@ describe( 'schema-forms', () => {
 
             it( 'min matches minimum', () => {
               const input = <HTMLInputElement>templates[ type ](
-                <JSONSchema4>{ type, minimum: 2 }
+                { minimum: 2 }
               )
 
               assert.strictEqual( input.min, '2' )
@@ -148,9 +145,7 @@ describe( 'schema-forms', () => {
             } )
 
             it( 'range', () => {
-              const input = <HTMLInputElement>NumberTemplate( document, true )(
-                schema
-              )
+              const input = <HTMLInputElement>NumberTemplate( document, true )()
 
               assert.strictEqual( input.type, 'range' )
             } )
@@ -158,7 +153,9 @@ describe( 'schema-forms', () => {
 
           if ( type === 'integer' ) {
             it( 'step is 1 if no multipleOf', () => {
-              const input = <HTMLInputElement>templates[ type ]( schema )
+              const input = <HTMLInputElement>templates[ type ](
+                { type: 'integer' }
+              )
 
               assert.strictEqual( input.step, '1' )
             } )
@@ -166,16 +163,14 @@ describe( 'schema-forms', () => {
 
           if ( type === 'string' ) {
             it( 'multiline', () => {
-              const input = StringTemplate( document, true )(
-                schema
-              )
+              const input = StringTemplate( document, true )()
 
               assert.strictEqual( input.localName, 'textarea' )
             } )
 
             it( 'pattern', () => {
               const input = <HTMLInputElement>templates[ type ](
-                <JSONSchema4>{ type, pattern: '.*' }
+                { pattern: '.*' }
               )
 
               assert.strictEqual( input.pattern, '.*' )
@@ -183,7 +178,7 @@ describe( 'schema-forms', () => {
 
             it( 'minLength', () => {
               const input = <HTMLInputElement>templates[ type ](
-                <JSONSchema4>{ type, minLength: 2 }
+                { minLength: 2 }
               )
 
               assert.strictEqual( input.minLength, 2 )
@@ -191,7 +186,7 @@ describe( 'schema-forms', () => {
 
             it( 'maxLength', () => {
               const input = <HTMLInputElement>templates[ type ](
-                <JSONSchema4>{ type, maxLength: 2 }
+                { maxLength: 2 }
               )
 
               assert.strictEqual( input.maxLength, 2 )

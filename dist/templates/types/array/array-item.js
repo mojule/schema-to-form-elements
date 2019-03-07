@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArrayItemTemplate = (document, templates = {}) => {
-    const arrayItemEditor = (schema, name = '', value) => {
+    const arrayItemEditor = (schema = {}, name = '', value) => {
         const li = document.createElement('li');
         if (typeof schema.type !== 'string')
             return li;

@@ -1,11 +1,10 @@
 import * as assert from 'assert'
-import { document, getEntries, form } from '../server/dom'
-import { StringTemplate } from '../templates/types/string'
-import { ArrayTemplate } from '../templates/types/array'
-import { Templates } from '../types'
 import { JSONSchema4 } from 'json-schema'
-import { ArrayListApi } from '../templates/api/array-list';
-import { ArrayItemTemplate } from '../templates/array-item';
+import { document, getEntries, form } from '../server/dom'
+import { Templates } from '../types'
+import {
+  StringTemplate, ArrayTemplate, ArrayListApi, ArrayItemTemplate
+} from '..'
 
 describe( 'schema-forms', () => {
   describe( 'apis', () => {

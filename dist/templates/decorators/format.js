@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FormatDecorator = (_document, stringTemplates, formatToTemplateKey = new Map(), formatToTypeAttribute = exports.defaultFormatToType) => {
-    const formatDecorator = (schema, name = '', value, isRequired = false) => {
+    const formatDecorator = (schema = {}, name = '', value, isRequired = false) => {
         const stringTemplate = stringTemplates.string;
         let format;
         if (typeof schema.format !== 'string') {

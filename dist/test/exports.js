@@ -2,14 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
 const dom_1 = require("../server/dom");
-const types_1 = require("../templates/types");
-const templates_1 = require("../templates");
 const __1 = require("..");
-const string_1 = require("../templates/types/string");
 describe('schema-forms', () => {
     describe('exports', () => {
         describe('TypeTemplates', () => {
-            const typeTemplates = types_1.TypeTemplates(dom_1.document);
+            const typeTemplates = __1.TypeTemplates(dom_1.document);
             const localNames = {
                 array: 'div',
                 boolean: 'input',
@@ -31,7 +28,7 @@ describe('schema-forms', () => {
             });
         });
         describe('ServerFormTemplates', () => {
-            const formTemplates = templates_1.ServerFormTemplates(dom_1.document);
+            const formTemplates = __1.ServerFormTemplates(dom_1.document);
             const localNames = {
                 array: 'fieldset',
                 boolean: 'label',
@@ -47,13 +44,13 @@ describe('schema-forms', () => {
             Object.keys(formTemplates).forEach(name => {
                 it(name, () => {
                     const template = formTemplates[name];
-                    const result = template({});
+                    const result = template();
                     assert.strictEqual(result.localName, localNames[name]);
                 });
             });
         });
         describe('ClientFormTemplates', () => {
-            const clientFormTemplates = templates_1.ClientFormTemplates(dom_1.document);
+            const clientFormTemplates = __1.ClientFormTemplates(dom_1.document);
             const localNames = {
                 array: 'fieldset',
                 boolean: 'label',
@@ -75,15 +72,16 @@ describe('schema-forms', () => {
             Object.keys(clientFormTemplates).forEach(name => {
                 it(name, () => {
                     const template = clientFormTemplates[name];
-                    const schema = schemas[name] || {};
-                    const result = template(schema);
+                    const result = (schemas[name] ?
+                        template(schemas[name]) :
+                        template());
                     assert.strictEqual(result.localName, localNames[name]);
                 });
             });
         });
         describe('SchemaToFormElements', () => {
-            const server = __1.SchemaToFormElements(templates_1.ServerFormTemplates(dom_1.document));
-            const client = __1.SchemaToFormElements(templates_1.ClientFormTemplates(dom_1.document));
+            const server = __1.SchemaToFormElements(__1.ServerFormTemplates(dom_1.document));
+            const client = __1.SchemaToFormElements(__1.ClientFormTemplates(dom_1.document));
             describe('server', () => {
                 const localNames = {
                     array: 'fieldset',
@@ -127,7 +125,7 @@ describe('schema-forms', () => {
                 assert.throws(() => server({ type: 'arrayItem' }));
             });
             it('must have template for type', () => {
-                const templates = { string: string_1.StringTemplate(dom_1.document) };
+                const templates = { string: __1.StringTemplate(dom_1.document) };
                 assert.throws(() => __1.SchemaToFormElements(templates)({ type: 'number' }));
             });
         });

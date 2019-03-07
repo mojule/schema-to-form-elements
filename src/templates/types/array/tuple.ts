@@ -1,10 +1,10 @@
 import { JSONSchema4 } from 'json-schema'
-import { Templates } from '../types'
-import { getTitle, getChildName } from './utils';
+import { Templates, ContainerTemplateFactory } from '../../../types'
+import { getTitle, getChildName } from '../../utils'
 
-export const TupleTemplate =
+export const TupleTemplate: ContainerTemplateFactory =
   ( document: Document, templates: Partial<Templates> = {} ) => {
-    const tupleTemplate = ( schema: JSONSchema4, name = '', value?: any[] ) => {
+    const tupleTemplate = ( schema: JSONSchema4 = {}, name = '', value?: any[] ) => {
       const container = document.createElement( 'div' )
 
       container.title = getTitle( schema, name, 'Tuple' )

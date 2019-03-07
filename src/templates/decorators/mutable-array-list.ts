@@ -9,11 +9,14 @@ export const MutableArrayListDecorator =
     arrayList: SchemaTemplate,
     templates: Partial<Templates>
   ) => {
-    const mutableArrayListDecorator = ( schema: JSONSchema4, name = '', value?: any[] ) => {
+    const mutableArrayListDecorator = ( schema: JSONSchema4 = {}, name = '', value?: any[] ) => {
       const container = arrayList( schema, name, value )
 
-      if ( !schema.items || Array.isArray( schema.items ) )
-        throw Error( 'MutableArrayList: expected schema.items to be JSON Schema' )
+      if (
+        !schema.items ||
+        Array.isArray( schema.items ) ||
+        typeof schema.items.type !== 'string'
+      ) return container
 
       const api = ArrayListApi( document, container, schema, templates )
 
@@ -64,7 +67,7 @@ export const MutableArrayItemDecorator =
     document: Document,
     arrayItem: SchemaTemplate
   ) => {
-    const mutableArrayItemDecorator = ( schema: JSONSchema4, name = '', value?: any ) => {
+    const mutableArrayItemDecorator = ( schema: JSONSchema4 = {}, name = '', value?: any ) => {
       const item = arrayItem( schema, name, value )
 
       const title = `Delete ${ getTitle( schema, name, 'Item' ) }`

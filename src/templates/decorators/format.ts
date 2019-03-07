@@ -8,7 +8,7 @@ export const FormatDecorator =
     formatToTemplateKey = new Map<string,string>(),
     formatToTypeAttribute = defaultFormatToType
   ) => {
-    const formatDecorator = ( schema: JSONSchema4, name = '', value?: any[], isRequired = false ) => {
+    const formatDecorator = ( schema: JSONSchema4 = {}, name = '', value?: any[], isRequired = false ) => {
       const stringTemplate = stringTemplates.string
 
       let format: string

@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("./utils");
+const utils_1 = require("../../utils");
 exports.TupleTemplate = (document, templates = {}) => {
-    const tupleTemplate = (schema, name = '', value) => {
+    const tupleTemplate = (schema = {}, name = '', value) => {
         const container = document.createElement('div');
         container.title = utils_1.getTitle(schema, name, 'Tuple');
         if (name)

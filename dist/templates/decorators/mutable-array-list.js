@@ -3,10 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const array_list_1 = require("../api/array-list");
 const utils_1 = require("../utils");
 exports.MutableArrayListDecorator = (document, arrayList, templates) => {
-    const mutableArrayListDecorator = (schema, name = '', value) => {
+    const mutableArrayListDecorator = (schema = {}, name = '', value) => {
         const container = arrayList(schema, name, value);
-        if (!schema.items || Array.isArray(schema.items))
-            throw Error('MutableArrayList: expected schema.items to be JSON Schema');
+        if (!schema.items ||
+            Array.isArray(schema.items) ||
+            typeof schema.items.type !== 'string')
+            return container;
         const api = array_list_1.ArrayListApi(document, container, schema, templates);
         const title = `Add ${utils_1.getTitle(schema.items, '', 'Item')}`;
         const addButton = document.createElement('button');
@@ -36,7 +38,7 @@ exports.MutableArrayListDecorator = (document, arrayList, templates) => {
     return mutableArrayListDecorator;
 };
 exports.MutableArrayItemDecorator = (document, arrayItem) => {
-    const mutableArrayItemDecorator = (schema, name = '', value) => {
+    const mutableArrayItemDecorator = (schema = {}, name = '', value) => {
         const item = arrayItem(schema, name, value);
         const title = `Delete ${utils_1.getTitle(schema, name, 'Item')}`;
         const deleteButton = document.createElement('button');

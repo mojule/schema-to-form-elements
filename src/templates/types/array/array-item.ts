@@ -1,9 +1,9 @@
 import { JSONSchema4 } from 'json-schema'
-import { Templates } from '../types'
+import { Templates, SchemaTemplateFactory } from '../../../types'
 
-export const ArrayItemTemplate =
+export const ArrayItemTemplate: SchemaTemplateFactory =
   ( document: Document, templates: Partial<Templates> = {} ) => {
-    const arrayItemEditor = ( schema: JSONSchema4, name = '', value?: any[] ) => {
+    const arrayItemEditor = ( schema: JSONSchema4 = {}, name = '', value?: any[] ) => {
       const li = document.createElement( 'li' )
 
       if( typeof schema.type !== 'string' ) return li

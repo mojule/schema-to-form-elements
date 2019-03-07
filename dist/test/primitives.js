@@ -2,9 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
 const dom_1 = require("../server/dom");
-const boolean_1 = require("../templates/types/boolean");
-const number_1 = require("../templates/types/number");
-const string_1 = require("../templates/types/string");
+const __1 = require("..");
 describe('schema-forms', () => {
     describe('primitives', () => {
         describe('creates input from primitive type', () => {
@@ -27,10 +25,10 @@ describe('schema-forms', () => {
                 string: 'foo'
             };
             const templates = {
-                boolean: boolean_1.BooleanTemplate(dom_1.document),
-                number: number_1.NumberTemplate(dom_1.document),
-                integer: number_1.NumberTemplate(dom_1.document),
-                string: string_1.StringTemplate(dom_1.document)
+                boolean: __1.BooleanTemplate(dom_1.document),
+                number: __1.NumberTemplate(dom_1.document),
+                integer: __1.NumberTemplate(dom_1.document),
+                string: __1.StringTemplate(dom_1.document)
             };
             const values = {
                 boolean: true,
@@ -49,9 +47,8 @@ describe('schema-forms', () => {
                 const inputTitle = expectTitle[type];
                 const inputValue = expectValue[type];
                 describe(`input[type="${inputType}"] from ${type} schema`, () => {
-                    const schema = { type };
                     it('expected type', () => {
-                        const input = templates[type](schema);
+                        const input = templates[type]();
                         assert.strictEqual(input.type, inputType);
                     });
                     it('default title', () => {
@@ -59,38 +56,38 @@ describe('schema-forms', () => {
                         assert.strictEqual(input.title, inputTitle);
                     });
                     it('name', () => {
-                        const input = templates[type](schema, type);
+                        const input = templates[type]({}, type);
                         assert.strictEqual(input.name, type);
                     });
                     it('value', () => {
-                        const input = templates[type](schema, type, values[type]);
+                        const input = templates[type]({}, type, values[type]);
                         assert.strictEqual(input[valueProperties[type]], inputValue);
                     });
                     it('value from default', () => {
-                        const input = templates[type]({ type, default: values[type] }, type);
+                        const input = templates[type]({ default: values[type] }, type);
                         assert.strictEqual(input[valueProperties[type]], inputValue);
                     });
                     if (type === 'boolean') {
                         it('value is false', () => {
-                            const input = templates[type](schema, type, false);
+                            const input = templates[type]({}, type, false);
                             assert.strictEqual(input[valueProperties[type]], false);
                         });
                         it('value from default is false', () => {
-                            const input = templates[type]({ type, default: false }, type);
+                            const input = templates[type]({ default: false }, type);
                             assert.strictEqual(input[valueProperties[type]], false);
                         });
                     }
                     it('required', () => {
-                        const input = templates[type](schema, type, values[type], true);
+                        const input = templates[type]({}, type, values[type], true);
                         assert(input.required);
                     });
                     if (type === 'number' || type === 'integer') {
                         it('step matches multipleOf', () => {
-                            const input = templates[type]({ type, multipleOf: 2 });
+                            const input = templates[type]({ multipleOf: 2 });
                             assert.strictEqual(input.step, '2');
                         });
                         it('min matches minimum', () => {
-                            const input = templates[type]({ type, minimum: 2 });
+                            const input = templates[type]({ minimum: 2 });
                             assert.strictEqual(input.min, '2');
                         });
                         it('max matches maximum', () => {
@@ -98,31 +95,31 @@ describe('schema-forms', () => {
                             assert.strictEqual(input.max, '2');
                         });
                         it('range', () => {
-                            const input = number_1.NumberTemplate(dom_1.document, true)(schema);
+                            const input = __1.NumberTemplate(dom_1.document, true)();
                             assert.strictEqual(input.type, 'range');
                         });
                     }
                     if (type === 'integer') {
                         it('step is 1 if no multipleOf', () => {
-                            const input = templates[type](schema);
+                            const input = templates[type]({ type: 'integer' });
                             assert.strictEqual(input.step, '1');
                         });
                     }
                     if (type === 'string') {
                         it('multiline', () => {
-                            const input = string_1.StringTemplate(dom_1.document, true)(schema);
+                            const input = __1.StringTemplate(dom_1.document, true)();
                             assert.strictEqual(input.localName, 'textarea');
                         });
                         it('pattern', () => {
-                            const input = templates[type]({ type, pattern: '.*' });
+                            const input = templates[type]({ pattern: '.*' });
                             assert.strictEqual(input.pattern, '.*');
                         });
                         it('minLength', () => {
-                            const input = templates[type]({ type, minLength: 2 });
+                            const input = templates[type]({ minLength: 2 });
                             assert.strictEqual(input.minLength, 2);
                         });
                         it('maxLength', () => {
-                            const input = templates[type]({ type, maxLength: 2 });
+                            const input = templates[type]({ maxLength: 2 });
                             assert.strictEqual(input.maxLength, 2);
                         });
                     }

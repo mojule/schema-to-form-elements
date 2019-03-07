@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
 exports.StringTemplate = (document, isMultiline = false) => {
-    const stringTemplate = (schema, name = '', value, isRequired = false) => {
+    const stringTemplate = (schema = {}, name = '', value, isRequired = false) => {
         let editor;
         if (isMultiline) {
             editor = document.createElement('textarea');
