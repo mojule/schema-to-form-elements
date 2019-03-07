@@ -9,6 +9,19 @@ todo: rationale, toc etc
 
 `npm install @mojule/schema-forms`
 
+## features
+
+- supports all schema functionality required to edit majority of models, with
+  remaining functionality planned in future releases
+- modular and extensible
+- 100% test coverage
+- typescript typings
+- browser and server (server via JSDOM or similar)
+- no dependencies
+- class-free, functional style
+
+todo: example code, playground, full documentation
+
 ## quickstart
 
 Write a schema:
@@ -92,22 +105,15 @@ Outputs:
   </div>
 </fieldset>
 
-## features
-
-- supports all schema functionality required to edit majority of models, with
-  remaining functionality planned in future releases
-- modular and extensible
-- 100% test coverage
-- typescript typings
-- browser and server (server via JSDOM or similar)
-- no dependencies
-- class-free functional style
-
-todo: example code, full documentation
-
 ## supported schema functionality
 
-Some unsupported features are planned, PRs welcome
+Some unsupported features are planned (partiularly `anyOf`/`oneOf`, `enum`)
+
+PRs will be welcome after 1.0 release, until then please open an issue to
+discuss
+
+todo: document which features won't be supported as they don't make sense for
+generating forms
 
 ✔️ string
   - ✔️ minLength
@@ -155,7 +161,9 @@ Some unsupported features are planned, PRs welcome
     - ✔️ where type is a string
     - ✔️ where type is undefined, the type will be inferred according to which
          template was called, but note that type is required for child schema of
-         arrays and objects, any child schema missing a type will be skipped
+         arrays and objects, as these cannot be inferred - any child schema
+         missing a type will be skipped - todo: consider strict mode that throws
+         instead of skipping
     - ❌ where type is an array
   - ❌ description
   - ❌ enum
