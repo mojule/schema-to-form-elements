@@ -3,6 +3,8 @@ import { Templates, SchemaTemplate } from '../../types'
 import { ArrayListApi } from '../api/array-list'
 import { getTitle } from '../utils'
 
+// TODO enforce minItems/maxItems
+
 export const MutableArrayListDecorator =
   (
     document: Document,

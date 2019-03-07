@@ -146,8 +146,8 @@ generating forms
   - ✔️ items
     - ✔️ list
     - ✔️ tuple
-  - ✔️ minItems (on list)
-  - ✔️ maxItems (on list)
+  - ✔️ minItems
+  - ✔️ maxItems
   - ❌ additionalItems
   - ❌ contains
   - ❌ uniqueItems
