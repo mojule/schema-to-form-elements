@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Schema Forms Playground</title>
+    <link rel="stylesheet" href="playground.css">
+  </head>
+  <body>
+    <header>
+      <label>Schemas</label>
+      <select>
+      </select>
+    </header>
+    <main class="viewport">
+      <section class="schema">
+        <h1><span>Schema</span><span class="schema-valid">❓</span></h1>
+        <textarea></textarea>
+        <pre></pre>
+        <div class="schema-button"></div>
+      </section>
+      <section class="form">
+        <h1><span>Form</span><span class="form-valid">❓</span></h1>
+        <form></form>
+        <pre></pre>
+        <div class="form-button"></div>
+      </section>
+      <section class="result json">
+        <h1><span>Result</span><span class="result-valid">❓</span><a href="#json" class="selected">JSON</a><a href="#form-data">Form Data</a></h1>
+        <textarea class="json" id="json"></textarea>
+        <table class="form-data" id="form-data"></table>
+        <pre></pre>
+        <div class="result-button"></div>
+      </section>
+    </main>
+    <footer>
+    </footer>
+    <script src="playground.js"></script>
+  </body>
+</html>

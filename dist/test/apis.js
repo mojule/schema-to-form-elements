@@ -53,7 +53,7 @@ describe('schema-forms', () => {
                 const container = templates.array(schema);
                 const api = __1.ArrayListApi(dom_1.document, container, schema, templates);
                 api.add('bar');
-                const entries = dom_1.getEntries(dom_1.form({}, container));
+                const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', ''],
                     ['1', 'bar']
@@ -68,7 +68,7 @@ describe('schema-forms', () => {
                 const container = templates.array(schema);
                 const api = __1.ArrayListApi(dom_1.document, container, schema, templates);
                 api.add('bar');
-                const entries = dom_1.getEntries(dom_1.form({}, container));
+                const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', ''],
                     ['1', 'bar']
@@ -78,7 +78,7 @@ describe('schema-forms', () => {
                 const container = templates.array(schema, 'foo');
                 const api = __1.ArrayListApi(dom_1.document, container, schema, templates);
                 api.add('bar');
-                const entries = dom_1.getEntries(dom_1.form({}, container));
+                const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['foo[0]', ''],
                     ['foo[1]', 'bar']
@@ -90,7 +90,7 @@ describe('schema-forms', () => {
                 api.add('bar');
                 api.add('baz');
                 api.remove(1);
-                const entries = dom_1.getEntries(dom_1.form({}, container));
+                const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', ''],
                     ['1', 'baz']

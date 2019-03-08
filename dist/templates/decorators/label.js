@@ -6,7 +6,8 @@ exports.LabelDecorator = (document, inputTemplate, isSuffix = false) => {
         const editor = inputTemplate(schema, name, value, isRequired);
         const label = document.createElement('label');
         const span = document.createElement('span');
-        span.innerHTML = utils_1.getTitle(schema, name, 'Input');
+        span.innerHTML =
+            `${utils_1.getTitle(schema, name, 'Input')}${isRequired ? '*' : ''}`;
         if (isSuffix) {
             label.appendChild(editor);
             label.appendChild(span);

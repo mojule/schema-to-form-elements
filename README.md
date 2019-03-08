@@ -22,7 +22,7 @@ todo: rationale, toc, example code, playground, full documentation, etc
   via JSDOM or similar, easily serialized to a string to send as an HTTP
   response)
 - no dependencies
-- simple class-free, functional coding style
+- simple class-free coding style
 
 ## quickstart
 
@@ -434,8 +434,6 @@ Get the template factory:
 ```js
 import { BooleanTemplate } from '@mojule/schema-forms'
 ```
-
-todo: document
 
 ## decorators
 

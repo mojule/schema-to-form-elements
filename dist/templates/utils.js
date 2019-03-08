@@ -9,12 +9,28 @@ exports.H = (document, name) => (attributes = {}, ...children) => {
     return el;
 };
 exports.Form = (document) => exports.H(document, 'form');
-exports.GetEntries = (FormData) => (form) => {
-    form.querySelectorAll('input').forEach(input => {
-        input.value = input.value || '';
+exports.getEntries = (form, allowEmptyValue = true) => {
+    const result = [];
+    // todo: won't work with select etc!
+    const inputs = Array.from(form.querySelectorAll('input, textarea'));
+    inputs.forEach(input => {
+        let { name, value } = input;
+        if (!value && !allowEmptyValue) {
+            return;
+        }
+        let typedValue = value;
+        if (name.endsWith('__number') ||
+            name.endsWith('__string') ||
+            name.endsWith('__boolean')) {
+            name = name.split('__')[0];
+        }
+        if (input.type === 'number')
+            typedValue = Number(typedValue);
+        if (input.type === 'checkbox')
+            typedValue = input.checked;
+        result.push([name, typedValue]);
     });
-    const formData = new FormData(form);
-    return Array.from(formData.entries()).map(([key, value]) => [key, String(value)]);
+    return result;
 };
 exports.keyToJsonPointer = (key) => {
     key = key.replace(/\[/g, '/');

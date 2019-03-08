@@ -6,8 +6,8 @@ import { ArrayListTemplate } from '../templates/types/array/array-list'
 import { ArrayListApi } from '../templates/api/array-list'
 import { Templates } from '../types'
 import { ArrayItemTemplate } from '../templates/types/array/array-item'
-import { entriesToPointers } from '../templates/utils'
-import { document, getEntries, form } from '../server/dom'
+import { entriesToPointers, getEntries } from '../templates/utils'
+import { document, form } from '../server/dom'
 
 const schema = <JSONSchema4>nestedArray
 

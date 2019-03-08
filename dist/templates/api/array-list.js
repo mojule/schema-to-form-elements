@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const array_item_1 = require("../types/array/array-item");
 const utils_1 = require("../utils");
+// TODO enforce minItems/maxItems
 exports.ArrayListApi = (document, container, schema, templates) => {
     const list = container.querySelector('ol');
     if (!list)

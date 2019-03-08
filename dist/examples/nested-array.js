@@ -20,8 +20,8 @@ const namedApi = array_list_2.ArrayListApi(dom_1.document, named, schema, templa
 namedApi.add([5, 6]);
 namedApi.add([7, 8]);
 namedApi.remove(3);
-const unnamedEntries = dom_1.getEntries(dom_1.form({}, unnamed));
-const namedEntries = dom_1.getEntries(dom_1.form({}, named));
+const unnamedEntries = utils_1.getEntries(dom_1.form({}, unnamed));
+const namedEntries = utils_1.getEntries(dom_1.form({}, named));
 exports.nestedArrayExample = {
     'Unnamed Nested Array': unnamed.outerHTML,
     'Named Nested Array': named.outerHTML,

@@ -9,6 +9,7 @@
     "test": "tsc && mocha ./dist/test",
     "coverage": "tsc && nyc --reporter=html --reporter=text mocha ./dist/test",
     "client-examples": "tsc && browserify ./dist/examples/client.js -o ./examples/client.js",
+    "client-playground": "tsc && browserify ./dist/examples/playground.js -o ./examples/playground.js",
     "server-examples": "tsc && node ./dist/examples/server"
   },
   "nyc": {
@@ -30,10 +31,12 @@
   },
   "homepage": "https://github.com/mojule/schema-to-form-elements#readme",
   "devDependencies": {
+    "@mojule/json-pointer": "^0.3.4",
     "@types/jsdom": "^12.2.2",
     "@types/json-schema": "^7.0.1",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.12",
+    "ajv": "^6.10.0",
     "jsdom": "^13.2.0",
     "mocha": "^5.2.0"
   },

@@ -77,10 +77,12 @@ describe('schema-forms', () => {
                             assert.strictEqual(input[valueProperties[type]], false);
                         });
                     }
-                    it('required', () => {
-                        const input = templates[type]({}, type, values[type], true);
-                        assert(input.required);
-                    });
+                    else {
+                        it('required', () => {
+                            const input = templates[type]({}, type, values[type], true);
+                            assert(input.required);
+                        });
+                    }
                     if (type === 'number' || type === 'integer') {
                         it('step matches multipleOf', () => {
                             const input = templates[type]({ multipleOf: 2 });

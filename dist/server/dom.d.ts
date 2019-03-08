@@ -9,7 +9,6 @@ export declare const document: Document, FormData: {
     readonly CAPTURING_PHASE: number;
     readonly NONE: number;
 };
-export declare const getEntries: (form: HTMLFormElement) => string[][];
 export declare const form: (attributes?: {
     [key: string]: any;
 }, ...children: Node[]) => HTMLFormElement;

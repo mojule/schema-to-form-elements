@@ -5,6 +5,8 @@ const dom_1 = require("../server/dom");
 const utils_1 = require("../templates/utils");
 const string_1 = require("../templates/types/string");
 const tuple_1 = require("../templates/types/array/tuple");
+const type_1 = require("../templates/decorators/type");
+const __1 = require("..");
 describe('utils', () => {
     describe('getTitle', () => {
         it('gets title from schema', () => {
@@ -68,11 +70,38 @@ describe('utils', () => {
         }, 'foo');
         const tupleFormEl = form({}, foo);
         it('gets entries from a form', () => {
-            const entries = utils_1.GetEntries(dom_1.FormData)(tupleFormEl);
+            const entries = utils_1.getEntries(tupleFormEl);
             assert.deepEqual(entries, [
                 ['foo[0]', 'bar'],
                 ['foo[1]', 'baz'],
                 ['foo[2]', '']
+            ]);
+        });
+        it('gets entries from a typed form', () => {
+            const tupleTemplate = tuple_1.TupleTemplate(dom_1.document, {
+                string: type_1.TypeDecorator(dom_1.document, string_1.StringTemplate(dom_1.document)),
+                number: type_1.TypeDecorator(dom_1.document, __1.NumberTemplate(dom_1.document)),
+                boolean: type_1.TypeDecorator(dom_1.document, __1.BooleanTemplate(dom_1.document))
+            });
+            const foo = tupleTemplate({
+                type: 'array',
+                items: [
+                    { type: 'string' },
+                    { type: 'number' },
+                    { type: 'boolean' },
+                    { type: 'boolean' }
+                ],
+                default: [
+                    'bar', 1.1, true, false
+                ]
+            }, 'foo');
+            const tupleFormEl = form({}, foo);
+            const entries = utils_1.getEntries(tupleFormEl);
+            assert.deepEqual(entries, [
+                ['foo[0]', 'bar'],
+                ['foo[1]', 1.1],
+                ['foo[2]', true],
+                ['foo[3]', false]
             ]);
         });
         it('keyToJsonPointer', () => {
@@ -82,7 +111,7 @@ describe('utils', () => {
             assert.strictEqual(utils_1.keyToJsonPointer('0'), '/0');
         });
         it('gets pointers from entries', () => {
-            const tuplePointers = utils_1.entriesToPointers(utils_1.GetEntries(dom_1.FormData)(tupleFormEl));
+            const tuplePointers = utils_1.entriesToPointers(utils_1.getEntries(tupleFormEl));
             assert.deepEqual(tuplePointers, [
                 ['/foo/0', 'bar'],
                 ['/foo/1', 'baz'],

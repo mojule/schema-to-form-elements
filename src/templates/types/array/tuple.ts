@@ -4,7 +4,7 @@ import { getTitle, getChildName } from '../../utils'
 
 export const TupleTemplate: ContainerTemplateFactory =
   ( document: Document, templates: Partial<Templates> = {} ) => {
-    const tupleTemplate = ( schema: JSONSchema4 = {}, name = '', value?: any[] ) => {
+    const tupleTemplate = ( schema: JSONSchema4 = {}, name = '', value?: any[], isRequired = false ) => {
       const container = document.createElement( 'div' )
 
       container.title = getTitle( schema, name, 'Tuple' )
@@ -31,7 +31,7 @@ export const TupleTemplate: ContainerTemplateFactory =
 
         const childName = getChildName( name, key )
 
-        const editor = template( childSchema, childName, childValue )
+        const editor = template( childSchema, childName, childValue, isRequired )
 
         container.appendChild( editor )
       } )

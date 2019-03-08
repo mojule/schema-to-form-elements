@@ -109,15 +109,15 @@ describe( 'schema-forms', () => {
 
               assert.strictEqual( input[ valueProperties[ type ] ], false )
             } )
+          } else {
+            it( 'required', () => {
+              const input = <HTMLInputElement>templates[ type ](
+                {}, type, values[ type ], true
+              )
+
+              assert( input.required )
+            } )
           }
-
-          it( 'required', () => {
-            const input = <HTMLInputElement>templates[ type ](
-              {}, type, values[ type ], true
-            )
-
-            assert( input.required )
-          } )
 
           if ( type === 'number' || type === 'integer' ) {
             it( 'step matches multipleOf', () => {

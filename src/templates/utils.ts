@@ -1,4 +1,5 @@
 import { JSONSchema4 } from 'json-schema'
+import { TypedFormEntry, TypedFormEntryValue } from '../types';
 
 export const getTitle = ( schema: JSONSchema4, name = '', fallback = 'Schema' ) =>
   schema.title || name || fallback
@@ -26,20 +27,42 @@ export const H =
 export const Form = ( document: Document ) =>
   H( document, 'form' )
 
-export const GetEntries = ( FormData: {
-  new( form?: HTMLFormElement | undefined ): FormData;
-  prototype: FormData;
-} ) =>
-  ( form: HTMLFormElement ) => {
-    form.querySelectorAll( 'input' ).forEach( input => {
-      input.value = input.value || ''
+export const getEntries =
+  ( form: HTMLFormElement, allowEmptyValue = true ) => {
+    const result: TypedFormEntry[] = []
+
+    // todo: won't work with select etc!
+    const inputs = <(HTMLInputElement|HTMLTextAreaElement)[]>Array.from(
+      form.querySelectorAll( 'input, textarea' )
+    )
+
+    inputs.forEach( input => {
+      let { name, value } = input
+
+      if ( !value && !allowEmptyValue ) {
+        return
+      }
+
+      let typedValue: TypedFormEntryValue = value
+
+      if (
+        name.endsWith( '__number' ) ||
+        name.endsWith( '__string' ) ||
+        name.endsWith( '__boolean' )
+      ){
+        name = name.split( '__' )[ 0 ]
+      }
+
+      if( input.type === 'number' )
+        typedValue = Number( typedValue )
+
+      if( input.type === 'checkbox' )
+        typedValue = ( <HTMLInputElement>input ).checked
+
+      result.push( [ name, typedValue ] )
     } )
 
-    const formData = new FormData( form )
-
-    return Array.from( formData.entries() ).map(
-      ( [ key, value ] ) => [ key, String( value ) ]
-    )
+    return result
   }
 
 export const keyToJsonPointer = ( key: string ) => {
@@ -52,5 +75,5 @@ export const keyToJsonPointer = ( key: string ) => {
   return key
 }
 
-export const entriesToPointers = ( entries: string[][] ) =>
-  entries.map( ( [ key, value ] ) => [ keyToJsonPointer( key ), value ] )
+export const entriesToPointers = ( entries: TypedFormEntry[] ) =>
+  entries.map( ( [ key, value ] ) => <TypedFormEntry>[ keyToJsonPointer( key ), value ] )

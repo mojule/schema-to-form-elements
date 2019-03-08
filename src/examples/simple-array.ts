@@ -6,8 +6,8 @@ import { ArrayListTemplate } from '../templates/types/array/array-list'
 import { ArrayListApi } from '../templates/api/array-list'
 import { Templates } from '../types'
 import { ArrayItemTemplate } from '../templates/types/array/array-item'
-import { document, getEntries, form } from '../server/dom'
-import { entriesToPointers } from '../templates/utils'
+import { document, form } from '../server/dom'
+import { entriesToPointers, getEntries } from '../templates/utils'
 
 const schema = <JSONSchema4>simpleArray
 

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../../utils");
 exports.TupleTemplate = (document, templates = {}) => {
-    const tupleTemplate = (schema = {}, name = '', value) => {
+    const tupleTemplate = (schema = {}, name = '', value, isRequired = false) => {
         const container = document.createElement('div');
         container.title = utils_1.getTitle(schema, name, 'Tuple');
         if (name)
@@ -22,7 +22,7 @@ exports.TupleTemplate = (document, templates = {}) => {
                 childValue = value[key];
             }
             const childName = utils_1.getChildName(name, key);
-            const editor = template(childSchema, childName, childValue);
+            const editor = template(childSchema, childName, childValue, isRequired);
             container.appendChild(editor);
         });
         return container;

@@ -5,8 +5,8 @@ import { StringTemplate } from '../templates/types/string'
 import { LabelDecorator } from '../templates/decorators/label'
 import { FieldsetDecorator } from '../templates/decorators/fieldset'
 import { FormatDecorator } from '../templates/decorators/format'
-import { entriesToPointers } from '../templates/utils'
-import { document, getEntries, form } from '../server/dom'
+import { entriesToPointers, getEntries } from '../templates/utils'
+import { document, form } from '../server/dom'
 
 const schema = <JSONSchema4>contactForm
 

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const array_list_1 = require("../api/array-list");
 const utils_1 = require("../utils");
+// TODO enforce minItems/maxItems
 exports.MutableArrayListDecorator = (document, arrayList, templates) => {
     const mutableArrayListDecorator = (schema = {}, name = '', value) => {
         const container = arrayList(schema, name, value);
@@ -21,16 +22,19 @@ exports.MutableArrayListDecorator = (document, arrayList, templates) => {
             if (target.dataset.action === 'array-list-add') {
                 e.stopPropagation();
                 api.add();
+                container.dispatchEvent(new Event('input', { bubbles: true }));
             }
             if (target.dataset.action === 'array-list-delete') {
                 e.stopPropagation();
                 const li = target.closest('li');
                 // can't throw errors in event handlers, no way to catch them
-                // when using dispatchEvent so throwing makes this untestable
+                // when using dispatchEvent, so throwing makes this untestable
                 if (!li)
                     return;
-                const index = Array.from(li.parentNode.children).indexOf(li);
+                const ol = li.parentNode;
+                const index = Array.from(ol.children).indexOf(li);
                 api.remove(index);
+                container.dispatchEvent(new Event('input', { bubbles: true }));
             }
         });
         return container;

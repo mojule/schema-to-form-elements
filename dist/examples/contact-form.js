@@ -22,8 +22,8 @@ const labelledStringTemplate = label_1.LabelDecorator(dom_1.document, formattedS
 const labelledObjectTemplate = object_1.ObjectTemplate(dom_1.document, { string: labelledStringTemplate });
 const fieldsetObjectTemplate = fieldset_1.FieldsetDecorator(dom_1.document, labelledObjectTemplate);
 const decorated = fieldsetObjectTemplate(schema);
-const unnamedEntries = dom_1.getEntries(dom_1.form({}, unnamed));
-const namedEntries = dom_1.getEntries(dom_1.form({}, unnamed));
+const unnamedEntries = utils_1.getEntries(dom_1.form({}, unnamed));
+const namedEntries = utils_1.getEntries(dom_1.form({}, unnamed));
 exports.contactFormExample = {
     'Unnamed Contact Form': unnamed.outerHTML,
     'Named Contact Form': named.outerHTML,

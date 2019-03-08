@@ -1,11 +1,13 @@
 import * as assert from 'assert'
 import { document, FormData } from '../server/dom'
 import {
-  getTitle, Form, H, GetEntries, entriesToPointers, keyToJsonPointer,
+  getTitle, Form, H, getEntries, entriesToPointers, keyToJsonPointer,
   getChildName
 } from '../templates/utils'
 import { StringTemplate } from '../templates/types/string'
 import { TupleTemplate } from '../templates/types/array/tuple'
+import { TypeDecorator } from '../templates/decorators/type';
+import { NumberTemplate, BooleanTemplate } from '..';
 
 describe( 'utils', () => {
   describe( 'getTitle', () => {
@@ -93,7 +95,7 @@ describe( 'utils', () => {
     const tupleFormEl = form( {}, foo )
 
     it( 'gets entries from a form', () => {
-      const entries = GetEntries( FormData )( tupleFormEl )
+      const entries = getEntries( tupleFormEl )
 
       assert.deepEqual(
         entries,
@@ -101,6 +103,44 @@ describe( 'utils', () => {
           [ 'foo[0]', 'bar' ],
           [ 'foo[1]', 'baz' ],
           [ 'foo[2]', '' ]
+        ]
+      )
+    })
+
+    it( 'gets entries from a typed form', () => {
+      const tupleTemplate = TupleTemplate( document, {
+        string: TypeDecorator( document, StringTemplate( document ) ),
+        number: TypeDecorator( document, NumberTemplate( document ) ),
+        boolean: TypeDecorator( document, BooleanTemplate( document ) )
+      } )
+
+      const foo = tupleTemplate(
+        {
+          type: 'array',
+          items: [
+            { type: 'string' },
+            { type: 'number' },
+            { type: 'boolean' },
+            { type: 'boolean' }
+          ],
+          default: [
+            'bar', 1.1, true, false
+          ]
+        },
+        'foo'
+      )
+
+      const tupleFormEl = form( {}, foo )
+
+      const entries = getEntries( tupleFormEl )
+
+      assert.deepEqual(
+        entries,
+        [
+          [ 'foo[0]', 'bar' ],
+          [ 'foo[1]', 1.1 ],
+          [ 'foo[2]', true ],
+          [ 'foo[3]', false ]
         ]
       )
     })
@@ -114,7 +154,7 @@ describe( 'utils', () => {
 
     it( 'gets pointers from entries', () => {
       const tuplePointers = entriesToPointers(
-        GetEntries( FormData )( tupleFormEl )
+        getEntries( tupleFormEl )
       )
 
       assert.deepEqual(

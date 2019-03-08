@@ -1,9 +1,9 @@
 import * as assert from 'assert'
 import { JSONSchema4 } from 'json-schema'
-import { document, getEntries, form } from '../server/dom'
+import { document, form } from '../server/dom'
 import { Templates } from '../types'
 import {
-  StringTemplate, ArrayTemplate, ArrayListApi, ArrayItemTemplate
+  StringTemplate, ArrayTemplate, ArrayListApi, ArrayItemTemplate, getEntries
 } from '..'
 
 describe( 'schema-forms', () => {

@@ -1,0 +1,81 @@
+{
+    "title": "Strings",
+    "type": "object",
+    "properties": {
+        "plain-string": {
+            "title": "String",
+            "type": "string"
+        },
+        "multiline": {
+            "title": "Multiline String",
+            "type": "string",
+            "format": "multiline"
+        },
+        "plain-string-min-length": {
+            "title": "String with Minimum Length",
+            "type": "string",
+            "minLength": 2
+        },
+        "plain-string-max-length": {
+            "title": "String with Maximum Length",
+            "type": "string",
+            "maxLength": 10
+        },
+        "plain-string-min-max-length": {
+            "title": "String with Minimum and Maximum Length",
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 10
+        },
+        "plain-string-pattern": {
+            "title": "String with pattern",
+            "type": "string",
+            "pattern": "^[0-9a-z]+$"
+        },
+        "color-string": {
+            "title": "Color String",
+            "type": "string",
+            "format": "color"
+        },
+        "datetime-string": {
+            "title": "Date-time String",
+            "type": "string",
+            "format": "date-time"
+        },
+        "email-string": {
+            "title": "Email String",
+            "type": "string",
+            "format": "email"
+        },
+        "month-string": {
+            "title": "Month String",
+            "type": "string",
+            "format": "month"
+        },
+        "password": {
+            "title": "Password String",
+            "type": "string",
+            "format": "password"
+        },
+        "telephone": {
+            "title": "Telephone String",
+            "type": "string",
+            "format": "tel"
+        },
+        "time": {
+            "title": "Time String",
+            "type": "string",
+            "format": "time"
+        },
+        "url": {
+            "title": "URL String",
+            "type": "string",
+            "format": "uri"
+        },
+        "week": {
+            "title": "Week String",
+            "type": "string",
+            "format": "week"
+        }
+    }
+}

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
 const dom_1 = require("../server/dom");
 const __1 = require("..");
+const type_1 = require("../templates/decorators/type");
 describe('schema-forms', () => {
     describe('decorators', () => {
         describe('fieldset', () => {
@@ -40,6 +41,12 @@ describe('schema-forms', () => {
                 const input = editor.firstElementChild;
                 assert(input);
                 assert.strictEqual(input.type, 'text');
+            });
+            it('label contains asterisk if required', () => {
+                const labelDecorator = __1.LabelDecorator(dom_1.document, __1.StringTemplate(dom_1.document));
+                const editor = labelDecorator({}, '', '', true);
+                const span = editor.querySelector('span');
+                assert(span.innerHTML.includes('*'));
             });
         });
         describe('format', () => {
@@ -128,7 +135,7 @@ describe('schema-forms', () => {
                 const container = templates.arrayList({ items: { type: 'string' } });
                 const addAction = container.querySelector('[data-action="array-list-add"]');
                 addAction.dispatchEvent(click);
-                const entries = dom_1.getEntries(dom_1.form({}, container));
+                const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', ''],
                     ['1', '']
@@ -142,7 +149,7 @@ describe('schema-forms', () => {
                 const deleteActions = Array.from(container.querySelectorAll('[data-action="array-list-delete"]'));
                 assert.strictEqual(deleteActions.length, 3);
                 deleteActions[1].dispatchEvent(click);
-                const entries = dom_1.getEntries(dom_1.form({}, container));
+                const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', ''],
                     ['1', '']
@@ -152,7 +159,7 @@ describe('schema-forms', () => {
                 const container = templates.arrayList({ type: 'array', items: { type: 'string' } }, 'foo');
                 const addAction = container.querySelector('[data-action="array-list-add"]');
                 addAction.dispatchEvent(click);
-                const entries = dom_1.getEntries(dom_1.form({}, container));
+                const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['foo[0]', ''],
                     ['foo[1]', '']
@@ -163,10 +170,35 @@ describe('schema-forms', () => {
                 const deleteAction = container.querySelector('[data-action="array-list-delete"]');
                 container.appendChild(deleteAction);
                 deleteAction.dispatchEvent(click);
-                const entries = dom_1.getEntries(dom_1.form({}, container));
+                const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', '']
                 ]);
+            });
+            it('click on container does not add or remove', () => {
+                const container = templates.arrayList({ type: 'array', items: { type: 'string' } });
+                container.dispatchEvent(click);
+                const entries = __1.getEntries(dom_1.form({}, container));
+                assert.deepEqual(entries, [
+                    ['0', '']
+                ]);
+            });
+        });
+        describe('type', () => {
+            it('decorates name with type', () => {
+                const stringTemplate = type_1.TypeDecorator(dom_1.document, __1.StringTemplate(dom_1.document));
+                const input = stringTemplate({ type: 'string' }, 'foo');
+                assert.strictEqual(input.name, 'foo__string');
+            });
+            it('no default name', () => {
+                const stringTemplate = type_1.TypeDecorator(dom_1.document, __1.StringTemplate(dom_1.document));
+                const input = stringTemplate({ type: 'string' });
+                assert.strictEqual(input.name, '__string');
+            });
+            it('does not decorate when no type', () => {
+                const stringTemplate = type_1.TypeDecorator(dom_1.document, __1.StringTemplate(dom_1.document));
+                const input = stringTemplate();
+                assert(!input.hasAttribute('name'));
             });
         });
     });

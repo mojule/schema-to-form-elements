@@ -31,3 +31,7 @@ export interface Templates {
 export interface StringFormatTemplates extends Partial<Templates> {
   string: SchemaTemplate
 }
+
+export type TypedFormEntryValue = string | number | boolean | null
+
+export type TypedFormEntry = [ string, TypedFormEntryValue ]

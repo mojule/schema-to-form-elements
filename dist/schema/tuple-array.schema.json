@@ -1,0 +1,20 @@
+{
+    "type": "array",
+    "title": "Tuple Array",
+    "description": "A tuple array",
+    "items": [
+        {
+            "title": "Foo",
+            "type": "number"
+        },
+        {
+            "title": "Bar",
+            "type": "string"
+        },
+        {
+            "title": "Baz",
+            "type": "boolean"
+        }
+    ],
+    "default": [1, "Bar", true]
+}

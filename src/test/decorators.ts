@@ -1,11 +1,12 @@
 import * as assert from 'assert'
-import { document, Event, getEntries, form } from '../server/dom'
+import { document, Event, form } from '../server/dom'
 import { Templates } from '../types'
 import {
   ArrayTemplate, FieldsetDecorator, LabelDecorator, StringTemplate,
   FormatDecorator, MutableArrayListDecorator, ArrayListTemplate,
-  MutableArrayItemDecorator, ArrayItemTemplate
+  MutableArrayItemDecorator, ArrayItemTemplate, getEntries
 } from '..'
+import { TypeDecorator } from '../templates/decorators/type'
 
 describe( 'schema-forms', () => {
   describe( 'decorators', () => {
@@ -79,6 +80,18 @@ describe( 'schema-forms', () => {
         assert( input )
         assert.strictEqual( ( <HTMLInputElement>input ).type, 'text' )
       })
+
+      it( 'label contains asterisk if required', () => {
+        const labelDecorator = LabelDecorator(
+          document,
+          StringTemplate( document )
+        )
+
+        const editor = labelDecorator( {}, '', '', true )
+        const span = editor.querySelector( 'span' )!
+
+        assert( span.innerHTML.includes( '*' ) )
+      } )
     })
 
     describe( 'format', () => {
@@ -314,6 +327,62 @@ describe( 'schema-forms', () => {
           ]
         )
       })
+
+      it( 'click on container does not add or remove', () => {
+        const container = templates.arrayList!(
+          { type: 'array', items: { type: 'string' } }
+        )
+
+        container.dispatchEvent( click )
+
+        const entries = getEntries( form( {}, container ) )
+
+        assert.deepEqual(
+          entries,
+          [
+            [ '0', '' ]
+          ]
+        )
+      } )
+    })
+
+    describe( 'type', () => {
+      it( 'decorates name with type', () => {
+        const stringTemplate = TypeDecorator(
+          document,
+          StringTemplate( document )
+        )
+
+        const input = <HTMLInputElement>stringTemplate(
+          { type: 'string' }, 'foo'
+        )
+
+        assert.strictEqual( input.name, 'foo__string' )
+      })
+
+      it( 'no default name', () => {
+        const stringTemplate = TypeDecorator(
+          document,
+          StringTemplate( document )
+        )
+
+        const input = <HTMLInputElement>stringTemplate(
+          { type: 'string' }
+        )
+
+        assert.strictEqual( input.name, '__string' )
+      })
+
+      it( 'does not decorate when no type', () => {
+        const stringTemplate = TypeDecorator(
+          document,
+          StringTemplate( document )
+        )
+
+        const input = <HTMLInputElement>stringTemplate()
+
+        assert( !input.hasAttribute( 'name' ) )
+      } )
     })
   })
 })

@@ -20,8 +20,8 @@ const simpleArrayApi = array_list_2.ArrayListApi(dom_1.document, named, schema, 
 simpleArrayApi.add(4);
 simpleArrayApi.add(5);
 simpleArrayApi.remove(3);
-const unnamedEntries = dom_1.getEntries(dom_1.form({}, unnamed));
-const namedEntries = dom_1.getEntries(dom_1.form({}, named));
+const unnamedEntries = utils_1.getEntries(dom_1.form({}, unnamed));
+const namedEntries = utils_1.getEntries(dom_1.form({}, named));
 exports.simpleArrayExample = {
     'Unnamed Simple Array': unnamed.outerHTML,
     'Named Simple Array': named.outerHTML,

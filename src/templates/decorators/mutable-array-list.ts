@@ -39,6 +39,8 @@ export const MutableArrayListDecorator =
           e.stopPropagation()
 
           api.add()
+
+          container.dispatchEvent( new Event( 'input', { bubbles: true } ) )
         }
 
         if ( target.dataset.action === 'array-list-delete' ) {
@@ -47,14 +49,18 @@ export const MutableArrayListDecorator =
           const li = target.closest( 'li' )
 
           // can't throw errors in event handlers, no way to catch them
-          // when using dispatchEvent so throwing makes this untestable
+          // when using dispatchEvent, so throwing makes this untestable
           if ( !li ) return
 
+          const ol = li.parentNode!
+
           const index = Array.from(
-            li.parentNode!.children
+            ol.children
           ).indexOf( li )
 
           api.remove( index )
+
+          container.dispatchEvent( new Event( 'input', { bubbles: true } ) )
         }
       })
 
