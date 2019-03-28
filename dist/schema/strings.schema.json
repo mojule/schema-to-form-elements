@@ -11,6 +11,17 @@
             "type": "string",
             "format": "multiline"
         },
+        "select-string": {
+            "title": "String Enum",
+            "type": "string",
+            "enum": ["Foo", "Bar", "Baz"]
+        },
+        "select-string-default": {
+            "title": "String Enum with Default",
+            "type": "string",
+            "enum": ["Foo", "Bar", "Baz"],
+            "default": "Bar"
+        },
         "plain-string-min-length": {
             "title": "String with Minimum Length",
             "type": "string",

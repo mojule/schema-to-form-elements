@@ -35,3 +35,6 @@ export interface StringFormatTemplates extends Partial<Templates> {
 export type TypedFormEntryValue = string | number | boolean | null
 
 export type TypedFormEntry = [ string, TypedFormEntryValue ]
+
+export type EditorElement =
+  HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement

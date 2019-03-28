@@ -11,6 +11,7 @@ const label_1 = require("./decorators/label");
 const mutable_array_list_1 = require("./decorators/mutable-array-list");
 const array_list_1 = require("./types/array/array-list");
 const array_item_1 = require("./types/array/array-item");
+const select_1 = require("./decorators/select");
 exports.ServerFormTemplates = (document) => {
     const templates = {};
     templates.array = fieldset_1.FieldsetDecorator(document, array_1.ArrayTemplate(document, templates));
@@ -18,10 +19,10 @@ exports.ServerFormTemplates = (document) => {
     templates.number = label_1.LabelDecorator(document, number_1.NumberTemplate(document));
     templates.integer = templates.number;
     templates.object = fieldset_1.FieldsetDecorator(document, object_1.ObjectTemplate(document, templates));
-    templates.string = label_1.LabelDecorator(document, format_1.FormatDecorator(document, {
+    templates.string = label_1.LabelDecorator(document, select_1.SelectDecorator(document, format_1.FormatDecorator(document, {
         string: string_1.StringTemplate(document),
         multiline: string_1.StringTemplate(document, true)
-    }));
+    })));
     return templates;
 };
 exports.ClientFormTemplates = (document) => {

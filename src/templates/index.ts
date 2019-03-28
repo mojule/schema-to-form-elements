@@ -12,6 +12,7 @@ import {
 } from './decorators/mutable-array-list'
 import { ArrayListTemplate } from './types/array/array-list'
 import { ArrayItemTemplate } from './types/array/array-item'
+import { SelectDecorator } from './decorators/select';
 
 export const ServerFormTemplates = ( document: Document ) => {
   const templates: Partial<Templates> = {}
@@ -40,12 +41,15 @@ export const ServerFormTemplates = ( document: Document ) => {
 
   templates.string = LabelDecorator(
     document,
-    FormatDecorator(
+    SelectDecorator(
       document,
-      {
-        string: StringTemplate( document ),
-        multiline: StringTemplate( document, true )
-      }
+      FormatDecorator(
+        document,
+        {
+          string: StringTemplate( document ),
+          multiline: StringTemplate( document, true )
+        }
+      )
     )
   )
 

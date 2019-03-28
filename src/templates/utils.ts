@@ -1,5 +1,5 @@
 import { JSONSchema4 } from 'json-schema'
-import { TypedFormEntry, TypedFormEntryValue } from '../types';
+import { TypedFormEntry, TypedFormEntryValue, EditorElement } from '../types';
 
 export const getTitle = ( schema: JSONSchema4, name = '', fallback = 'Schema' ) =>
   schema.title || name || fallback
@@ -31,13 +31,12 @@ export const getEntries =
   ( form: HTMLFormElement, allowEmptyValue = true ) => {
     const result: TypedFormEntry[] = []
 
-    // todo: won't work with select etc!
-    const inputs = <(HTMLInputElement|HTMLTextAreaElement)[]>Array.from(
-      form.querySelectorAll( 'input, textarea' )
+    const editors = <EditorElement[]>Array.from(
+      form.querySelectorAll( 'input, textarea, select' )
     )
 
-    inputs.forEach( input => {
-      let { name, value } = input
+    editors.forEach( editor => {
+      let { name, value } = editor
 
       if ( !value && !allowEmptyValue ) {
         return
@@ -53,11 +52,11 @@ export const getEntries =
         name = name.split( '__' )[ 0 ]
       }
 
-      if( input.type === 'number' )
+      if( editor.type === 'number' )
         typedValue = Number( typedValue )
 
-      if( input.type === 'checkbox' )
-        typedValue = ( <HTMLInputElement>input ).checked
+      if( editor.type === 'checkbox' )
+        typedValue = ( <HTMLInputElement>editor ).checked
 
       result.push( [ name, typedValue ] )
     } )

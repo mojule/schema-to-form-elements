@@ -11,10 +11,9 @@ exports.H = (document, name) => (attributes = {}, ...children) => {
 exports.Form = (document) => exports.H(document, 'form');
 exports.getEntries = (form, allowEmptyValue = true) => {
     const result = [];
-    // todo: won't work with select etc!
-    const inputs = Array.from(form.querySelectorAll('input, textarea'));
-    inputs.forEach(input => {
-        let { name, value } = input;
+    const editors = Array.from(form.querySelectorAll('input, textarea, select'));
+    editors.forEach(editor => {
+        let { name, value } = editor;
         if (!value && !allowEmptyValue) {
             return;
         }
@@ -24,10 +23,10 @@ exports.getEntries = (form, allowEmptyValue = true) => {
             name.endsWith('__boolean')) {
             name = name.split('__')[0];
         }
-        if (input.type === 'number')
+        if (editor.type === 'number')
             typedValue = Number(typedValue);
-        if (input.type === 'checkbox')
-            typedValue = input.checked;
+        if (editor.type === 'checkbox')
+            typedValue = editor.checked;
         result.push([name, typedValue]);
     });
     return result;

@@ -19,3 +19,4 @@ export interface StringFormatTemplates extends Partial<Templates> {
 }
 export declare type TypedFormEntryValue = string | number | boolean | null;
 export declare type TypedFormEntry = [string, TypedFormEntryValue];
+export declare type EditorElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
