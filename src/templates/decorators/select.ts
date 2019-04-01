@@ -3,10 +3,11 @@ import { JSONSchema4 } from 'json-schema'
 import { getTitle } from '../utils'
 
 export const SelectDecorator = (
-  document: Document, stringTemplate: SchemaTemplate
+  document: Document, stringTemplate: SchemaTemplate,
+  predicate = ( _schema: JSONSchema4 ) => true
 ) => {
   const selectDecorator = ( schema: JSONSchema4 = {}, name = '', value?: string, isRequired = false ) => {
-    if( !Array.isArray( schema.enum ) )
+    if( !Array.isArray( schema.enum ) || !predicate( schema ) )
       return stringTemplate( schema, name, value, isRequired )
 
     if( !schema.enum.every( value => typeof value === 'string' ) )

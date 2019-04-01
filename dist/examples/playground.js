@@ -19,6 +19,7 @@ ajv.addFormat('multiline', () => true);
 ajv.addFormat('password', () => true);
 ajv.addFormat('tel', () => true);
 ajv.addFormat('range', () => true);
+ajv.addFormat('hidden', () => true);
 ajv.addFormat('color', /^\#[a-f0-9]{6}$/);
 ajv.addFormat('month', /^\d{4}-\d{1,2}$/);
 ajv.addFormat('week', /^\d{4}-W\d{1,2}$/);

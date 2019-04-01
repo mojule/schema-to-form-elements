@@ -13,6 +13,7 @@ import {
 import { ArrayListTemplate } from './types/array/array-list'
 import { ArrayItemTemplate } from './types/array/array-item'
 import { SelectDecorator } from './decorators/select';
+import { ConstDecorator } from './decorators/const';
 
 export const ServerFormTemplates = ( document: Document ) => {
   const templates: Partial<Templates> = {}
@@ -29,7 +30,10 @@ export const ServerFormTemplates = ( document: Document ) => {
 
   templates.number = LabelDecorator(
     document,
-    NumberTemplate( document )
+    ConstDecorator(
+      document,
+      NumberTemplate( document )
+    )
   )
 
   templates.integer = templates.number
@@ -41,14 +45,18 @@ export const ServerFormTemplates = ( document: Document ) => {
 
   templates.string = LabelDecorator(
     document,
-    SelectDecorator(
+    ConstDecorator(
       document,
-      FormatDecorator(
+      SelectDecorator(
         document,
-        {
-          string: StringTemplate( document ),
-          multiline: StringTemplate( document, true )
-        }
+        FormatDecorator(
+          document,
+          {
+            string: StringTemplate( document ),
+            multiline: StringTemplate( document, true )
+          }
+        ),
+        schema => Array.isArray( schema.enum ) && schema.enum.length > 1
       )
     )
   )

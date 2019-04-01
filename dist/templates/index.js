@@ -12,17 +12,18 @@ const mutable_array_list_1 = require("./decorators/mutable-array-list");
 const array_list_1 = require("./types/array/array-list");
 const array_item_1 = require("./types/array/array-item");
 const select_1 = require("./decorators/select");
+const const_1 = require("./decorators/const");
 exports.ServerFormTemplates = (document) => {
     const templates = {};
     templates.array = fieldset_1.FieldsetDecorator(document, array_1.ArrayTemplate(document, templates));
     templates.boolean = label_1.LabelDecorator(document, boolean_1.BooleanTemplate(document), true);
-    templates.number = label_1.LabelDecorator(document, number_1.NumberTemplate(document));
+    templates.number = label_1.LabelDecorator(document, const_1.ConstDecorator(document, number_1.NumberTemplate(document)));
     templates.integer = templates.number;
     templates.object = fieldset_1.FieldsetDecorator(document, object_1.ObjectTemplate(document, templates));
-    templates.string = label_1.LabelDecorator(document, select_1.SelectDecorator(document, format_1.FormatDecorator(document, {
+    templates.string = label_1.LabelDecorator(document, const_1.ConstDecorator(document, select_1.SelectDecorator(document, format_1.FormatDecorator(document, {
         string: string_1.StringTemplate(document),
         multiline: string_1.StringTemplate(document, true)
-    })));
+    }), schema => Array.isArray(schema.enum) && schema.enum.length > 1)));
     return templates;
 };
 exports.ClientFormTemplates = (document) => {

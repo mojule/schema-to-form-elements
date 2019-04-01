@@ -186,8 +186,6 @@ describe( 'schema-forms', () => {
         ArrayItemTemplate( document, templates )
       )
 
-      const click = new Event( 'click', { bubbles: true } )
-
       it( 'creates an add action', () => {
         const container = templates.arrayList!(
           { items: { type: 'string' } }
@@ -245,7 +243,7 @@ describe( 'schema-forms', () => {
 
         const addAction = container.querySelector( '[data-action="array-list-add"]' )!
 
-        addAction.dispatchEvent( click )
+        addAction.dispatchEvent( new Event( 'click', { bubbles: true } ) )
 
         const entries = getEntries( form( {}, container ) )
 
@@ -265,8 +263,8 @@ describe( 'schema-forms', () => {
 
         const addAction = container.querySelector( '[data-action="array-list-add"]' )!
 
-        addAction.dispatchEvent( click )
-        addAction.dispatchEvent( click )
+        addAction.dispatchEvent( new Event( 'click', { bubbles: true } ) )
+        addAction.dispatchEvent( new Event( 'click', { bubbles: true } ) )
 
         const deleteActions = Array.from(
           container.querySelectorAll( '[data-action="array-list-delete"]' )
@@ -274,7 +272,7 @@ describe( 'schema-forms', () => {
 
         assert.strictEqual( deleteActions.length, 3 )
 
-        deleteActions[ 1 ].dispatchEvent( click )
+        deleteActions[ 1 ].dispatchEvent( new Event( 'click', { bubbles: true } ) )
 
         const entries = getEntries( form( {}, container ) )
 
@@ -294,7 +292,7 @@ describe( 'schema-forms', () => {
 
         const addAction = container.querySelector( '[data-action="array-list-add"]' )!
 
-        addAction.dispatchEvent( click )
+        addAction.dispatchEvent( new Event( 'click', { bubbles: true } ) )
 
         const entries = getEntries( form( {}, container ) )
 
@@ -316,7 +314,7 @@ describe( 'schema-forms', () => {
 
         container.appendChild( deleteAction )
 
-        deleteAction.dispatchEvent( click )
+        deleteAction.dispatchEvent( new Event( 'click', { bubbles: true } ) )
 
         const entries = getEntries( form( {}, container ) )
 
@@ -333,7 +331,7 @@ describe( 'schema-forms', () => {
           { type: 'array', items: { type: 'string' } }
         )
 
-        container.dispatchEvent( click )
+        container.dispatchEvent( new Event( 'click', { bubbles: true } ) )
 
         const entries = getEntries( form( {}, container ) )
 

@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils");
-exports.SelectDecorator = (document, stringTemplate) => {
+exports.SelectDecorator = (document, stringTemplate, predicate = (_schema) => true) => {
     const selectDecorator = (schema = {}, name = '', value, isRequired = false) => {
-        if (!Array.isArray(schema.enum))
+        if (!Array.isArray(schema.enum) || !predicate(schema))
             return stringTemplate(schema, name, value, isRequired);
         if (!schema.enum.every(value => typeof value === 'string'))
             throw Error('Expected enum to be an array of strings');

@@ -22,6 +22,17 @@
       "enum": [ "Foo", "Bar", "Baz" ],
       "default": "Bar"
     },
+    "const-string": {
+      "title": "Const String",
+      "type": "string",
+      "enum": [ "Foo" ]
+    },
+    "hidden-string": {
+      "title": "Hidden String",
+      "type": "string",
+      "enum": [ "Bar" ],
+      "format": "hidden"
+    },
     "plain-string-min-length": {
       "title": "String with Minimum Length",
       "type": "string",

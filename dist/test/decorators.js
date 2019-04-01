@@ -102,7 +102,7 @@ describe('schema-forms', () => {
             };
             templates.arrayList = __1.MutableArrayListDecorator(dom_1.document, __1.ArrayListTemplate(dom_1.document, templates), templates);
             templates.arrayItem = __1.MutableArrayItemDecorator(dom_1.document, __1.ArrayItemTemplate(dom_1.document, templates));
-            const click = new dom_1.Event('click', { bubbles: true });
+            //      const click = new Event( 'click', { bubbles: true } )
             it('creates an add action', () => {
                 const container = templates.arrayList({ items: { type: 'string' } });
                 const addActions = container.querySelectorAll('[data-action="array-list-add"]');
@@ -134,7 +134,7 @@ describe('schema-forms', () => {
             it('adds', () => {
                 const container = templates.arrayList({ items: { type: 'string' } });
                 const addAction = container.querySelector('[data-action="array-list-add"]');
-                addAction.dispatchEvent(click);
+                addAction.dispatchEvent(new dom_1.Event('click', { bubbles: true }));
                 const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', ''],
@@ -144,11 +144,11 @@ describe('schema-forms', () => {
             it('removes', () => {
                 const container = templates.arrayList({ type: 'array', items: { type: 'string' } });
                 const addAction = container.querySelector('[data-action="array-list-add"]');
-                addAction.dispatchEvent(click);
-                addAction.dispatchEvent(click);
+                addAction.dispatchEvent(new dom_1.Event('click', { bubbles: true }));
+                addAction.dispatchEvent(new dom_1.Event('click', { bubbles: true }));
                 const deleteActions = Array.from(container.querySelectorAll('[data-action="array-list-delete"]'));
                 assert.strictEqual(deleteActions.length, 3);
-                deleteActions[1].dispatchEvent(click);
+                deleteActions[1].dispatchEvent(new dom_1.Event('click', { bubbles: true }));
                 const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', ''],
@@ -158,7 +158,7 @@ describe('schema-forms', () => {
             it('adds with parent name', () => {
                 const container = templates.arrayList({ type: 'array', items: { type: 'string' } }, 'foo');
                 const addAction = container.querySelector('[data-action="array-list-add"]');
-                addAction.dispatchEvent(click);
+                addAction.dispatchEvent(new dom_1.Event('click', { bubbles: true }));
                 const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['foo[0]', ''],
@@ -169,7 +169,7 @@ describe('schema-forms', () => {
                 const container = templates.arrayList({ type: 'array', items: { type: 'string' } });
                 const deleteAction = container.querySelector('[data-action="array-list-delete"]');
                 container.appendChild(deleteAction);
-                deleteAction.dispatchEvent(click);
+                deleteAction.dispatchEvent(new dom_1.Event('click', { bubbles: true }));
                 const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', '']
@@ -177,7 +177,7 @@ describe('schema-forms', () => {
             });
             it('click on container does not add or remove', () => {
                 const container = templates.arrayList({ type: 'array', items: { type: 'string' } });
-                container.dispatchEvent(click);
+                container.dispatchEvent(new dom_1.Event('click', { bubbles: true }));
                 const entries = __1.getEntries(dom_1.form({}, container));
                 assert.deepEqual(entries, [
                     ['0', '']
