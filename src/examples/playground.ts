@@ -4,8 +4,8 @@ import { JSONSchema4 } from 'json-schema'
 import * as schemas from '../schema'
 import * as data from '../schema/data'
 import { getData } from './get-data'
-import { SchemaToFormElements } from '..';
-import { ClientFormTemplates } from '../templates';
+import { SchemaToFormElements } from '..'
+import { ClientFormTemplates } from '../templates'
 
 const valid = '✔️'
 const invalid = '❌'
@@ -29,7 +29,7 @@ ajv.addFormat( 'month', /^\d{4}-\d{1,2}$/ )
 ajv.addFormat( 'week', /^\d{4}-W\d{1,2}$/ )
 
 document.addEventListener( 'DOMContentLoaded', () => {
-  const schemaToDom = SchemaToFormElements( ClientFormTemplates( document ) )
+  const schemaToDom = SchemaToFormElements( ClientFormTemplates( document, Event ) )
 
   const {
     form, submit, select, schema, schemaSubmit, resultJson, resultFormData,

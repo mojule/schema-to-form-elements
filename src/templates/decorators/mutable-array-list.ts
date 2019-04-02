@@ -8,6 +8,7 @@ import { getTitle } from '../utils'
 export const MutableArrayListDecorator =
   (
     document: Document,
+    Event,
     arrayList: SchemaTemplate,
     templates: Partial<Templates>
   ) => {

@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { document } from '../server/dom'
+import { document, Event } from '../server/dom'
 import {
   SchemaToFormElements, ServerFormTemplates, ClientFormTemplates,
   StringTemplate, TypeTemplates
@@ -70,7 +70,7 @@ describe( 'schema-forms', () => {
     })
 
     describe( 'ClientFormTemplates', () => {
-      const clientFormTemplates = ClientFormTemplates( document )
+      const clientFormTemplates = ClientFormTemplates( document, Event )
 
       const localNames = {
         array: 'fieldset',
@@ -117,7 +117,7 @@ describe( 'schema-forms', () => {
       )
 
       const client = SchemaToFormElements(
-        ClientFormTemplates( document )
+        ClientFormTemplates( document, Event )
       )
 
       describe( 'server', () => {

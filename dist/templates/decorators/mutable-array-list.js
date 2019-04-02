@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const array_list_1 = require("../api/array-list");
 const utils_1 = require("../utils");
 // TODO enforce minItems/maxItems
-exports.MutableArrayListDecorator = (document, arrayList, templates) => {
+exports.MutableArrayListDecorator = (document, Event, arrayList, templates) => {
     const mutableArrayListDecorator = (schema = {}, name = '', value) => {
         const container = arrayList(schema, name, value);
         if (!schema.items ||

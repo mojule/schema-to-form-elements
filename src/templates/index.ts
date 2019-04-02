@@ -64,13 +64,14 @@ export const ServerFormTemplates = ( document: Document ) => {
   return <Templates>templates
 }
 
-export const ClientFormTemplates = ( document: Document ) => {
+export const ClientFormTemplates = ( document: Document, Event ) => {
   const templates = ServerFormTemplates( document )
 
   templates.arrayList = FieldsetDecorator(
     document,
     MutableArrayListDecorator(
       document,
+      Event,
       ArrayListTemplate( document, templates ),
       templates
     )

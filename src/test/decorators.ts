@@ -177,6 +177,7 @@ describe( 'schema-forms', () => {
 
       templates.arrayList = MutableArrayListDecorator(
         document,
+        Event,
         ArrayListTemplate( document, templates ),
         templates
       )

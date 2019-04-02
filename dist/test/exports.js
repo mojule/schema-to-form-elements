@@ -50,7 +50,7 @@ describe('schema-forms', () => {
             });
         });
         describe('ClientFormTemplates', () => {
-            const clientFormTemplates = __1.ClientFormTemplates(dom_1.document);
+            const clientFormTemplates = __1.ClientFormTemplates(dom_1.document, dom_1.Event);
             const localNames = {
                 array: 'fieldset',
                 boolean: 'label',
@@ -81,7 +81,7 @@ describe('schema-forms', () => {
         });
         describe('SchemaToFormElements', () => {
             const server = __1.SchemaToFormElements(__1.ServerFormTemplates(dom_1.document));
-            const client = __1.SchemaToFormElements(__1.ClientFormTemplates(dom_1.document));
+            const client = __1.SchemaToFormElements(__1.ClientFormTemplates(dom_1.document, dom_1.Event));
             describe('server', () => {
                 const localNames = {
                     array: 'fieldset',

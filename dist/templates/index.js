@@ -26,9 +26,9 @@ exports.ServerFormTemplates = (document) => {
     }), schema => Array.isArray(schema.enum) && schema.enum.length > 1)));
     return templates;
 };
-exports.ClientFormTemplates = (document) => {
+exports.ClientFormTemplates = (document, Event) => {
     const templates = exports.ServerFormTemplates(document);
-    templates.arrayList = fieldset_1.FieldsetDecorator(document, mutable_array_list_1.MutableArrayListDecorator(document, array_list_1.ArrayListTemplate(document, templates), templates));
+    templates.arrayList = fieldset_1.FieldsetDecorator(document, mutable_array_list_1.MutableArrayListDecorator(document, Event, array_list_1.ArrayListTemplate(document, templates), templates));
     templates.arrayItem = mutable_array_list_1.MutableArrayItemDecorator(document, array_item_1.ArrayItemTemplate(document, templates));
     return templates;
 };

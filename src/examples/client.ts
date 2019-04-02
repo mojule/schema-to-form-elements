@@ -4,7 +4,7 @@ import * as nestedArrayJson from '../schema/nested-array.schema.json'
 import { SchemaToFormElements } from '../'
 import { ClientFormTemplates } from '../templates/index.js';
 
-const templates = ClientFormTemplates( document )
+const templates = ClientFormTemplates( document, Event )
 
 const schemaToFormElements = SchemaToFormElements( templates )
 const contactFormSchema = <JSONSchema4>contactFormJson

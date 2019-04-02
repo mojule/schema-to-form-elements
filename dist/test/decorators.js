@@ -100,9 +100,8 @@ describe('schema-forms', () => {
             const templates = {
                 string: __1.StringTemplate(dom_1.document)
             };
-            templates.arrayList = __1.MutableArrayListDecorator(dom_1.document, __1.ArrayListTemplate(dom_1.document, templates), templates);
+            templates.arrayList = __1.MutableArrayListDecorator(dom_1.document, dom_1.Event, __1.ArrayListTemplate(dom_1.document, templates), templates);
             templates.arrayItem = __1.MutableArrayItemDecorator(dom_1.document, __1.ArrayItemTemplate(dom_1.document, templates));
-            //      const click = new Event( 'click', { bubbles: true } )
             it('creates an add action', () => {
                 const container = templates.arrayList({ items: { type: 'string' } });
                 const addActions = container.querySelectorAll('[data-action="array-list-add"]');
