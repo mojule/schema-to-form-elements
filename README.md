@@ -1,3 +1,5 @@
+# Deprecated, use mojule/schema-forms
+
 # schema-forms
 
 Generate HTML forms from [JSON Schema](https://json-schema.org/)
