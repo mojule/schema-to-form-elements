@@ -2,7 +2,7 @@ import { JSONSchema4 } from 'json-schema'
 import * as contactFormJson from '../schema/contact-form.schema.json'
 import * as nestedArrayJson from '../schema/nested-array.schema.json'
 import { SchemaToFormElements } from '../'
-import { ClientFormTemplates } from '../templates/index.js';
+import { ClientFormTemplates } from '../templates'
 
 const templates = ClientFormTemplates( document, Event )
 
